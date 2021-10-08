@@ -41,7 +41,7 @@ class UserAuthService
         }
 
         if (!Hash::check($password, $user->password)) {
-            return $this->error('Credentials not correct', 404);
+            return $this->error('Credentials not correct', 400);
         }
 
         if (!$user->api_token) {

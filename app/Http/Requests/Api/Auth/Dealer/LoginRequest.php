@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests\Api\Auth\Dealer;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
 
 class LoginRequest extends FormRequest
 {
@@ -13,7 +17,7 @@ class LoginRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +28,20 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'tax_number' => 'required',
+            'password' => 'required'
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(
+            response()->json([
+                'message' => 'Request not valid',
+                'error' => true,
+                'code' => 400,
+                'response' => (new ValidationException($validator))->errors()
+            ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY)
+        );
     }
 }

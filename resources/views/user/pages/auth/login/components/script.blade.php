@@ -54,6 +54,11 @@
                     if (parseInt(error.responseJSON.code) === 404) {
                         toastr.error('Sistemde Kayıtlı Böyle Bir Kullanıcı Bulunamadı.');
                     }
+
+                    if (parseInt(error.responseJSON.code) === 400) {
+                        toastr.error('Girdiğiniz Bilgiler Eşleşmiyor!');
+                    }
+
                     LoginButton.attr('disabled', false);
                 }
             });

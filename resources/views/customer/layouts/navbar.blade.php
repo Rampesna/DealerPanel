@@ -5,24 +5,6 @@
 
             </div>
             <div class="topbar">
-                <div class="kt-header__topbar-item kt-header__topbar-item--search mt-4 mr-3">
-                    <div class="kt-header__topbar-wrapper">
-                        <div class="kt-quick-search" id="kt_quick_search_default">
-                            <div class="form-group row ">
-                                <div class="col-xl-12" style="width:400px">
-                                    <label style="width:100%">
-                                        <select class="form-control selectpicker" id="SelectedCompany">
-                                            @foreach($companies as $company)
-                                                <option @if($company->id == intval($authenticated->last_selected_company_id)) selected @endif value="{{ $company->id }}">{{ $company->title }}</option>
-                                            @endforeach
-                                        </select>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="topbar-item">
                     <div class="btn btn-icon w-auto btn-clean d-flex align-items-center btn-lg px-2" id="kt_quick_user_toggle">
                         <span class="text-muted font-weight-bold font-size-base d-none d-md-inline mr-1">Hoşgeldiniz,</span>
@@ -32,11 +14,8 @@
                         </span>
                     </div>
                 </div>
-
             </div>
-
         </div>
-
     </div>
 
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
@@ -45,6 +24,6 @@
         </div>
     </div>
 
-    @include('user.layouts.footer')
-    @include('user.layouts.rightbar')
+    @include('customer.layouts.footer')
+    @include('customer.layouts.rightbar')
 </div>

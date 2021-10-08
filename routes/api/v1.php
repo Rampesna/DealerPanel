@@ -3,10 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::name('auth.')->prefix('auth')->group(function () {
-    Route::name('login.')->prefix('login')->group(function () {
-        Route::any('customer', [\App\Http\Controllers\Api\Auth\CustomerAuthenticationController::class, 'login'])->name('customer');
-        Route::any('dealer', [\App\Http\Controllers\Api\Auth\DealerAuthenticationController::class, 'login'])->name('dealer');
-        Route::any('user', [\App\Http\Controllers\Api\Auth\UserAuthenticationController::class, 'login'])->name('user');
+Route::prefix('auth')->group(function () {
+    Route::prefix('login')->group(function () {
+        Route::any('customer', [\App\Http\Controllers\Api\Auth\CustomerAuthenticationController::class, 'login'])->name('api.v1.auth.login.customer');
+        Route::any('dealer', [\App\Http\Controllers\Api\Auth\DealerAuthenticationController::class, 'login'])->name('api.v1.auth.login.dealer');
+        Route::any('user', [\App\Http\Controllers\Api\Auth\UserAuthenticationController::class, 'login'])->name('api.v1.auth.login.user');
     });
 });

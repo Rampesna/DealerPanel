@@ -20,7 +20,7 @@
                         </div>
                         <div class="form-group">
                             <label for="tax_number" class="font-size-h6 font-weight-bolder text-dark">Vergi Numaranız</label>
-                            <input class="form-control h-auto py-7 px-6 rounded-lg border-0 onlyNumber" type="text" id="tax_number" autocomplete="off">
+                            <input class="form-control h-auto py-7 px-6 rounded-lg border-0 onlyNumber" type="text" id="tax_number" autocomplete="off" maxlength="11">
                         </div>
                         <div class="form-group">
                             <div class="d-flex justify-content-between mt-n5">
@@ -41,7 +41,7 @@
                         <div class="pb-lg-0 pb-5">
                             <div class="row">
                                 <div class="col-xl-4">
-                                    <button type="button" class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3">Giriş Yap</button>
+                                    <button type="button" class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3" id="LoginButton">Giriş Yap</button>
                                 </div>
                             </div>
                         </div>

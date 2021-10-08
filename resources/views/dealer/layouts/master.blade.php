@@ -33,40 +33,32 @@
 
 </head>
 
-<div class="QuickActions isHidden cursor-pointer" data-toggle="modal" data-target="#ManagementModal">
-    <img class="QuickActions-button" src="{{ asset('assets/media/logos/quick-menu.png') }}" />
-</div>
-
 <body id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading example">
 <div id="loader"></div>
 
 <div class="d-flex flex-column flex-root">
     <div class="d-flex flex-row flex-column-fluid page">
-        @include('user.layouts.sidebar')
-        @include('user.layouts.navbar')
+        @include('dealer.layouts.sidebar')
+        @include('dealer.layouts.navbar')
     </div>
 </div>
 
-@include('user.layouts.modals.logout')
-@include('user.layouts.modals.management')
+@include('dealer.layouts.modals.logout')
 
 @stack('before-scripts')
 
 <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
 <script src="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.js?v=7.0.3') }}"></script>
 <script src="{{ asset('assets/js/scripts.bundle.js?v=7.0.3') }}"></script>
+<script src="{{ asset('assets/js/custom.js') }}"></script>
+
+@include('dealer.layouts.components.script')
 
 @stack('after-scripts')
-
-<script src="{{ asset('assets/js/bootstrap-datepicker.tr.js') }}"></script>
-<script src="{{ asset('assets/js/pages/crud/forms/widgets/input-mask.js?v=7.0.3') }}"></script>
 
 @if (trim($__env->yieldContent('page-script')))
     @yield('page-script')
 @endif
-
-<script src="{{ asset('assets/js/custom.js') }}"></script>
-@include('user.layouts.components.script')
 
 </body>
 </html>
