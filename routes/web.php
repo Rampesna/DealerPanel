@@ -3,9 +3,5 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('test', function () {
-    return bcrypt('admin');
+    return (new \App\Services\CustomerService)->datatable(1);
 });
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
