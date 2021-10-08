@@ -1,0 +1,156 @@
+.toast-top-center {
+    margin-top: 20px;
+}
+
+.fc-agenda-view .fc-day-grid {
+    position: relative;
+    z-index: 2
+}
+
+.fc-agenda-view .fc-day-grid .fc-row {
+    min-height: 3em
+}
+
+.fc-agenda-view .fc-day-grid .fc-row .fc-content-skeleton {
+    padding-bottom: 1em
+}
+
+.modal-backdrop
+{
+    opacity:0.65 !important;
+}
+
+#loader{
+    /*
+    #23232b For BG
+    */
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background: #23232b url('../../assets/media/gif/ays-pre-loader.gif') no-repeat center;
+    z-index: 999;
+}
+
+
+.loader{
+    width: 50px;
+    height: 50px;
+    border-radius: 25%;
+    position: relative;
+    margin: 0 auto;
+    margin-top: 20%;
+    margin-bottom: 35%;
+}
+
+/* LOADER 1 */
+
+#loader-1:before, #loader-1:after{
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    border: 10px solid transparent;
+    border-top-color: #3498db;
+}
+
+#loader-1:before{
+    z-index: 100;
+    animation: spin 1s infinite;
+}
+
+#loader-1:after{
+    border: 10px solid #ccc;
+}
+
+@keyframes spin{
+    0%{
+        -webkit-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100%{
+        -webkit-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+.QuickActions {
+    transition: background-color 0.5s ease;
+    position: fixed;
+    z-index: 16;
+    top: 45%;
+    right: -37.5px;
+    -webkit-transition-property: bottom, right, color;
+    -webkit-transition-duration: .66s;
+    -webkit-transition-timing-function: cubic-bezier(0.25, 1, .25, 1);
+    -moz-transition-property: bottom, right, color;
+    -moz-transition-duration: .66s;
+    -moz-transition-timing-function: cubic-bezier(0.25, 1, .25, 1);
+    -ms-transition-property: bottom, right, color;
+    -ms-transition-duration: .66s;
+    -ms-transition-timing-function: cubic-bezier(0.25, 1, .25, 1);
+    -o-transition-property: bottom, right, color;
+    -o-transition-duration: .66s;
+    -o-transition-timing-function: cubic-bezier(0.25, 1, .25, 1);
+    transition-property: bottom, right, color;
+    transition-duration: .66s;
+    transition-timing-function: cubic-bezier(0.25, 1, .25, 1)
+}
+
+.QuickActions.isHidden {
+    top: 45%;
+    right: -37.5px;
+}
+
+.QuickActions:hover {
+    top: 45%;
+    right: -10px;
+}
+
+.QuickActions:hover .QuickActions-button {
+    transition: background-color 0.5s ease;
+    background-color: transparent;
+}
+
+.QuickActions .QuickActions-button {
+    transition: background-color 0.5s ease;
+    display: block;
+    position: relative;
+    z-index: 14;
+    width: 75px;
+    height: 75px;
+    line-height: 75px;
+    padding: 5px;
+    text-align: center;
+    background-color: transparent;
+    color: #b2afad;
+    pointer-events: none;
+    -webkit-transition-property: color;
+    -webkit-transition-duration: .66s;
+    -webkit-transition-timing-function: cubic-bezier(0.25, 1, .25, 1);
+    -moz-transition-property: color;
+    -moz-transition-duration: .66s;
+    -moz-transition-timing-function: cubic-bezier(0.25, 1, .25, 1);
+    -ms-transition-property: color;
+    -ms-transition-duration: .66s;
+    -ms-transition-timing-function: cubic-bezier(0.25, 1, .25, 1);
+    -o-transition-property: color;
+    -o-transition-duration: .66s;
+    -o-transition-timing-function: cubic-bezier(0.25, 1, .25, 1);
+    transition-property: color;
+    transition-duration: .66s;
+    transition-timing-function: cubic-bezier(0.25, 1, .25, 1);
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    -webkit-box-shadow: 0 3px 6px #c5c4c2;
+    -moz-box-shadow: 0 3px 6px #c5c4c2;
+    box-shadow: 0 3px 6px #c5c4c2
+}

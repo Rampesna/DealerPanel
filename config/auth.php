@@ -40,6 +40,27 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'api' => [
+            'driver' => 'token',
+            'provider' => 'users',
+            'hash' => false,
+        ],
+
+        'user' => [
+            'driver' => 'session',
+            'provider' => 'users'
+        ],
+
+        'dealer' => [
+            'driver' => 'session',
+            'provider' => 'dealers'
+        ],
+
+        'customer' => [
+            'driver' => 'session',
+            'provider' => 'customers'
+        ],
     ],
 
     /*
@@ -63,6 +84,16 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+        ],
+
+        'dealers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Dealer::class,
+        ],
+
+        'customers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Customer::class,
         ],
 
         // 'users' => [
