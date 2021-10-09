@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDealersTable extends Migration
+class CreateSupportRequestMessagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateDealersTable extends Migration
      */
     public function up()
     {
-        Schema::create('dealers', function (Blueprint $table) {
+        Schema::create('support_request_messages', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('top_id')->nullable();
-            $table->string('tax_number')->unique();
-            $table->string('name');
+            $table->bigInteger('support_request_id')->unsigned();
+            $table->string('creator_type');
+            $table->bigInteger('creator_id')->unsigned();
+            $table->longText('message')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -30,6 +31,6 @@ class CreateDealersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dealers');
+        Schema::dropIfExists('support_request_messages');
     }
 }

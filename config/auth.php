@@ -52,9 +52,9 @@ return [
             'provider' => 'users'
         ],
 
-        'dealer' => [
+        'dealerUser' => [
             'driver' => 'session',
-            'provider' => 'dealers'
+            'provider' => 'dealerUsers'
         ],
 
         'customer' => [
@@ -86,9 +86,9 @@ return [
             'model' => App\Models\User::class,
         ],
 
-        'dealers' => [
+        'dealerUsers' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Dealer::class,
+            'model' => App\Models\DealerUser::class,
         ],
 
         'customers' => [

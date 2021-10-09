@@ -3,8 +3,10 @@
 namespace App\Http;
 
 use App\Http\Middleware\AuthType;
+use App\Http\Middleware\CheckHeaderAuthType;
+use App\Http\Middleware\CheckHeaderToken;
 use App\Http\Middleware\CheckMethod;
-use App\Http\Middleware\CheckToken;
+use App\Http\Middleware\CheckDealerUser;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -66,7 +68,9 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'CheckToken' => CheckToken::class,
         'CheckMethod' => CheckMethod::class,
+        'CheckHeaderToken' => CheckHeaderToken::class,
+        'CheckHeaderAuthType' => CheckHeaderAuthType::class,
+        'CheckDealerUser' => CheckDealerUser::class,
     ];
 }

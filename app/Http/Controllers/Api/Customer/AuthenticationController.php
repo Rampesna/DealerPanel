@@ -8,16 +8,16 @@ use App\Http\Requests\Api\Customer\Auth\LoginRequest;
 
 class AuthenticationController extends Controller
 {
-    private $customerAuthService;
+    private $customerService;
 
     public function __construct()
     {
-        $this->customerAuthService = new CustomerService;
+        $this->customerService = new CustomerService;
     }
 
     public function login(LoginRequest $request)
     {
-        return $this->customerAuthService->login(
+        return $this->customerService->login(
             $request->tax_number,
             $request->password
         );

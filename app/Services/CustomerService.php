@@ -75,13 +75,25 @@ class CustomerService
         $dealer_id = null
     )
     {
-        return $this->success('All customers', $dealer_id ? Customer::whereIn('dealer_id', (new DealerService)->getSubDealersIds($dealer_id))->get() : Customer::all());
+        $customers = Customer::with([]);
+
+        if ($dealer_id) {
+            $customers->whereIn('dealer_id', (new DealerService)->getSubDealersIds($dealer_id));
+        }
+
+        return $this->success('All customers', $customers->get());
     }
 
     public function datatable(
         $dealer_id = null
     )
     {
-        return DataTables::of($dealer_id ? Customer::whereIn('dealer_id', (new DealerService)->getSubDealersIds($dealer_id)) : Customer::with([]))->make(true);
+        $customers = Customer::with([]);
+
+        if ($dealer_id) {
+            $customers->whereIn('dealer_id', (new DealerService)->getSubDealersIds($dealer_id));
+        }
+
+        return DataTables::of($customers)->make(true);
     }
 }
