@@ -27,7 +27,7 @@
             LoginButton.attr('disabled', true);
             $.ajax({
                 type: 'post',
-                url: '{{ route('api.v1.auth.login.user') }}',
+                url: '{{ route('api.v1.user.auth.login') }}',
                 data: {
                     email: email,
                     password: password

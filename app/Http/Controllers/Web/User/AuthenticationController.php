@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Web\User;
 
+use App\Services\UserService;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Web\Auth\User\OAuthLoginRequest;
-use App\Services\Auth\UserAuthService;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\Web\User\Auth\OAuthLoginRequest;
 
 class AuthenticationController extends Controller
 {
@@ -20,7 +20,7 @@ class AuthenticationController extends Controller
 
     public function oAuthLogin(OAuthLoginRequest $request)
     {
-        return (new UserAuthService)->oAuthLogin($request->api_token);
+        return (new UserService)->oAuthLogin($request->api_token);
     }
 
     public function logout()

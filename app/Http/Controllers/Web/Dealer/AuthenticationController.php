@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Web\Dealer;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Web\Auth\Dealer\OAuthLoginRequest;
-use App\Services\Auth\DealerAuthService;
+use App\Services\DealerService;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Web\Dealer\Auth\OAuthLoginRequest;
 
 class AuthenticationController extends Controller
 {
@@ -20,7 +20,7 @@ class AuthenticationController extends Controller
 
     public function oAuthLogin(OAuthLoginRequest $request)
     {
-        return (new DealerAuthService)->oAuthLogin($request->api_token);
+        return (new DealerService)->oAuthLogin($request->api_token);
     }
 
     public function logout()

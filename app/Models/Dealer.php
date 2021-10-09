@@ -21,6 +21,11 @@ class Dealer extends Authenticatable
         'remember_token',
     ];
 
+    public function apiToken()
+    {
+        return $this->api_token;
+    }
+
     public function getSubDealersAttribute()
     {
         return Dealer::where('top_id', $this->id)->get();

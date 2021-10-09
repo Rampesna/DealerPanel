@@ -10,4 +10,8 @@ Route::middleware([
     'auth:dealer'
 ])->group(function () {
     Route::get('dashboard', [\App\Http\Controllers\Web\Dealer\DashboardController::class, 'index'])->name('dealer.dashboard.index');
+
+    Route::prefix('customer')->group(function () {
+        Route::get('index', [\App\Http\Controllers\Web\Dealer\CustomerController::class, 'index'])->name('dealer.customer.index');
+    });
 });

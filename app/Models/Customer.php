@@ -16,4 +16,9 @@ class Customer extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function apiToken()
+    {
+        return $this->api_token;
+    }
 }

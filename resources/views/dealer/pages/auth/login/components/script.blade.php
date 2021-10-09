@@ -19,7 +19,7 @@
             LoginButton.attr('disabled', true);
             $.ajax({
                 type: 'post',
-                url: '{{ route('api.v1.auth.login.dealer') }}',
+                url: '{{ route('api.v1.dealer.auth.login') }}',
                 data: {
                     tax_number: tax_number,
                     password: password
