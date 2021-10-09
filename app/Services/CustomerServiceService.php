@@ -14,26 +14,9 @@ class CustomerServiceService
     use Response;
 
     /**
-     * @param CustomerService $customerService
+     * @param int $customer_id
+     * @param int $service_id
      */
-    private $customerService;
-
-    /**
-     * @return CustomerService
-     */
-    public function getCustomerService()
-    {
-        return $this->customerService;
-    }
-
-    /**
-     * @param CustomerService $customerService
-     */
-    public function setCustomerService(CustomerService $customerService): void
-    {
-        $this->customerService = $customerService;
-    }
-
     public function index(
         $customer_id = null,
         $service_id = null
@@ -52,6 +35,10 @@ class CustomerServiceService
         return $this->success('All customer services', $customerServices->get());
     }
 
+    /**
+     * @param int $customer_id
+     * @param int $service_id
+     */
     public function datatable(
         $customer_id = null,
         $service_id = null

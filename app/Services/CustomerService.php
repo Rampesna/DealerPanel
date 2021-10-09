@@ -13,26 +13,9 @@ class CustomerService
     use Response;
 
     /**
-     * @param Customer $customer ;
+     * @param string $tax_number
+     * @param string $password
      */
-    private $customer;
-
-    /**
-     * @return Customer
-     */
-    public function getCustomer()
-    {
-        return $this->customer;
-    }
-
-    /**
-     * @param Customer $customer
-     */
-    public function setCustomer(Customer $customer): void
-    {
-        $this->customer = $customer;
-    }
-
     public function login(
         $tax_number,
         $password
@@ -56,6 +39,9 @@ class CustomerService
         return $this->success('Customer logged in successfully', $customer);
     }
 
+    /**
+     * @param string $api_token
+     */
     public function oAuthLogin(
         $api_token
     )
@@ -71,6 +57,9 @@ class CustomerService
         return $this->success('Customer logged in successfully with oAuth', $customer);
     }
 
+    /**
+     * @param int $dealer_id default null
+     */
     public function index(
         $dealer_id = null
     )
@@ -84,6 +73,9 @@ class CustomerService
         return $this->success('All customers', $customers->get());
     }
 
+    /**
+     * @param int $dealer_id default null
+     */
     public function datatable(
         $dealer_id = null
     )
@@ -95,5 +87,30 @@ class CustomerService
         }
 
         return DataTables::of($customers)->make(true);
+    }
+
+    /**
+     * @param int $id
+     * @param int $dealer_id
+     * @param string $tax_number
+     * @param string $name
+     * @param string $password
+     */
+    public function save(
+        int    $id,
+        int    $dealer_id,
+        string $tax_number,
+        string $name,
+        string $password
+    )
+    {
+        $customer = $id ? Customer::find($id) : new Customer;
+        $customer->dealer_id = $dealer_id;
+        $customer->tax_number = $tax_number;
+        $customer->name = $name;
+        $customer->password = $password ?? $customer->password;
+        $customer->save();
+
+        return $customer;
     }
 }

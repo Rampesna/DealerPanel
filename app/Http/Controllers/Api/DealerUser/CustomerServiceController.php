@@ -7,7 +7,6 @@ use App\Http\Requests\Api\CustomerService\DatatableRequest;
 use App\Http\Requests\Api\CustomerService\IndexRequest;
 use App\Services\CustomerServiceService;
 use App\Traits\Response;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
 class CustomerServiceController extends Controller
@@ -21,11 +20,17 @@ class CustomerServiceController extends Controller
         $this->customerServiceService = new CustomerServiceService;
     }
 
+    /**
+     * @param IndexRequest $request
+     */
     public function index(IndexRequest $request)
     {
         return $this->customerServiceService->index(Crypt::decrypt($request->customer_id));
     }
 
+    /**
+     * @param DatatableRequest $request
+     */
     public function datatable(DatatableRequest $request)
     {
         return $this->customerServiceService->datatable(Crypt::decrypt($request->customer_id));

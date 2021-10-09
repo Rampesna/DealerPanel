@@ -18,6 +18,9 @@ class AuthenticationController extends Controller
         return view('dealerUser.pages.auth.login.index');
     }
 
+    /**
+     * @param OAuthLoginRequest $request
+     */
     public function oAuthLogin(OAuthLoginRequest $request)
     {
         return (new DealerUserService)->oAuthLogin($request->api_token);

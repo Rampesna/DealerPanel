@@ -11,24 +11,10 @@ class UserService
 {
     use Response;
 
-    private $user;
-
     /**
-     * @return User
+     * @param string $email
+     * @param string $password
      */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
-     * @param User $user
-     */
-    public function setUser(User $user): void
-    {
-        $this->user = $user;
-    }
-
     public function login(
         $email,
         $password
@@ -52,6 +38,9 @@ class UserService
         return $this->success('User logged in successfully', $user);
     }
 
+    /**
+     * @param string $api_token
+     */
     public function oAuthLogin(
         $api_token
     )

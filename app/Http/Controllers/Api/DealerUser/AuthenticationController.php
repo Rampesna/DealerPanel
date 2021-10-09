@@ -15,6 +15,9 @@ class AuthenticationController extends Controller
         $this->dealerUserService = new DealerUserService;
     }
 
+    /**
+     * @param LoginRequest $request
+     */
     public function login(LoginRequest $request)
     {
         return $this->dealerUserService->login(

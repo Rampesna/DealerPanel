@@ -12,27 +12,11 @@ class DealerService
     use Response;
 
     /**
-     * @param Dealer $dealer ;
+     * @param int $dealer_id
      */
-    private $dealer;
-
-    /**
-     * @return Dealer
-     */
-    public function getDealer()
-    {
-        return $this->dealer;
-    }
-
-    /**
-     * @param Dealer $dealer
-     */
-    public function setDealer(Dealer $dealer): void
-    {
-        $this->dealer = $dealer;
-    }
-
-    public function getSubDealersIds($dealer_id)
+    public function getSubDealersIds(
+        $dealer_id
+    )
     {
         $ids = [$dealer_id];
         if (($dealer = Dealer::find($dealer_id))->sub_dealers->count() > 0) {

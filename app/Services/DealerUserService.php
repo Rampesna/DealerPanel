@@ -12,26 +12,9 @@ class DealerUserService
     use Response;
 
     /**
-     * @param DealerUser $dealerUser
+     * @param string $email
+     * @param string $password
      */
-    private $dealerUser;
-
-    /**
-     * @return DealerUser
-     */
-    public function getDealerUser()
-    {
-        return $this->dealerUser;
-    }
-
-    /**
-     * @param DealerUser $dealerUser
-     */
-    public function setDealerUser(DealerUser $dealerUser): void
-    {
-        $this->dealerUser = $dealerUser;
-    }
-
     public function login(
         $email,
         $password
@@ -55,6 +38,9 @@ class DealerUserService
         return $this->success('DealerUser logged in successfully', $dealerUser);
     }
 
+    /**
+     * @param string $api_token
+     */
     public function oAuthLogin(
         $api_token
     )

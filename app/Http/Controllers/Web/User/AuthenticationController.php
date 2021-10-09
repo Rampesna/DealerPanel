@@ -18,6 +18,9 @@ class AuthenticationController extends Controller
         return view('user.pages.auth.login.index');
     }
 
+    /**
+     * @param OAuthLoginRequest $request
+     */
     public function oAuthLogin(OAuthLoginRequest $request)
     {
         return (new UserService)->oAuthLogin($request->api_token);

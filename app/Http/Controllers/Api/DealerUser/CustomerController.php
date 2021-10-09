@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\DealerUser;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\DealerUser\Customer\SaveRequest;
 use App\Services\CustomerService;
 use App\Traits\Response;
 use Illuminate\Http\Request;
@@ -28,8 +29,8 @@ class CustomerController extends Controller
         return $this->customerService->datatable($request->dealerUser->dealer_id);
     }
 
-    public function save()
+    public function save(SaveRequest $request)
     {
-
+        return $request;
     }
 }

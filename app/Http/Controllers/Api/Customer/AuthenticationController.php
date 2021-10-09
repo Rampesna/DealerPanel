@@ -15,6 +15,9 @@ class AuthenticationController extends Controller
         $this->customerService = new CustomerService;
     }
 
+    /**
+     * @param LoginRequest $request
+     */
     public function login(LoginRequest $request)
     {
         return $this->customerService->login(

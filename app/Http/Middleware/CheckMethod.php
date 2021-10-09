@@ -16,9 +16,9 @@ class CheckMethod
      */
     public function handle(Request $request, Closure $next, $methods)
     {
-        if (checkMethod($request->method(), explode(',', $methods)) === 0) {
+        if (checkMethod($request->method(), explode('|', $methods)) === 0) {
             return response()->json([
-                'message' => 'Method not allowed. Allowed methods: ' . implode(',', $methods),
+                'message' => 'Method not allowed. Allowed methods: ' . $methods,
                 'error' => false,
                 'code' => 405,
                 'response' => null
