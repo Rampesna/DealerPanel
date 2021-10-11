@@ -35,6 +35,26 @@
         </div>
     </div>
 
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="context-menu" style="width: 300px">
+        <a onclick="create()" class="dropdown-item cursor-pointer">
+            <div class="row">
+                <div class="col-xl-12">
+                    <i class="fas fa-plus-circle text-success"></i><span class="ml-4">Hizmet Ekle</span>
+                </div>
+            </div>
+        </a>
+        <div id="EditingContexts">
+            <hr>
+            <a onclick="drop()" class="dropdown-item cursor-pointer">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <i class="fas fa-trash-alt text-danger"></i><span class="ml-4">Sil</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
 @endsection
 
 @section('page-styles')

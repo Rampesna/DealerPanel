@@ -91,26 +91,52 @@ class CustomerService
 
     /**
      * @param int $id
+     */
+    public function show(
+        $id
+    )
+    {
+        if (!$customer = Customer::find($id)) {
+            return $this->error('Customer not found', 404);
+        }
+
+        return $this->success('Customer details', $customer);
+    }
+
+    /**
+     * @param int $id
      * @param int $dealer_id
      * @param string $tax_number
      * @param string $name
      * @param string $password
      */
     public function save(
-        int    $id,
-        int    $dealer_id,
-        string $tax_number,
-        string $name,
-        string $password
+        $id,
+        $dealer_id,
+        $tax_number,
+        $name,
+        $email,
+        $gsm
     )
     {
         $customer = $id ? Customer::find($id) : new Customer;
         $customer->dealer_id = $dealer_id;
         $customer->tax_number = $tax_number;
         $customer->name = $name;
-        $customer->password = $password ?? $customer->password;
+        $customer->email = $email;
+        $customer->gsm = $gsm;
         $customer->save();
 
-        return $customer;
+        return $this->success('Customer created successfully', $customer);
+    }
+
+    /**
+     * @param string $tax_number
+     */
+    public function checkTaxNumber(
+        string $tax_number
+    )
+    {
+        return $this->success('Checking customer tax number', Customer::where('tax_number', $tax_number)->first() ? 1 : 0);
     }
 }

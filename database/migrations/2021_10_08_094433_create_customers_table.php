@@ -18,7 +18,9 @@ class CreateCustomersTable extends Migration
             $table->bigInteger('dealer_id')->unsigned();
             $table->string('tax_number')->unique();
             $table->string('name');
-            $table->string('password');
+            $table->string('password')->nullable();
+            $table->string('email')->nullable();
+            $table->string('gsm')->nullable();
             $table->string('api_token')->nullable();
             $table->rememberToken();
             $table->timestamps();

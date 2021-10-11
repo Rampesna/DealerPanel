@@ -4,6 +4,8 @@
 
 @section('content')
 
+    @include('dealerUser.pages.customer.index.modals.create')
+
     <input type="hidden" id="id_edit">
     <input type="hidden" id="encrypted_id_edit">
     <div class="row">

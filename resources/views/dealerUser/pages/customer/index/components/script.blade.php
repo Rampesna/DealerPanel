@@ -3,8 +3,35 @@
 
 <script>
 
+    var CreateButton = $('#CreateButton');
+
+    function create() {
+        $('#CreateModal').modal('show');
+    }
+
     function show() {
         $(location).prop('href', `{{ route('dealerUser.customer.show') }}/${$('#encrypted_id_edit').val()}/index`)
+    }
+
+    function save(method, data) {
+        $.ajax({
+            type: method,
+            url: '{{ route('api.v1.dealerUser.customer.save') }}',
+            headers: {
+                _token: '{{ auth()->user()->apiToken() }}',
+                _auth_type: 'DealerUser'
+            },
+            data: data,
+            success: function () {
+                toastr.success('Müşteri Başarıyla Eklendi.');
+                $('#CreateModal').modal('hide');
+                customers.ajax.reload();
+            },
+            error: function (error) {
+                console.log(error);
+                toastr.error('Müşteri Eklenirken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+            }
+        });
     }
 
     var customers = $('#customers').DataTable({
@@ -41,8 +68,8 @@
 
         order: [
             [
-                0,
-                "desc"
+                1,
+                "asc"
             ]
         ],
 
@@ -111,8 +138,6 @@
         ],
 
         responsive: true,
-        colReorder: true,
-        stateSave: true,
         select: 'single'
     });
 
@@ -157,6 +182,49 @@
         } else {
             $("#context-menu").hide();
             customers.rows().deselect();
+        }
+    });
+
+    CreateButton.click(function () {
+        var dealer_id = '{{ auth()->user()->getDealerId() }}';
+        var tax_number = $('#tax_number_create').val();
+        var name = $('#name_create').val();
+        var email = $('#email_create').val();
+        var gsm = $('#gsm_create').val();
+
+        if (tax_number == null || tax_number === '') {
+            toastr.warning('Vergi Numarası Boş Olamaz!');
+        } else if (tax_number.length < 10) {
+            toastr.warning('Vergi Numarası En Az 10 Karakter Olmalıdır!');
+        } else if (tax_number.length > 11) {
+            toastr.warning('Vergi Numarası En Fazla 11 Karakter Olabilir!');
+        } else if (name == null || name === '') {
+            toastr.warning('Müşteri Ünvanı Boş Olamaz!');
+        } else {
+            $.ajax({
+                type: 'get',
+                url: '{{ route('api.v1.general.customer.checkTaxNumber') }}',
+                data: {
+                    tax_number: tax_number
+                },
+                success: function (response) {
+                    if (response.response === 1) {
+                        toastr.warning('Bu Vergi Numarasına Ait Müşteri Zaten Sistemde Kayıtlı!');
+                    } else {
+                        save('post', {
+                            dealer_id: dealer_id,
+                            tax_number: tax_number,
+                            name: name,
+                            email: email,
+                            gsm: gsm
+                        });
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                    toastr.error('Vergi Numarası Kontrolü Yapılırken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+                }
+            });
         }
     });
 

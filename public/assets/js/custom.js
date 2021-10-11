@@ -70,7 +70,7 @@ $(".onlyNumber").keypress(function (e) {
     }
 });
 
-$('.mobilePhoneNumberMask').inputmask('(999) 999-99-99', {placeholder: '(___) ___-__-__'});
+$('.gsmMask').inputmask('(999) 999-99-99', {placeholder: '(___) ___-__-__'});
 
 $(".emailMask").inputmask({
     mask: "*{1,20}[.*{1,20}][.*{1,20}][.*{1,20}]@*{1,20}[.*{2,6}][.*{1,2}]",

@@ -29,4 +29,9 @@ class DealerUser extends Authenticatable
     {
         return Crypt::encrypt($this->id);
     }
+
+    public function getDealerId()
+    {
+        return $this->dealer_id;
+    }
 }
