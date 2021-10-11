@@ -22,7 +22,7 @@ class CheckDealerUser
                 'error' => true,
                 'code' => 400,
                 'response' => null
-            ]);
+            ], 400);
         }
 
         $dealerUser = \App\Models\DealerUser::where('api_token', $request->header('_token'))->first();
@@ -33,7 +33,7 @@ class CheckDealerUser
                 'error' => true,
                 'code' => 400,
                 'response' => null
-            ]);
+            ], 400);
         }
 
         $request->merge([

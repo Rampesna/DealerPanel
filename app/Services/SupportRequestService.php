@@ -10,6 +10,7 @@ use App\Models\SupportRequestPriority;
 use App\Models\SupportRequestStatus;
 use App\Models\User;
 use App\Traits\Response;
+use Illuminate\Support\Facades\Crypt;
 use Yajra\DataTables\DataTables;
 
 class SupportRequestService
@@ -85,7 +86,19 @@ class SupportRequestService
         $id
     )
     {
-        $supportRequest = SupportRequest::find($id);
+        $supportRequest = SupportRequest::with([
+            'creator',
+            'category',
+            'priority',
+            'status',
+            'files',
+            'messages' => function ($messages) {
+                $messages->with([
+                    'creator',
+                    'files'
+                ])->orderBy('created_at', 'desc');
+            }
+        ])->find(Crypt::decrypt($id));
 
         if (!$supportRequest) {
             return $this->error('Support request not found', 404);
@@ -126,5 +139,26 @@ class SupportRequestService
         $supportRequest->save();
 
         return $this->success('Support request saved successfully', $supportRequest);
+    }
+
+    /**
+     * @param string $id
+     * @param int $status_id
+     */
+    public function updateStatus(
+        $id,
+        $status_id
+    )
+    {
+        $supportRequest = SupportRequest::find(Crypt::decrypt($id));
+
+        if (!$supportRequest) {
+            return $this->error('Support request not found', 404);
+        }
+
+        $supportRequest->status_id = $status_id;
+        $supportRequest->save();
+
+        return $this->success('Support request status updated successfully', $supportRequest);
     }
 }

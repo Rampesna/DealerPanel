@@ -22,7 +22,7 @@ class CheckHeaderAuthType
                 'error' => true,
                 'code' => 400,
                 'response' => null
-            ]);
+            ], 400);
         }
 
         return $next($request);

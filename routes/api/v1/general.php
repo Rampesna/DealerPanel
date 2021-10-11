@@ -10,4 +10,22 @@ Route::middleware([
             ->name('api.v1.general.customer.checkTaxNumber')
             ->middleware(['CheckMethod:get']);
     });
+
+    Route::prefix('supportRequestCategory')->group(function () {
+        Route::any('index', [\App\Http\Controllers\Api\General\SupportRequestCategoryController::class, 'index'])
+            ->name('api.v1.general.supportRequestCategory.index')
+            ->middleware(['CheckMethod:get']);
+    });
+
+    Route::prefix('supportRequestPriority')->group(function () {
+        Route::any('index', [\App\Http\Controllers\Api\General\SupportRequestPriorityController::class, 'index'])
+            ->name('api.v1.general.supportRequestPriority.index')
+            ->middleware(['CheckMethod:get']);
+    });
+
+    Route::prefix('supportRequestStatus')->group(function () {
+        Route::any('index', [\App\Http\Controllers\Api\General\SupportRequestStatusController::class, 'index'])
+            ->name('api.v1.general.supportRequestStatus.index')
+            ->middleware(['CheckMethod:get']);
+    });
 });

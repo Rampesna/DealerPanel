@@ -44,4 +44,9 @@ class SupportRequest extends Model
     {
         return $this->hasMany(SupportRequestMessage::class);
     }
+
+    public function files()
+    {
+        return $this->morphMany(File::class, 'relation');
+    }
 }

@@ -7,6 +7,7 @@ use App\Http\Requests\Api\DealerUser\SupportRequest\DatatableRequest;
 use App\Http\Requests\Api\DealerUser\SupportRequest\IndexRequest;
 use App\Http\Requests\Api\DealerUser\SupportRequest\SaveRequest;
 use App\Http\Requests\Api\DealerUser\SupportRequest\ShowRequest;
+use App\Http\Requests\Api\DealerUser\SupportRequest\UpdateStatusRequest;
 use App\Services\SupportRequestService;
 use App\Traits\Response;
 
@@ -52,6 +53,14 @@ class SupportRequestController extends Controller
             $request->description,
             $request->category_id,
             $request->priority_id,
+            $request->status_id
+        );
+    }
+
+    public function updateStatus(UpdateStatusRequest $request)
+    {
+        return $this->supportRequestService->updateStatus(
+            $request->id,
             $request->status_id
         );
     }

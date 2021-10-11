@@ -19,6 +19,7 @@ class CreateFilesTable extends Migration
             $table->bigInteger('creator_id')->unsigned();
             $table->string('relation_type');
             $table->bigInteger('relation_id')->unsigned();
+            $table->string('name');
             $table->text('path');
             $table->string('mimetype')->nullable();
             $table->string('icon')->nullable();

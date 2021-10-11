@@ -1,14 +1,14 @@
 @extends('dealerUser.layouts.master')
-@section('title', 'Destek Taleplerim')
+@section('title', 'Müşteri Destek Talepleri')
 @php(setlocale(LC_TIME, 'Turkish'))
 
 @section('content')
 
-    @include('dealerUser.pages.supportRequest.index.modals.create')
+    @include('dealerUser.pages.customer.show.layouts.subheader')
 
     <input type="hidden" id="id_edit">
     <input type="hidden" id="encrypted_id_edit">
-    <div class="row">
+    <div class="row mt-15">
         <div class="col-xl-12">
             <div class="card" id="supportRequestsCard">
                 <div class="card-body">
@@ -36,15 +36,7 @@
     </div>
 
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="context-menu" style="width: 300px">
-        <a onclick="create()" class="dropdown-item cursor-pointer">
-            <div class="row">
-                <div class="col-xl-12">
-                    <i class="fas fa-plus-circle text-success"></i><span class="ml-4">Yeni Oluştur</span>
-                </div>
-            </div>
-        </a>
         <div id="EditingContexts">
-            <hr>
             <a onclick="show()" class="dropdown-item cursor-pointer">
                 <div class="row">
                     <div class="col-xl-12">
@@ -58,9 +50,9 @@
 @endsection
 
 @section('page-styles')
-    @include('dealerUser.pages.supportRequest.index.components.style')
+    @include('dealerUser.pages.customer.show.supportRequest.components.style')
 @stop
 
 @section('page-script')
-    @include('dealerUser.pages.supportRequest.index.components.script')
+    @include('dealerUser.pages.customer.show.supportRequest.components.script')
 @stop

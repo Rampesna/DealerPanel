@@ -52,6 +52,69 @@ var KTAppSettings = {
     "font-family": "Poppins"
 };
 
+const months = [
+    'Ocak',
+    'Şubat',
+    'Mart',
+    'Nisan',
+    'Mayıs',
+    'Haziran',
+    'Temmuz',
+    'Ağustos',
+    'Eylül',
+    'Ekim',
+    'Kasım',
+    'Aralık',
+];
+
+function reformatDatetimeForHuman(date) {
+    var formattedDate = new Date(date);
+    return String(formattedDate.getDate()).padStart(2, '0') + ' ' +
+        months[formattedDate.getMonth()] + ' ' +
+        formattedDate.getFullYear() + ', ' +
+        String(formattedDate.getHours()).padStart(2, '0') + ':' +
+        String(formattedDate.getMinutes()).padStart(2, '0') + ' ';
+}
+
+function reformatDatetime(date) {
+    var formattedDate = new Date(date);
+    return String(formattedDate.getDate()).padStart(2, '0') + '.' +
+        String(formattedDate.getMonth() + 1).padStart(2, '0') + '.' +
+        formattedDate.getFullYear() + ', ' +
+        String(formattedDate.getHours()).padStart(2, '0') + ':' +
+        String(formattedDate.getMinutes()).padStart(2, '0') + ' ';
+}
+
+function reformatDateForHuman(date) {
+    var formattedDate = new Date(date);
+    return String(formattedDate.getDate()).padStart(2, '0') + ' ' +
+        months[formattedDate.getMonth()] + ' ' +
+        formattedDate.getFullYear();
+}
+
+function reformatDate(date) {
+    var formattedDate = new Date(date);
+    return String(formattedDate.getDate()).padStart(2, '0') + '.' +
+        String(formattedDate.getMonth() + 1).padStart(2, '0') + '.' +
+        formattedDate.getFullYear();
+}
+
+function reformatDatetimeForInput(date) {
+    var formattedDate = new Date(date);
+    return formattedDate.getFullYear() + '-' +
+        String(formattedDate.getMonth() + 1).padStart(2, '0') + '-' +
+        String(formattedDate.getDate()).padStart(2, '0') + ' ' +
+        String(formattedDate.getHours()).padStart(2, '0') + ':' +
+        String(formattedDate.getMinutes()).padStart(2, '0');
+}
+
+function reformatDateForInput(date) {
+    var formattedDate = new Date(date);
+    return formattedDate.getFullYear() + '-' +
+        String(formattedDate.getMonth() + 1).padStart(2, '0') + '-' +
+        String(formattedDate.getDate()).padStart(2, '0');
+}
+
 $('.decimal').on("copy cut paste drop", function () {
     return false;
 }).keyup(function () {

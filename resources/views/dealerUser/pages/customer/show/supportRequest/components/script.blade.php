@@ -172,14 +172,14 @@
         serverSide: true,
         ajax: {
             type: 'get',
-            url: '{{ route('api.v1.dealerUser.supportRequest.datatable') }}',
+            url: '{{ route('api.v1.dealerUser.customer.supportRequest.datatable') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
                 _auth_type: 'DealerUser'
             },
             data: {
-                creator_type: '{{ str_replace('\\', '\\\\', auth()->user()->authType()) }}',
-                creator_id: '{{ auth()->id() }}'
+                creator_type: 'App\\Models\\Customer',
+                creator_id: '{{ $id }}'
             },
             error: function (error) {
                 console.log(error)
