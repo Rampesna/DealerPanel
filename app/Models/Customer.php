@@ -27,6 +27,11 @@ class Customer extends Authenticatable
         return $this->api_token;
     }
 
+    public function authType()
+    {
+        return get_class($this);
+    }
+
     public function getEncryptedIdAttribute()
     {
         return Crypt::encrypt($this->id);

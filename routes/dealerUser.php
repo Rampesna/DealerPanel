@@ -15,4 +15,9 @@ Route::middleware([
         Route::get('index', [\App\Http\Controllers\Web\DealerUser\CustomerController::class, 'index'])->name('dealerUser.customer.index');
         Route::get('show/{id?}/{tab?}', [\App\Http\Controllers\Web\DealerUser\CustomerController::class, 'show'])->name('dealerUser.customer.show');
     });
+
+    Route::prefix('supportRequest')->group(function () {
+        Route::get('index', [\App\Http\Controllers\Web\DealerUser\SupportRequestController::class, 'index'])->name('dealerUser.supportRequest.index');
+        Route::get('show/{id?}', [\App\Http\Controllers\Web\DealerUser\SupportRequestController::class, 'show'])->name('dealerUser.supportRequest.show');
+    });
 });

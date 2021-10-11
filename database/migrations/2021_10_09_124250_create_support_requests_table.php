@@ -17,8 +17,6 @@ class CreateSupportRequestsTable extends Migration
             $table->id();
             $table->string('creator_type');
             $table->bigInteger('creator_id')->unsigned();
-            $table->string('relation_type');
-            $table->bigInteger('relation_id')->unsigned();
             $table->string('name');
             $table->longText('description')->nullable();
             $table->bigInteger('category_id')->unsigned();

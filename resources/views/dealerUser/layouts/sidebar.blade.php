@@ -62,8 +62,8 @@
                         <span class="menu-text">Finans</span>
                     </a>
                 </li>
-                <li class="menu-item {{ request()->segment(2) === 'ticket' ? 'menu-item-active' : null }}" aria-haspopup="true">
-                    <a href="{{ route('dealerUser.dashboard.index') }}" class="menu-link">
+                <li class="menu-item {{ request()->segment(2) === 'supportRequest' ? 'menu-item-active' : null }}" aria-haspopup="true">
+                    <a href="{{ route('dealerUser.supportRequest.index') }}" class="menu-link">
                         <span class="svg-icon menu-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" >
                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -73,7 +73,7 @@
                                 </g>
                             </svg>
                         </span>
-                        <span class="menu-text">Destek Talepleri</span>
+                        <span class="menu-text">Destek Taleplerim</span>
                     </a>
                 </li>
 

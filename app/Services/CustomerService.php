@@ -104,11 +104,11 @@ class CustomerService
     }
 
     /**
-     * @param int $id
+     * @param int|null $id
      * @param int $dealer_id
      * @param string $tax_number
-     * @param string $name
-     * @param string $password
+     * @param string|null $name
+     * @param string|null $password
      */
     public function save(
         $id,
