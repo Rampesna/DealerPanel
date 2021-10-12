@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Customer;
+use App\Models\Dealer;
 use App\Traits\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -58,13 +59,19 @@ class CustomerService
     }
 
     /**
-     * @param int $dealer_id default null
+     * @param int|null $transaction_status_id
+     * @param int|null $dealer_id
      */
     public function index(
+        $transaction_status_id = null,
         $dealer_id = null
     )
     {
         $customers = Customer::with([]);
+
+        if ($transaction_status_id) {
+            $customers->where('transaction_status_id', $transaction_status_id);
+        }
 
         if ($dealer_id) {
             $customers->whereIn('dealer_id', (new DealerService)->getSubDealersIds($dealer_id));
@@ -74,19 +81,32 @@ class CustomerService
     }
 
     /**
-     * @param int $dealer_id default null
+     * @param int|null $transaction_status_id
+     * @param int|null $dealer_id
      */
     public function datatable(
+        $transaction_status_id = null,
         $dealer_id = null
     )
     {
         $customers = Customer::with([]);
 
+        if ($transaction_status_id) {
+            $customers->where('transaction_status_id', $transaction_status_id);
+        }
+
         if ($dealer_id) {
             $customers->whereIn('dealer_id', (new DealerService)->getSubDealersIds($dealer_id));
         }
 
-        return DataTables::of($customers)->make(true);
+        return DataTables::of($customers)->
+        filterColumn('dealer_id', function ($customers, $data) {
+            return $customers->whereIn('dealer_id', Dealer::where('name', 'like', '%' . $data . '%')->pluck('id')->toArray());
+        })->
+        editColumn('dealer_id', function ($customer) {
+            return $customer->dealer ? $customer->dealer->name : '';
+        })->
+        make(true);
     }
 
     /**

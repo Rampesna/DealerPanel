@@ -16,12 +16,14 @@
                         <thead>
                         <tr>
                             <th>VKN/TCKN</th>
+                            <th>Bayi</th>
                             <th>Müşteri Adı</th>
                         </tr>
                         </thead>
                         <tfoot>
                         <tr>
                             <th>VKN/TCKN</th>
+                            <th>Bayi</th>
                             <th>Müşteri Adı</th>
                         </tr>
                         </tfoot>

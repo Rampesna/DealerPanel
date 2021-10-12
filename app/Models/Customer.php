@@ -41,4 +41,9 @@ class Customer extends Authenticatable
     {
         return $this->hasMany(CustomerService::class);
     }
+
+    public function dealer()
+    {
+        return $this->belongsTo(Dealer::class);
+    }
 }

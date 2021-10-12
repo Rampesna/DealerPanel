@@ -16,6 +16,12 @@ Route::middleware([
         Route::get('show/{id?}/{tab?}', [\App\Http\Controllers\Web\DealerUser\CustomerController::class, 'show'])->name('dealerUser.customer.show');
     });
 
+    Route::prefix('waitingTransaction')->group(function () {
+        Route::get('{tab?}', [\App\Http\Controllers\Web\DealerUser\WaitingTransactionController::class, 'show'])->name('dealerUser.waitingTransaction.show');
+    });
+
+    Route::get('finance', [\App\Http\Controllers\Web\DealerUser\FinanceController::class, 'index'])->name('dealerUser.finance.index');
+
     Route::prefix('supportRequest')->group(function () {
         Route::get('index', [\App\Http\Controllers\Web\DealerUser\SupportRequestController::class, 'index'])->name('dealerUser.supportRequest.index');
         Route::get('show/{id?}', [\App\Http\Controllers\Web\DealerUser\SupportRequestController::class, 'show'])->name('dealerUser.supportRequest.show');

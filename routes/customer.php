@@ -10,4 +10,15 @@ Route::middleware([
     'auth:customer'
 ])->group(function () {
     Route::get('dashboard', [\App\Http\Controllers\Web\Customer\DashboardController::class, 'index'])->name('customer.dashboard.index');
+
+    Route::get('credit', [\App\Http\Controllers\Web\Customer\CreditController::class, 'index'])->name('customer.credit.index');
+
+    Route::get('finance', [\App\Http\Controllers\Web\Customer\FinanceController::class, 'index'])->name('customer.finance.index');
+
+    Route::get('service', [\App\Http\Controllers\Web\Customer\ServiceController::class, 'index'])->name('customer.service.index');
+
+    Route::prefix('supportRequest')->group(function () {
+        Route::get('index', [\App\Http\Controllers\Web\Customer\SupportRequestController::class, 'index'])->name('customer.supportRequest.index');
+        Route::get('show/{id?}', [\App\Http\Controllers\Web\Customer\SupportRequestController::class, 'show'])->name('customer.supportRequest.show');
+    });
 });

@@ -4,8 +4,6 @@ namespace App\Services;
 
 use App\Models\Dealer;
 use App\Traits\Response;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class DealerService
 {

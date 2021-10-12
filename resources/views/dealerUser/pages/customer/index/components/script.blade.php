@@ -134,6 +134,7 @@
         },
         columns: [
             {data: 'tax_number', name: 'tax_number', width: '10%'},
+            {data: 'dealer_id', name: 'dealer_id'},
             {data: 'name', name: 'name'},
         ],
 

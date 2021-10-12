@@ -29,6 +29,16 @@ Route::middleware([
         });
     });
 
+    Route::prefix('waitingTransaction')->group(function () {
+        Route::prefix('customer')->group(function () {
+            Route::any('datatable', [\App\Http\Controllers\Api\DealerUser\WaitingTransaction\CustomerController::class, 'datatable'])->name('api.v1.dealerUser.waitingTransaction.customer.datatable')->middleware(['CheckMethod:get']);
+        });
+
+        Route::prefix('credit')->group(function () {
+            Route::any('datatable', [\App\Http\Controllers\Api\DealerUser\WaitingTransaction\CreditController::class, 'datatable'])->name('api.v1.dealerUser.waitingTransaction.credit.datatable')->middleware(['CheckMethod:get']);
+        });
+    });
+
     Route::prefix('supportRequest')->group(function () {
         Route::any('index', [\App\Http\Controllers\Api\DealerUser\SupportRequestController::class, 'index'])->name('api.v1.dealerUser.supportRequest.index')->middleware(['CheckMethod:get']);
         Route::any('datatable', [\App\Http\Controllers\Api\DealerUser\SupportRequestController::class, 'datatable'])->name('api.v1.dealerUser.supportRequest.datatable')->middleware(['CheckMethod:get']);

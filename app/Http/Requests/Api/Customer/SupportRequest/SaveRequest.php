@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Api\CustomerService;
+namespace App\Http\Requests\Api\Customer\SupportRequest;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -8,7 +8,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 
-class DatatableRequest extends FormRequest
+class SaveRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,7 +28,13 @@ class DatatableRequest extends FormRequest
     public function rules()
     {
         return [
-            'customer_id' => 'required'
+            'creator_type' => 'required',
+            'creator_id' => 'required|integer',
+            'name' => 'required',
+            'description' => 'nullable',
+            'category_id' => 'required|integer',
+            'priority_id' => 'required|integer',
+            'status_id' => 'required|integer'
         ];
     }
 

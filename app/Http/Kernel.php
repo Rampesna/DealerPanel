@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\AuthType;
+use App\Http\Middleware\CheckCustomer;
 use App\Http\Middleware\CheckHeaderAuthType;
 use App\Http\Middleware\CheckHeaderToken;
 use App\Http\Middleware\CheckMethod;
@@ -72,5 +73,6 @@ class Kernel extends HttpKernel
         'CheckHeaderToken' => CheckHeaderToken::class,
         'CheckHeaderAuthType' => CheckHeaderAuthType::class,
         'CheckDealerUser' => CheckDealerUser::class,
+        'CheckCustomer' => CheckCustomer::class,
     ];
 }

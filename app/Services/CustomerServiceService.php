@@ -14,15 +14,21 @@ class CustomerServiceService
     use Response;
 
     /**
-     * @param int $customer_id
-     * @param int $service_id
+     * @param int|null $customer_id
+     * @param int|null $service_id
+     * @param int|null $transaction_status_id
      */
     public function index(
         $customer_id = null,
-        $service_id = null
+        $service_id = null,
+        $transaction_status_id = null
     )
     {
         $customerServices = CustomerService::with([]);
+
+        if ($transaction_status_id) {
+            $customerServices->where('transaction_status_id', $transaction_status_id);
+        }
 
         if ($customer_id) {
             $customerServices->where('customer_id', $customer_id);
@@ -36,15 +42,21 @@ class CustomerServiceService
     }
 
     /**
-     * @param int $customer_id
-     * @param int $service_id
+     * @param int|null $customer_id
+     * @param int|null $service_id
+     * @param int|null $transaction_status_id
      */
     public function datatable(
         $customer_id = null,
-        $service_id = null
+        $service_id = null,
+        $transaction_status_id = null
     )
     {
         $customerServices = CustomerService::with([]);
+
+        if ($transaction_status_id) {
+            $customerServices->where('transaction_status_id', $transaction_status_id);
+        }
 
         if ($customer_id) {
             $customerServices->where('customer_id', $customer_id);
