@@ -18,6 +18,6 @@ class CustomerController extends Controller
 
     public function checkTaxNumber(CheckTaxNumberRequest $request)
     {
-        return $this->customerService->checkTaxNumber($request->tax_number);
+        return $this->customerService->checkTaxNumber($request->tax_number, $request->except_id);
     }
 }

@@ -5,6 +5,8 @@
 @section('content')
 
     @include('user.pages.customer.index.modals.create')
+    @include('user.pages.customer.index.modals.edit')
+    @include('user.pages.customer.index.modals.delete')
 
     <input type="hidden" id="id_edit">
     <input type="hidden" id="encrypted_id_edit">

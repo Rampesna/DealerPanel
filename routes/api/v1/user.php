@@ -13,6 +13,7 @@ Route::middleware([
 ])->group(function () {
 
     Route::prefix('dealer')->group(function () {
+        Route::any('all', [\App\Http\Controllers\Api\User\DealerController::class, 'all'])->name('api.v1.user.dealer.all')->middleware(['CheckMethod:get']);
         Route::any('index', [\App\Http\Controllers\Api\User\DealerController::class, 'index'])->name('api.v1.user.dealer.index')->middleware(['CheckMethod:get']);
         Route::any('datatable', [\App\Http\Controllers\Api\User\DealerController::class, 'datatable'])->name('api.v1.user.dealer.datatable')->middleware(['CheckMethod:get']);
         Route::any('jsTree', [\App\Http\Controllers\Api\User\DealerController::class, 'jsTree'])->name('api.v1.user.dealer.jsTree')->middleware(['CheckMethod:get']);

@@ -22,6 +22,11 @@ class DealerController extends Controller
         $this->dealerService = new DealerService;
     }
 
+    public function all()
+    {
+        return $this->dealerService->all();
+    }
+
     public function index()
     {
         return $this->dealerService->index();

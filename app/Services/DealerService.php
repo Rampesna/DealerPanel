@@ -10,6 +10,11 @@ class DealerService
 {
     use Response;
 
+    public function all()
+    {
+        return $this->success('All dealers', Dealer::all());
+    }
+
     /**
      * @param int|null $dealer_id
      */

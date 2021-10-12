@@ -4,9 +4,45 @@
 <script>
 
     var CreateButton = $('#CreateButton');
+    var UpdateButton = $('#UpdateButton');
+    var DeleteButton = $('#DeleteButton');
+
+    var dealer_id_create = $('#dealer_id_create');
+    var dealer_id_edit = $('#dealer_id_edit');
 
     function create() {
         $('#CreateModal').modal('show');
+    }
+
+    function edit() {
+        var id = $('#encrypted_id_edit').val();
+        $.ajax({
+            type: 'get',
+            url: '{{ route('api.v1.user.customer.show') }}',
+            headers: {
+                _token: '{{ auth()->user()->apiToken() }}',
+                _auth_type: 'User'
+            },
+            data: {
+                id: id
+            },
+            success: function (response) {
+                dealer_id_edit.val(response.response.dealer_id).selectpicker('refresh');
+                $('#tax_number_edit').val(response.response.tax_number);
+                $('#name_edit').val(response.response.name);
+                $('#email_edit').val(response.response.email);
+                $('#gsm_edit').val(response.response.gsm);
+                $('#EditModal').modal('show');
+            },
+            error: function (error) {
+                console.log(error);
+                toastr.error('Müşteri Detayları Alınırken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+            }
+        });
+    }
+
+    function drop() {
+        $('#DeleteModal').modal('show');
     }
 
     function show() {
@@ -23,16 +59,46 @@
             },
             data: data,
             success: function () {
-                toastr.success('Müşteri Başarıyla Eklendi.');
+                toastr.success('Başarıyla Kaydedildi!');
+                $('#CreateForm').trigger('reset');
+                dealer_id_create.selectpicker('refresh');
                 $('#CreateModal').modal('hide');
+                $('#EditModal').modal('hide');
                 customers.ajax.reload();
             },
             error: function (error) {
                 console.log(error);
-                toastr.error('Müşteri Eklenirken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+                toastr.error('Müşteri Kaydedilirken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
             }
         });
     }
+
+    function getDealers() {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('api.v1.user.dealer.all') }}',
+            headers:{
+                _token: '{{ auth()->user()->apiToken() }}',
+                _auth_type: 'User'
+            },
+            data: {},
+            success: function (response) {
+                dealer_id_create.empty();
+                dealer_id_edit.empty();
+                $.each(response.response, function (i, dealer) {
+                    dealer_id_create.append(`<option value="${dealer.id}">${dealer.name}</option>`);
+                    dealer_id_edit.append(`<option value="${dealer.id}">${dealer.name}</option>`);
+                });
+                dealer_id_create.selectpicker('refresh');
+                dealer_id_edit.selectpicker('refresh');
+            },
+            error: function () {
+
+            }
+        });
+    }
+
+    getDealers();
 
     var customers = $('#customers').DataTable({
         language: {
@@ -147,8 +213,10 @@
         if (selectedRows.count() > 0) {
             var id = selectedRows.data()[0].id;
             var encrypted_id = selectedRows.data()[0].encrypted_id;
+            var name = selectedRows.data()[0].name;
             $("#id_edit").val(id);
             $("#encrypted_id_edit").val(encrypted_id);
+            $("#deleting").html(name);
             $("#EditingContexts").show();
         } else {
             $("#EditingContexts").hide();
@@ -184,6 +252,103 @@
             $("#context-menu").hide();
             customers.rows().deselect();
         }
+    });
+
+    CreateButton.click(function () {
+        var dealer_id = $('#dealer_id_create').val();
+        var tax_number = $('#tax_number_create').val();
+        var name = $('#name_create').val();
+        var email = $('#email_create').val();
+        var gsm = $('#gsm_create').val();
+
+        if (dealer_id == null || dealer_id === '') {
+            toastr.warning('Bayi Seçilmesi Zorunludur!');
+        } else if (tax_number == null || tax_number === '') {
+            toastr.warning('Vergi Numarası Boş Olamaz!');
+        } else if (tax_number.length < 10) {
+            toastr.warning('Vergi Numarası En Az 10 Karakter Olmalıdır!');
+        } else if (tax_number.length > 11) {
+            toastr.warning('Vergi Numarası En Fazla 11 Karakter Olmalıdır!');
+        } else if (name == null || name === '') {
+            toastr.warning('Müşteri Ünvanı Boş Olamaz!');
+        } else {
+            $.ajax({
+                type: 'get',
+                url: '{{ route('api.v1.general.customer.checkTaxNumber') }}',
+                data: {
+                    tax_number: tax_number
+                },
+                success: function (response) {
+                    if (response.response === 1) {
+                        toastr.warning('Bu Vergi Numarasına Ait Müşteri Zaten Sistemde Kayıtlı!');
+                    } else {
+                        save('post', {
+                            dealer_id: dealer_id,
+                            tax_number: tax_number,
+                            name: name,
+                            email: email,
+                            gsm: gsm
+                        });
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                    toastr.error('Vergi Numarası Kontrolü Yapılırken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+                }
+            });
+        }
+    });
+
+    UpdateButton.click(function () {
+        var id = $('#id_edit').val();
+        var dealer_id = $('#dealer_id_edit').val();
+        var tax_number = $('#tax_number_edit').val();
+        var name = $('#name_edit').val();
+        var email = $('#email_edit').val();
+        var gsm = $('#gsm_edit').val();
+
+        if (dealer_id == null || dealer_id === '') {
+            toastr.warning('Bayi Seçilmesi Zorunludur!');
+        } else if (tax_number == null || tax_number === '') {
+            toastr.warning('Vergi Numarası Boş Olamaz!');
+        } else if (tax_number.length < 10) {
+            toastr.warning('Vergi Numarası En Az 10 Karakter Olmalıdır!');
+        } else if (tax_number.length > 11) {
+            toastr.warning('Vergi Numarası En Fazla 11 Karakter Olmalıdır!');
+        } else if (name == null || name === '') {
+            toastr.warning('Müşteri Ünvanı Boş Olamaz!');
+        } else {
+            $.ajax({
+                type: 'get',
+                url: '{{ route('api.v1.general.customer.checkTaxNumber') }}',
+                data: {
+                    tax_number: tax_number,
+                    except_id: id
+                },
+                success: function (response) {
+                    if (response.response === 1) {
+                        toastr.warning('Bu Vergi Numarasına Ait Müşteri Zaten Sistemde Kayıtlı!');
+                    } else {
+                        save('put', {
+                            id: id,
+                            dealer_id: dealer_id,
+                            tax_number: tax_number,
+                            name: name,
+                            email: email,
+                            gsm: gsm
+                        });
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                    toastr.error('Vergi Numarası Kontrolü Yapılırken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+                }
+            });
+        }
+    });
+
+    DeleteButton.click(function () {
+
     });
 
 </script>

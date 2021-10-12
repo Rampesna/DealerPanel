@@ -34,7 +34,7 @@ class CustomerController extends Controller
 
     public function show(ShowRequest $request)
     {
-        return $this->customerService->show($request->id);
+        return $this->customerService->show(Crypt::decrypt($request->id));
     }
 
     public function save(SaveRequest $request)
