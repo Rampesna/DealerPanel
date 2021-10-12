@@ -8,6 +8,7 @@ use App\Http\Middleware\CheckHeaderAuthType;
 use App\Http\Middleware\CheckHeaderToken;
 use App\Http\Middleware\CheckMethod;
 use App\Http\Middleware\CheckDealerUser;
+use App\Http\Middleware\CheckUser;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -74,5 +75,6 @@ class Kernel extends HttpKernel
         'CheckHeaderAuthType' => CheckHeaderAuthType::class,
         'CheckDealerUser' => CheckDealerUser::class,
         'CheckCustomer' => CheckCustomer::class,
+        'CheckUser' => CheckUser::class,
     ];
 }

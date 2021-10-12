@@ -32,17 +32,21 @@ class SupportRequestService
     }
 
     /**
-     * @param string $creator_type
-     * @param int $creator_id
+     * @param string|null $creator_type
+     * @param int|null $creator_id
      */
     public function datatable(
-        $creator_type,
-        $creator_id
+        $creator_type = null,
+        $creator_id = null
     )
     {
         $supportRequests = SupportRequest::with([
             'creator',
-        ])->where('creator_type', $creator_type)->where('creator_id', $creator_id);
+        ]);
+
+        if ($creator_type && $creator_id) {
+            $supportRequests->where('creator_type', $creator_type)->where('creator_id', $creator_id);
+        }
 
         return DataTables::of($supportRequests)->
         filterColumn('creator_id', function ($supportRequests, $data) {
@@ -63,6 +67,11 @@ class SupportRequestService
         })->
         filterColumn('status_id', function ($supportRequests, $data) {
             return $supportRequests->whereIn('status_id', SupportRequestStatus::where('name', 'like', '%' . $data . '%')->pluck('id')->toArray());
+        })->
+        editColumn('creator_type', function ($supportRequest) {
+            return $supportRequest->creator_type == 'App\\Models\\Customer' ? 'Müşteri' : (
+            $supportRequest->creator_type == 'App\\Models\\DealerUser' ? 'Bayi' : '--'
+            );
         })->
         editColumn('creator_id', function ($supportRequest) {
             return $supportRequest->creator ? $supportRequest->creator->name : '';

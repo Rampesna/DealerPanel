@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Api\DealerUser\Dealer;
+namespace App\Http\Requests\Api\User\Dealer;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -8,7 +8,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 
-class SaveRequest extends FormRequest
+class DropRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,10 +28,7 @@ class SaveRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => strtolower(request()->method()) == 'put' ? 'required' : 'nullable',
-            'dealer_id' => 'required',
-            'tax_number' => 'required',
-            'name' => 'required'
+            'id' => 'required'
         ];
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Api\DealerUser\Dealer;
+namespace App\Http\Requests\Api\General\Dealer;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -8,7 +8,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 
-class ShowRequest extends FormRequest
+class CheckTaxNumberRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,7 +28,7 @@ class ShowRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required'
+            'tax_number' => 'required|min:10|max:11'
         ];
     }
 

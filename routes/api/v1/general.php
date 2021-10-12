@@ -11,6 +11,12 @@ Route::middleware([
             ->middleware(['CheckMethod:get']);
     });
 
+    Route::prefix('dealer')->group(function () {
+        Route::any('checkTaxNumber', [\App\Http\Controllers\Api\General\DealerController::class, 'checkTaxNumber'])
+            ->name('api.v1.general.dealer.checkTaxNumber')
+            ->middleware(['CheckMethod:get']);
+    });
+
     Route::prefix('supportRequestCategory')->group(function () {
         Route::any('index', [\App\Http\Controllers\Api\General\SupportRequestCategoryController::class, 'index'])
             ->name('api.v1.general.supportRequestCategory.index')

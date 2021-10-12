@@ -151,12 +151,34 @@ class CustomerService
     }
 
     /**
-     * @param string $tax_number
+     * @param int $id
      */
-    public function checkTaxNumber(
-        string $tax_number
+    public function drop(
+        $id
     )
     {
-        return $this->success('Checking customer tax number', Customer::where('tax_number', $tax_number)->first() ? 1 : 0);
+        if (!$customer = Customer::find($id)) {
+            return $this->error('Customer not found', 404);
+        }
+
+        return $this->success('Customer details', $customer->delete());
+    }
+
+    /**
+     * @param string $tax_number
+     * @param int $except_id
+     */
+    public function checkTaxNumber(
+        $tax_number,
+        $except_id = null
+    )
+    {
+        $customer = Customer::with([]);
+
+        if ($except_id) {
+            $customer->where('id', '<>', $except_id);
+        }
+
+        return $this->success('Checking customer tax number', $customer->where('tax_number', $tax_number)->first() ? 1 : 0);
     }
 }

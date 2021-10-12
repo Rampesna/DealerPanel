@@ -28,4 +28,9 @@ class Dealer extends Model
     {
         return Dealer::where('top_id', $this->id)->get();
     }
+
+    public function top()
+    {
+        return $this->belongsTo(Dealer::class, 'top_id', 'id');
+    }
 }

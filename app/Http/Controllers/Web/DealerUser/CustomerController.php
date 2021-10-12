@@ -12,9 +12,6 @@ class CustomerController extends Controller
         return view('dealerUser.pages.customer.index.index');
     }
 
-    /**
-     * @param Request $request
-     */
     public function show(Request $request)
     {
         try {
