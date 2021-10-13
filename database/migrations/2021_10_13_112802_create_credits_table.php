@@ -17,7 +17,7 @@ class CreateCreditsTable extends Migration
             $table->id();
             $table->string('relation_type');
             $table->bigInteger('relation_id')->unsigned();
-            $table->bigInteger('service_id')->unsigned()->nullable();
+            $table->bigInteger('customer_service_id')->unsigned()->nullable();
             $table->double('amount')->unsigned();
             $table->boolean('direction');
             $table->longText('description')->nullable();

@@ -186,6 +186,21 @@ class CustomerServiceService
         $customerService->transaction_status_id = $transaction_status_id;
         $customerService->save();
 
+        if (
+            $transaction_status_id == 2
+        ) {
+            $creditService = new CreditService;
+            $creditService->save(
+                null,
+                'App\\Models\\Customer',
+                $customerService->customer_id,
+                $customerService->id,
+                $customerService->service->credit_amount,
+                1,
+                'Hizmet Onayı İle Otomatik Kontör Aktarımı'
+            );
+        }
+
         return $this->success('Customer service transaction status updated successfully', $customerService);
     }
 }

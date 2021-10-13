@@ -24,7 +24,7 @@
                         <label class="col-6 col-form-label">Toplam Alınan Kontör:</label>
                         <div class="col-6 text-right">
                             <span class="form-control-plaintext font-weight-bolder" id="creatorSpan">
-                                --
+                                {{ \App\Models\Credit::where('relation_type', 'App\\Models\\Customer')->where('relation_id', auth()->id())->sum('amount') }}
                             </span>
                         </div>
                     </div>

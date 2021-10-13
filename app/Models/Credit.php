@@ -19,4 +19,14 @@ class Credit extends Model
     {
         return Crypt::encrypt($this->id);
     }
+
+    public function relation()
+    {
+        return $this->morphTo();
+    }
+
+    public function service()
+    {
+        return $this->hasOneThrough(Service::class, CustomerService::class);
+    }
 }
