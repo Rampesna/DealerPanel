@@ -48,6 +48,11 @@ Route::middleware([
             Route::any('accept', [\App\Http\Controllers\Api\User\WaitingTransaction\CustomerController::class, 'accept'])->name('api.v1.user.waitingTransaction.customer.accept')->middleware(['CheckMethod:put']);
         });
 
+        Route::prefix('customerService')->group(function () {
+            Route::any('datatable', [\App\Http\Controllers\Api\User\WaitingTransaction\CustomerServiceController::class, 'datatable'])->name('api.v1.user.waitingTransaction.customerService.datatable')->middleware(['CheckMethod:get']);
+            Route::any('accept', [\App\Http\Controllers\Api\User\WaitingTransaction\CustomerServiceController::class, 'accept'])->name('api.v1.user.waitingTransaction.customerService.accept')->middleware(['CheckMethod:put']);
+        });
+
         Route::prefix('credit')->group(function () {
             Route::any('datatable', [\App\Http\Controllers\Api\User\WaitingTransaction\CreditController::class, 'datatable'])->name('api.v1.user.waitingTransaction.credit.datatable')->middleware(['CheckMethod:get']);
         });

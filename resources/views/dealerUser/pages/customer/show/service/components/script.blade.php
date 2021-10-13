@@ -3,6 +3,90 @@
 
 <script>
 
+    var CreateButton = $('#CreateButton');
+
+    var service_id_create = $('#service_id_create');
+    var status_id_create = $('#status_id_create');
+
+    function create() {
+        $('#CreateModal').modal('show');
+    }
+
+    function save(method, data) {
+        $.ajax({
+            type: method,
+            url: '{{ route('api.v1.dealerUser.customer.service.save') }}',
+            headers: {
+                _token: '{{ auth()->user()->apiToken() }}',
+                _auth_type: 'DealerUser'
+            },
+            data: data,
+            success: function () {
+                $('#CreateForm').trigger('reset');
+                service_id_create.selectpicker('refresh');
+                status_id_create.selectpicker('refresh');
+                $('#CreateModal').modal('hide');
+                $('#EditModal').modal('hide');
+                toastr.success('Başarıyla Kaydedildi.');
+                services.ajax.reload();
+            },
+            error: function (error) {
+                console.log(error);
+                toastr.error('Kaydedilirken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+            }
+        });
+    }
+
+    function getServices() {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('api.v1.general.service.index') }}',
+            headers: {
+                _token: '{{ auth()->user()->apiToken() }}',
+                _auth_type: 'User'
+            },
+            data: {},
+            success: function (response) {
+                service_id_create.empty();
+                service_id_create.append(`<optgroup label=""><option value="">Seçim Yapılmadı</option></optgroup>`);
+                $.each(response.response, function (i, service) {
+                    service_id_create.append(`<option value="${service.id}">${service.name}</option>`);
+                });
+                service_id_create.selectpicker('refresh');
+            },
+            error: function (error) {
+                console.log(error);
+                toastr.error('Hizmet Listesi Alınırken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+            }
+        });
+    }
+
+    function getCustomerServiceStatuses() {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('api.v1.general.customerServiceStatus.index') }}',
+            headers: {
+                _token: '{{ auth()->user()->apiToken() }}',
+                _auth_type: 'User'
+            },
+            data: {},
+            success: function (response) {
+                status_id_create.empty();
+                status_id_create.append(`<optgroup label=""><option value="">Seçim Yapılmadı</option></optgroup>`);
+                $.each(response.response, function (i, customerServiceStatus) {
+                    status_id_create.append(`<option value="${customerServiceStatus.id}">${customerServiceStatus.name}</option>`);
+                });
+                status_id_create.selectpicker('refresh');
+            },
+            error: function () {
+
+            }
+        });
+    }
+
+    getServices();
+    getCustomerServiceStatuses();
+
     var services = $('#services').DataTable({
         language: {
             info: "_TOTAL_ Kayıttan _START_ - _END_ Arasındaki Kayıtlar Gösteriliyor.",
@@ -164,6 +248,38 @@
         } else {
             $("#context-menu").hide();
             services.rows().deselect();
+        }
+    });
+
+    CreateButton.click(function () {
+        var customer_id = '{{ $id }}';
+        var service_id = service_id_create.val();
+        var start = $('#start_create').val();
+        var end = $('#end_create').val();
+        var amount = $('#amount_create').val();
+        var status_id = status_id_create.val();
+
+        if (customer_id === '') {
+            toastr.warning('Müşteri Bağlantısından Bir Sorun Oluştu. Lütfen Sayfayı Yenileyip Tekrar Deneyin. Sorun Devam Ederse Geliştirici Ekibi İle İletişime Geçin.');
+        } else if (service_id == null || service_id === '') {
+            toastr.warning('Hizmet Seçimi Zorunludur!');
+        } else if (start == null || start === '') {
+            toastr.warning('Hizmet Başlangıcı Seçimi Zorunludur!');
+        } else if (end == null || end === '') {
+            toastr.warning('Hizmet Bitişi Seçimi Zorunludur!');
+        } else if (amount == null || amount === '') {
+            toastr.warning('Hizmet Adedi Girilmesi Zorunludur!');
+        } else if (status_id == null || status_id === '') {
+            toastr.warning('Hizmet Durumu Girilmesi Zorunludur!');
+        } else {
+            save('post', {
+                customer_id: customer_id,
+                service_id: service_id,
+                start: start,
+                end: end,
+                amount: amount,
+                status_id: status_id
+            });
         }
     });
 

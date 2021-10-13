@@ -22,6 +22,7 @@ Route::middleware([
         Route::prefix('service')->group(function () {
             Route::any('index', [\App\Http\Controllers\Api\DealerUser\CustomerServiceController::class, 'index'])->name('api.v1.dealerUser.customer.service.index')->middleware(['CheckMethod:get']);
             Route::any('datatable', [\App\Http\Controllers\Api\DealerUser\CustomerServiceController::class, 'datatable'])->name('api.v1.dealerUser.customer.service.datatable')->middleware(['CheckMethod:get']);
+            Route::any('save', [\App\Http\Controllers\Api\DealerUser\CustomerServiceController::class, 'save'])->name('api.v1.dealerUser.customer.service.save')->middleware(['CheckMethod:post']);
         });
 
         Route::prefix('supportRequest')->group(function () {

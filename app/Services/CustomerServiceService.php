@@ -167,4 +167,25 @@ class CustomerServiceService
 
         return $this->success('Customer service deleted successfully', $customerService->delete());
     }
+
+    /**
+     * @param int $customer_service_id
+     * @param int $transaction_status_id
+     */
+    public function updateTransactionStatus(
+        $customer_service_id,
+        $transaction_status_id
+    )
+    {
+        $customerService = CustomerService::find($customer_service_id);
+
+        if (!$customerService) {
+            return $this->error('Customer service not found', 404);
+        }
+
+        $customerService->transaction_status_id = $transaction_status_id;
+        $customerService->save();
+
+        return $this->success('Customer service transaction status updated successfully', $customerService);
+    }
 }

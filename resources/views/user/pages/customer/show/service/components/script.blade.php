@@ -129,7 +129,7 @@
     }
 
     getServices();
-    getCustomerServiceStatuses()
+    getCustomerServiceStatuses();
 
     var services = $('#services').DataTable({
         language: {

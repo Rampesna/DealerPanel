@@ -16,6 +16,13 @@
                 </a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link @if(@$tab == 'customerService') active @endif" href="{{ route('user.waitingTransaction.show', ['tab' => 'customerService']) }}">
+                    <span class="nav-icon"><i class="fas fa-th"></i></span>
+                    <span class="nav-text">Hizmetler</span>
+                </a>
+            </li>
+
         </ul>
     </div>
 </div>
