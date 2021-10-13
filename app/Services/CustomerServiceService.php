@@ -118,9 +118,21 @@ class CustomerServiceService
 
     /**
      * @param int|null $id
+     * @param int $customer_id
+     * @param int $service_id
+     * @param \DateTime $start
+     * @param \DateTime $end
+     * @param double $amount
+     * @param int $status_id
      */
     public function save(
-        $id
+        $id,
+        $customer_id,
+        $service_id,
+        $start,
+        $end,
+        $amount,
+        $status_id
     )
     {
         $customerService = $id ? CustomerService::find($id) : new CustomerService;
@@ -128,6 +140,16 @@ class CustomerServiceService
         if ($id && !$customerService) {
             return $this->error('Customer service not found', 404);
         }
+
+        $customerService->customer_id = $customer_id;
+        $customerService->service_id = $service_id;
+        $customerService->start = $start;
+        $customerService->end = $end;
+        $customerService->amount = $amount;
+        $customerService->status_id = $status_id;
+        $customerService->save();
+
+        return $this->success('Customer service saved successfully', $customerService);
     }
 
     /**

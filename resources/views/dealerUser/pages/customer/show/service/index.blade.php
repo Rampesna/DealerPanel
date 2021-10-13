@@ -16,7 +16,7 @@
                             <th>Hizmet Adı</th>
                             <th>Başlangıç</th>
                             <th>Bitiş</th>
-                            <th>Tutar</th>
+                            <th>Adet</th>
                             <th>Durum</th>
                         </tr>
                         </thead>
@@ -25,7 +25,7 @@
                             <th>Hizmet Adı</th>
                             <th>Başlangıç</th>
                             <th>Bitiş</th>
-                            <th>Tutar</th>
+                            <th>Adet</th>
                             <th>Durum</th>
                         </tr>
                         </tfoot>

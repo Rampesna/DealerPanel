@@ -7,12 +7,41 @@
     var UpdateButton = $('#UpdateButton');
     var DeleteButton = $('#DeleteButton');
 
+    var service_id_create = $('#service_id_create');
+    var service_id_edit = $('#service_id_edit');
+
+    var status_id_create = $('#status_id_create');
+    var status_id_edit = $('#status_id_edit');
+
     function create() {
         $('#CreateModal').modal('show');
     }
 
     function edit() {
-
+        var id = $('#id_edit').val();
+        $.ajax({
+            type: 'get',
+            url: '{{ route('api.v1.user.customer.service.show') }}',
+            headers: {
+                _token: '{{ auth()->user()->apiToken() }}',
+                _auth_type: 'User'
+            },
+            data: {
+                id: id
+            },
+            success: function (response) {
+                service_id_edit.val(response.response.service_id).selectpicker('refresh');
+                $('#start_edit').val(reformatDatetimeForInput(response.response.start));
+                $('#end_edit').val(reformatDatetimeForInput(response.response.end));
+                $('#amount_edit').val(response.response.amount);
+                status_id_edit.val(response.response.status_id).selectpicker('refresh');
+                $('#EditModal').modal('show');
+            },
+            error: function (error) {
+                console.log(error);
+                toastr.error('Hizmet Detayları Alınırken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+            }
+        });
     }
 
     function drop() {
@@ -22,7 +51,7 @@
     function save(method, data) {
         $.ajax({
             type: method,
-            url: '',
+            url: '{{ route('api.v1.user.customer.service.save') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
                 _auth_type: 'User'
@@ -30,6 +59,8 @@
             data: data,
             success: function () {
                 $('#CreateForm').trigger('reset');
+                service_id_create.selectpicker('refresh');
+                status_id_create.selectpicker('refresh');
                 $('#CreateModal').modal('hide');
                 $('#EditModal').modal('hide');
                 toastr.success('Başarıyla Kaydedildi.');
@@ -41,6 +72,64 @@
             }
         });
     }
+
+    function getServices() {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('api.v1.general.service.index') }}',
+            headers: {
+                _token: '{{ auth()->user()->apiToken() }}',
+                _auth_type: 'User'
+            },
+            data: {},
+            success: function (response) {
+                service_id_create.empty();
+                service_id_edit.empty();
+                service_id_create.append(`<optgroup label=""><option value="">Seçim Yapılmadı</option></optgroup>`);
+                service_id_edit.append(`<optgroup label=""><option value="">Seçim Yapılmadı</option></optgroup>`);
+                $.each(response.response, function (i, service) {
+                    service_id_create.append(`<option value="${service.id}">${service.name}</option>`);
+                    service_id_edit.append(`<option value="${service.id}">${service.name}</option>`);
+                });
+                service_id_create.selectpicker('refresh');
+                service_id_edit.selectpicker('refresh');
+            },
+            error: function (error) {
+                console.log(error);
+                toastr.error('Hizmet Listesi Alınırken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+            }
+        });
+    }
+
+    function getCustomerServiceStatuses() {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('api.v1.general.customerServiceStatus.index') }}',
+            headers: {
+                _token: '{{ auth()->user()->apiToken() }}',
+                _auth_type: 'User'
+            },
+            data: {},
+            success: function (response) {
+                status_id_create.empty();
+                status_id_edit.empty();
+                status_id_create.append(`<optgroup label=""><option value="">Seçim Yapılmadı</option></optgroup>`);
+                status_id_edit.append(`<optgroup label=""><option value="">Seçim Yapılmadı</option></optgroup>`);
+                $.each(response.response, function (i, customerServiceStatus) {
+                    status_id_create.append(`<option value="${customerServiceStatus.id}">${customerServiceStatus.name}</option>`);
+                    status_id_edit.append(`<option value="${customerServiceStatus.id}">${customerServiceStatus.name}</option>`);
+                });
+                status_id_create.selectpicker('refresh');
+                status_id_edit.selectpicker('refresh');
+            },
+            error: function () {
+
+            }
+        });
+    }
+
+    getServices();
+    getCustomerServiceStatuses()
 
     var services = $('#services').DataTable({
         language: {
@@ -167,8 +256,10 @@
         if (selectedRows.count() > 0) {
             var id = selectedRows.data()[0].id;
             var encrypted_id = selectedRows.data()[0].encrypted_id;
+            var name = selectedRows.data()[0].service_id;
             $("#id_edit").val(id);
             $("#encrypted_id_edit").val(encrypted_id);
+            $('#deleting').html(name);
             $("#EditingContexts").show();
         } else {
             $("#EditingContexts").hide();
@@ -207,15 +298,93 @@
     });
 
     CreateButton.click(function () {
+        var customer_id = '{{ $id }}';
+        var service_id = service_id_create.val();
+        var start = $('#start_create').val();
+        var end = $('#end_create').val();
+        var amount = $('#amount_create').val();
+        var status_id = status_id_create.val();
 
+        if (customer_id === '') {
+            toastr.warning('Müşteri Bağlantısından Bir Sorun Oluştu. Lütfen Sayfayı Yenileyip Tekrar Deneyin. Sorun Devam Ederse Geliştirici Ekibi İle İletişime Geçin.');
+        } else if (service_id == null || service_id === '') {
+            toastr.warning('Hizmet Seçimi Zorunludur!');
+        } else if (start == null || start === '') {
+            toastr.warning('Hizmet Başlangıcı Seçimi Zorunludur!');
+        } else if (end == null || end === '') {
+            toastr.warning('Hizmet Bitişi Seçimi Zorunludur!');
+        } else if (amount == null || amount === '') {
+            toastr.warning('Hizmet Adedi Girilmesi Zorunludur!');
+        } else if (status_id == null || status_id === '') {
+            toastr.warning('Hizmet Durumu Girilmesi Zorunludur!');
+        } else {
+            save('post', {
+                customer_id: customer_id,
+                service_id: service_id,
+                start: start,
+                end: end,
+                amount: amount,
+                status_id: status_id
+            });
+        }
     });
 
     UpdateButton.click(function () {
+        var id = $('#id_edit').val();
+        var customer_id = '{{ $id }}';
+        var service_id = service_id_edit.val();
+        var start = $('#start_edit').val();
+        var end = $('#end_edit').val();
+        var amount = $('#amount_edit').val();
+        var status_id = status_id_edit.val();
 
+        if (customer_id === '') {
+            toastr.warning('Müşteri Bağlantısından Bir Sorun Oluştu. Lütfen Sayfayı Yenileyip Tekrar Deneyin. Sorun Devam Ederse Geliştirici Ekibi İle İletişime Geçin.');
+        } else if (service_id == null || service_id === '') {
+            toastr.warning('Hizmet Seçimi Zorunludur!');
+        } else if (start == null || start === '') {
+            toastr.warning('Hizmet Başlangıcı Seçimi Zorunludur!');
+        } else if (end == null || end === '') {
+            toastr.warning('Hizmet Bitişi Seçimi Zorunludur!');
+        } else if (amount == null || amount === '') {
+            toastr.warning('Hizmet Adedi Girilmesi Zorunludur!');
+        } else if (status_id == null || status_id === '') {
+            toastr.warning('Hizmet Durumu Girilmesi Zorunludur!');
+        } else {
+            save('post', {
+                id: id,
+                customer_id: customer_id,
+                service_id: service_id,
+                start: start,
+                end: end,
+                amount: amount,
+                status_id: status_id
+            });
+        }
     });
 
     DeleteButton.click(function () {
-
+        var id = $('#id_edit').val();
+        $.ajax({
+            type: 'delete',
+            url: '{{ route('api.v1.user.customer.service.drop') }}',
+            headers: {
+                _token: '{{ auth()->user()->apiToken() }}',
+                _auth_type: 'User'
+            },
+            data: {
+                id: id
+            },
+            success: function () {
+                toastr.success('Başarıyla Silindi');
+                $('#DeleteModal').modal('hide');
+                services.ajax.reload();
+            },
+            error: function (error) {
+                console.log(error);
+                toastr.error('Hizmet Silinirken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+            }
+        });
     });
 
 </script>

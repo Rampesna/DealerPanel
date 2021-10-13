@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Api\User\CustomerService;
+namespace App\Http\Requests\Api\General\CustomerServiceStatus;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -8,7 +8,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 
-class SaveRequest extends FormRequest
+class IndexRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,26 +25,10 @@ class SaveRequest extends FormRequest
      *
      * @return array
      */
-
-    /**
-     * @param int|null $id
-     * @param int $customer_id
-     * @param int $service_id
-     * @param \DateTime $start
-     * @param \DateTime $end
-     * @param double $amount
-     * @param int $status_id
-     */
     public function rules()
     {
         return [
-            'id' => strtolower(request()->method() == 'put') ? 'required' : 'nullable',
-            'customer_id' => 'required',
-            'service_id' => 'required|int',
-            'start' => 'required',
-            'end' => 'required',
-            'amount' => 'required',
-            'status_id' => 'required'
+            //
         ];
     }
 

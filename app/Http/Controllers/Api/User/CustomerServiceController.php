@@ -39,24 +39,32 @@ class CustomerServiceController extends Controller
     /**
      * @param ShowRequest $request
      */
-    public function show()
+    public function show(ShowRequest $request)
     {
-
+        return $this->customerServiceService->show($request->id);
     }
 
     /**
      * @param SaveRequest $request
      */
-    public function save()
+    public function save(SaveRequest $request)
     {
-
+        return $this->customerServiceService->save(
+            $request->id,
+            gettype($request->customer_id) == 'integer' ? $request->customer_id : Crypt::decrypt($request->customer_id),
+            $request->service_id,
+            $request->start,
+            $request->end,
+            $request->amount,
+            $request->status_id
+        );
     }
 
     /**
      * @param DropRequest $request
      */
-    public function drop()
+    public function drop(DropRequest $request)
     {
-
+        return $this->customerServiceService->drop($request->id);
     }
 }

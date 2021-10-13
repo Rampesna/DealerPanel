@@ -10,6 +10,8 @@
     @include('user.pages.customer.show.service.modals.edit')
     @include('user.pages.customer.show.service.modals.delete')
 
+    <input type="hidden" id="id_edit">
+    <input type="hidden" id="encrypted_id_edit">
     <div class="row mt-15">
         <div class="col-xl-12">
             <div class="card" id="servicesCard">
@@ -20,7 +22,7 @@
                             <th>Hizmet Adı</th>
                             <th>Başlangıç</th>
                             <th>Bitiş</th>
-                            <th>Tutar</th>
+                            <th>Adet</th>
                             <th>Durum</th>
                         </tr>
                         </thead>
@@ -29,7 +31,7 @@
                             <th>Hizmet Adı</th>
                             <th>Başlangıç</th>
                             <th>Bitiş</th>
-                            <th>Tutar</th>
+                            <th>Adet</th>
                             <th>Durum</th>
                         </tr>
                         </tfoot>

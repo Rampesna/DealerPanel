@@ -103,7 +103,7 @@ function reformatDatetimeForInput(date) {
     var formattedDate = new Date(date);
     return formattedDate.getFullYear() + '-' +
         String(formattedDate.getMonth() + 1).padStart(2, '0') + '-' +
-        String(formattedDate.getDate()).padStart(2, '0') + ' ' +
+        String(formattedDate.getDate()).padStart(2, '0') + 'T' +
         String(formattedDate.getHours()).padStart(2, '0') + ':' +
         String(formattedDate.getMinutes()).padStart(2, '0');
 }
