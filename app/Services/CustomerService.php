@@ -140,6 +140,11 @@ class CustomerService
     )
     {
         $customer = $id ? Customer::find($id) : new Customer;
+
+        if ($id && !$customer) {
+            return $this->error('Customer not found', 404);
+        }
+
         $customer->dealer_id = $dealer_id;
         $customer->tax_number = $tax_number;
         $customer->name = $name;
@@ -173,12 +178,33 @@ class CustomerService
         $except_id = null
     )
     {
-        $customer = Customer::with([]);
+        $customer = Customer::withTrashed();
 
         if ($except_id) {
             $customer->where('id', '<>', $except_id);
         }
 
         return $this->success('Checking customer tax number', $customer->where('tax_number', $tax_number)->first() ? 1 : 0);
+    }
+
+    /**
+     * @param int $customer_id
+     * @param int $transaction_status_id
+     */
+    public function updateTransactionStatus(
+        $customer_id,
+        $transaction_status_id
+    )
+    {
+        $customer = Customer::find($customer_id);
+
+        if (!$customer) {
+            return $this->error('Customer not found', 404);
+        }
+
+        $customer->transaction_status_id = $transaction_status_id;
+        $customer->save();
+
+        return $this->success('Customer transaction status updated successfully', $customer_id);
     }
 }

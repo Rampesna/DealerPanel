@@ -138,6 +138,11 @@ class SupportRequestService
     )
     {
         $supportRequest = $id ? SupportRequest::find($id) : new SupportRequest;
+
+        if ($id && !$supportRequest) {
+            return $this->error('Support request not found', 404);
+        }
+
         $supportRequest->creator_type = $creator_type;
         $supportRequest->creator_id = $creator_id;
         $supportRequest->name = $name;

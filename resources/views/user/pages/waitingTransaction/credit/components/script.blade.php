@@ -3,11 +3,7 @@
 
 <script>
 
-    function show() {
-        $(location).prop('href', `{{ route('user.supportRequest.show') }}/${$('#encrypted_id_edit').val()}`);
-    }
-
-    var supportRequests = $('#supportRequests').DataTable({
+    var credits = $('#credits').DataTable({
         language: {
             info: "_TOTAL_ Kayıttan _START_ - _END_ Arasındaki Kayıtlar Gösteriliyor.",
             infoEmpty: "Gösterilecek Hiç Kayıt Yok.",
@@ -73,38 +69,17 @@
                 text: '<i class="fas fa-undo"></i> Yenile',
                 action: function (e, dt, node, config) {
                     $('table input').val('');
-                    supportRequests.search('').columns().search('').ajax.reload().draw();
+                    credits.search('').columns().search('').ajax.reload().draw();
                 }
             }
         ],
 
         initComplete: function () {
-            var r = $('#supportRequests tfoot tr');
-            $('#supportRequests thead').append(r);
+            var r = $('#credits tfoot tr');
+            $('#credits thead').append(r);
             this.api().columns().every(function (index) {
                 var column = this;
                 var input = document.createElement('input');
-
-                if (index === 0) {
-                    input = document.createElement('select');
-                    var option = document.createElement("option");
-                    option.setAttribute("value", "");
-                    option.innerHTML = "Tümü";
-                    input.appendChild(option);
-
-                    option = document.createElement("option");
-                    option.setAttribute("value", "App\\Models\\Customer");
-                    option.innerHTML = "Müşteri";
-                    input.appendChild(option);
-
-                    option = document.createElement("option");
-                    option.setAttribute("value", "App\\Models\\DealerUser");
-                    option.innerHTML = "Bayi";
-                    input.appendChild(option);
-
-                    input.className = 'selectpicker';
-                }
-
                 input.className = 'form-control';
                 $(input).appendTo($(column.footer()).empty())
                     .on('change', function () {
@@ -117,71 +92,22 @@
         serverSide: true,
         ajax: {
             type: 'get',
-            url: '{{ route('api.v1.user.supportRequest.datatable') }}',
+            url: '{{ route('api.v1.dealerUser.waitingTransaction.credit.datatable') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
-                _auth_type: 'User'
+                _auth_type: 'DealerUser'
             },
-            data: {},
             error: function (error) {
                 console.log(error)
             }
         },
         columns: [
-            {data: 'creator_type', name: 'creator_type', width: '10%'},
-            {data: 'creator_id', name: 'creator_id'},
+            {data: 'tax_number', name: 'tax_number', width: '10%'},
             {data: 'name', name: 'name'},
-            {data: 'category_id', name: 'category_id'},
-            {data: 'priority_id', name: 'priority_id'},
-            {data: 'status_id', name: 'status_id'},
         ],
 
         responsive: true,
         select: 'single'
-    });
-
-    $('body').on('contextmenu', function (e) {
-        var selectedRows = supportRequests.rows({selected: true});
-        if (selectedRows.count() > 0) {
-            var id = selectedRows.data()[0].id;
-            var encrypted_id = selectedRows.data()[0].encrypted_id;
-            $("#id_edit").val(id);
-            $("#encrypted_id_edit").val(encrypted_id);
-            $("#EditingContexts").show();
-        } else {
-            $("#EditingContexts").hide();
-        }
-
-        var top = e.pageY - 10;
-        var left = e.pageX - 10;
-
-        $("#context-menu").css({
-            display: "block",
-            top: top,
-            left: left
-        });
-
-        return false;
-    }).on("click", function () {
-        $("#context-menu").hide();
-    }).on('focusout', function () {
-        $("#context-menu").hide();
-    });
-
-    $('#supportRequests tbody').on('mousedown', 'tr', function (e) {
-        if (e.button === 0) {
-            return false;
-        } else {
-            supportRequests.row(this).select();
-        }
-    });
-
-    $(document).click((e) => {
-        if ($.contains($("#supportRequestsCard").get(0), e.target)) {
-        } else {
-            $("#context-menu").hide();
-            supportRequests.rows().deselect();
-        }
     });
 
 </script>

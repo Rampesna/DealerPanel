@@ -28,6 +28,29 @@ Route::middleware([
         Route::any('show', [\App\Http\Controllers\Api\User\CustomerController::class, 'show'])->name('api.v1.user.customer.show')->middleware(['CheckMethod:get']);
         Route::any('save', [\App\Http\Controllers\Api\User\CustomerController::class, 'save'])->name('api.v1.user.customer.save')->middleware(['CheckMethod:post|put']);
         Route::any('drop', [\App\Http\Controllers\Api\User\CustomerController::class, 'drop'])->name('api.v1.user.customer.drop')->middleware(['CheckMethod:delete']);
+
+        Route::prefix('service')->group(function () {
+            Route::any('index', [\App\Http\Controllers\Api\User\CustomerServiceController::class, 'index'])->name('api.v1.user.customer.service.index')->middleware(['CheckMethod:get']);
+            Route::any('datatable', [\App\Http\Controllers\Api\User\CustomerServiceController::class, 'datatable'])->name('api.v1.user.customer.service.datatable')->middleware(['CheckMethod:get']);
+            Route::any('show', [\App\Http\Controllers\Api\User\CustomerServiceController::class, 'show'])->name('api.v1.user.customer.service.show')->middleware(['CheckMethod:get']);
+            Route::any('save', [\App\Http\Controllers\Api\User\CustomerServiceController::class, 'save'])->name('api.v1.user.customer.service.save')->middleware(['CheckMethod:post|put']);
+            Route::any('drop', [\App\Http\Controllers\Api\User\CustomerServiceController::class, 'drop'])->name('api.v1.user.customer.service.drop')->middleware(['CheckMethod:delete']);
+        });
+
+        Route::prefix('supportRequest')->group(function () {
+            Route::any('datatable', [\App\Http\Controllers\Api\User\CustomerSupportRequestController::class, 'datatable'])->name('api.v1.user.customer.supportRequest.datatable')->middleware(['CheckMethod:get']);
+        });
+    });
+
+    Route::prefix('waitingTransaction')->group(function () {
+        Route::prefix('customer')->group(function () {
+            Route::any('datatable', [\App\Http\Controllers\Api\User\WaitingTransaction\CustomerController::class, 'datatable'])->name('api.v1.user.waitingTransaction.customer.datatable')->middleware(['CheckMethod:get']);
+            Route::any('accept', [\App\Http\Controllers\Api\User\WaitingTransaction\CustomerController::class, 'accept'])->name('api.v1.user.waitingTransaction.customer.accept')->middleware(['CheckMethod:put']);
+        });
+
+        Route::prefix('credit')->group(function () {
+            Route::any('datatable', [\App\Http\Controllers\Api\User\WaitingTransaction\CreditController::class, 'datatable'])->name('api.v1.user.waitingTransaction.credit.datatable')->middleware(['CheckMethod:get']);
+        });
     });
 
     Route::prefix('supportRequest')->group(function () {

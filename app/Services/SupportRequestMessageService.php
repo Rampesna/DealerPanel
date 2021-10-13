@@ -27,6 +27,11 @@ class SupportRequestMessageService
     )
     {
         $supportRequestMessage = $id ? SupportRequestMessage::find($id) : new SupportRequestMessage;
+
+        if ($id && !$supportRequestMessage) {
+            return $this->error('Support request message not found', 404);
+        }
+
         $supportRequestMessage->support_request_id = Crypt::decrypt($support_request_id);
         $supportRequestMessage->creator_type = $creator_type;
         $supportRequestMessage->creator_id = $creator_id;

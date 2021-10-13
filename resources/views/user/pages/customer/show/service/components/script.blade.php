@@ -3,6 +3,45 @@
 
 <script>
 
+    var CreateButton = $('#CreateButton');
+    var UpdateButton = $('#UpdateButton');
+    var DeleteButton = $('#DeleteButton');
+
+    function create() {
+        $('#CreateModal').modal('show');
+    }
+
+    function edit() {
+
+    }
+
+    function drop() {
+        $('#DeleteModal').modal('show');
+    }
+
+    function save(method, data) {
+        $.ajax({
+            type: method,
+            url: '',
+            headers: {
+                _token: '{{ auth()->user()->apiToken() }}',
+                _auth_type: 'User'
+            },
+            data: data,
+            success: function () {
+                $('#CreateForm').trigger('reset');
+                $('#CreateModal').modal('hide');
+                $('#EditModal').modal('hide');
+                toastr.success('Başarıyla Kaydedildi.');
+                services.ajax.reload();
+            },
+            error: function (error) {
+                console.log(error);
+                toastr.error('Kaydedilirken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+            }
+        });
+    }
+
     var services = $('#services').DataTable({
         language: {
             info: "_TOTAL_ Kayıttan _START_ - _END_ Arasındaki Kayıtlar Gösteriliyor.",
@@ -97,10 +136,10 @@
         serverSide: true,
         ajax: {
             type: 'get',
-            url: '{{ route('api.v1.dealerUser.customer.service.datatable') }}',
+            url: '{{ route('api.v1.user.customer.service.datatable') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
-                _auth_type: 'DealerUser'
+                _auth_type: 'User'
             },
             data: {
                 customer_id: '{{ $id }}'
@@ -165,6 +204,18 @@
             $("#context-menu").hide();
             services.rows().deselect();
         }
+    });
+
+    CreateButton.click(function () {
+
+    });
+
+    UpdateButton.click(function () {
+
+    });
+
+    DeleteButton.click(function () {
+
     });
 
 </script>

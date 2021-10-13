@@ -45,6 +45,14 @@
         </a>
         <div id="EditingContexts">
             <hr>
+            <a onclick="show()" class="dropdown-item cursor-pointer">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <i class="fas fa-eye text-info"></i><span class="ml-4">İncele</span>
+                    </div>
+                </div>
+            </a>
+            <hr>
             <a onclick="edit()" class="dropdown-item cursor-pointer">
                 <div class="row">
                     <div class="col-xl-12">

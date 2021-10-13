@@ -99,4 +99,50 @@ class CustomerServiceService
         })->
         make(true);
     }
+
+    /**
+     * @param int $id
+     */
+    public function show(
+        $id
+    )
+    {
+        $customerService = CustomerService::find($id);
+
+        if (!$customerService) {
+            return $this->error('Customer service not found', 404);
+        }
+
+        return $this->success('Customer service details', $customerService);
+    }
+
+    /**
+     * @param int|null $id
+     */
+    public function save(
+        $id
+    )
+    {
+        $customerService = $id ? CustomerService::find($id) : new CustomerService;
+
+        if ($id && !$customerService) {
+            return $this->error('Customer service not found', 404);
+        }
+    }
+
+    /**
+     * @param int $id
+     */
+    public function drop(
+        $id
+    )
+    {
+        $customerService = CustomerService::find($id);
+
+        if (!$customerService) {
+            return $this->error('Customer service not found', 404);
+        }
+
+        return $this->success('Customer service deleted successfully', $customerService->delete());
+    }
 }

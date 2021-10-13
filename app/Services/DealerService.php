@@ -83,6 +83,11 @@ class DealerService
     )
     {
         $dealer = $id ? Dealer::find($id) : new Dealer;
+
+        if ($id && !$dealer) {
+            return $this->error('Dealer not found', 404);
+        }
+
         $dealer->top_id = $top_id;
         $dealer->tax_number = $tax_number;
         $dealer->name = $name;
@@ -130,7 +135,7 @@ class DealerService
         $except_id = null
     )
     {
-        $dealer = Dealer::with([]);
+        $dealer = Dealer::withTrashed();
 
         if ($except_id) {
             $dealer->where('id', '<>', $except_id);

@@ -13,16 +13,16 @@
     }
 
     function show() {
-        $(location).prop('href', `{{ route('dealerUser.supportRequest.show') }}/${$('#encrypted_id_edit').val()}`);
+        $(location).prop('href', `{{ route('user.supportRequest.show') }}/${$('#encrypted_id_edit').val()}`);
     }
 
     function save(method, data) {
         $.ajax({
             type: method,
-            url: '{{ route('api.v1.dealerUser.supportRequest.save') }}',
+            url: '{{ route('api.v1.user.supportRequest.save') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
-                _auth_type: 'DealerUser'
+                _auth_type: 'User'
             },
             data: data,
             success: function (response) {
@@ -43,7 +43,7 @@
             type: 'get',
             url: '{{ route('api.v1.general.supportRequestCategory.index') }}',
             data: {
-                type: 'DealerUser'
+                type: 'User'
             },
             success: function (response) {
                 category_id_create.empty();
@@ -64,7 +64,7 @@
             type: 'get',
             url: '{{ route('api.v1.general.supportRequestPriority.index') }}',
             data: {
-                type: 'DealerUser'
+                type: 'User'
             },
             success: function (response) {
                 priority_id_create.empty();
@@ -172,10 +172,10 @@
         serverSide: true,
         ajax: {
             type: 'get',
-            url: '{{ route('api.v1.dealerUser.customer.supportRequest.datatable') }}',
+            url: '{{ route('api.v1.user.customer.supportRequest.datatable') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
-                _auth_type: 'DealerUser'
+                _auth_type: 'User'
             },
             data: {
                 creator_type: 'App\\Models\\Customer',

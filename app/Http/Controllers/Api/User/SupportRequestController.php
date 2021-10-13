@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\DealerUser\SupportRequest\DatatableRequest;
-use App\Http\Requests\Api\DealerUser\SupportRequest\IndexRequest;
-use App\Http\Requests\Api\DealerUser\SupportRequest\SaveRequest;
-use App\Http\Requests\Api\DealerUser\SupportRequest\ShowRequest;
-use App\Http\Requests\Api\DealerUser\SupportRequest\UpdateStatusRequest;
+use App\Http\Requests\Api\User\SupportRequest\DatatableRequest;
+use App\Http\Requests\Api\User\SupportRequest\IndexRequest;
+use App\Http\Requests\Api\User\SupportRequest\ShowRequest;
+use App\Http\Requests\Api\User\SupportRequest\UpdateStatusRequest;
 use App\Services\SupportRequestService;
 use App\Traits\Response;
+use Illuminate\Support\Facades\Crypt;
 
 class SupportRequestController extends Controller
 {
@@ -32,26 +32,17 @@ class SupportRequestController extends Controller
 
     public function datatable(DatatableRequest $request)
     {
-        return $this->supportRequestService->datatable();
+        return $this->supportRequestService->datatable(
+            $request->creator_type,
+            $request->creator_id ?
+                gettype($request->creator_id) == 'integer' ?
+                    $request->creator_id : Crypt::decrypt($request->creator_id) : null
+        );
     }
 
     public function show(ShowRequest $request)
     {
         return $this->supportRequestService->show($request->id);
-    }
-
-    public function save(SaveRequest $request)
-    {
-        return $this->supportRequestService->save(
-            $request->id,
-            $request->creator_type,
-            $request->creator_id,
-            $request->name,
-            $request->description,
-            $request->category_id,
-            $request->priority_id,
-            $request->status_id
-        );
     }
 
     public function updateStatus(UpdateStatusRequest $request)

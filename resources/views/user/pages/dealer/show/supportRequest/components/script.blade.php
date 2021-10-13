@@ -3,38 +3,11 @@
 
 <script>
 
-    var CreateButton = $('#CreateButton');
-
-    function create() {
-        $('#CreateModal').modal('show');
-    }
-
     function show() {
-        $(location).prop('href', `{{ route('dealerUser.customer.show') }}/${$('#encrypted_id_edit').val()}/index`)
+        $(location).prop('href', `{{ route('user.supportRequest.show') }}/${$('#encrypted_id_edit').val()}`);
     }
 
-    function save(method, data) {
-        $.ajax({
-            type: method,
-            url: '{{ route('api.v1.dealerUser.customer.save') }}',
-            headers: {
-                _token: '{{ auth()->user()->apiToken() }}',
-                _auth_type: 'DealerUser'
-            },
-            data: data,
-            success: function () {
-                toastr.success('Müşteri Oluşturma Talebiniz Alındı. Onaylandığında Müşteri Listenize Eklenecektir.');
-                $('#CreateModal').modal('hide');
-                customers.ajax.reload();
-            },
-            error: function (error) {
-                console.log(error);
-                toastr.error('Müşteri Eklenirken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
-            }
-        });
-    }
-
-    var customers = $('#customers').DataTable({
+    var supportRequests = $('#supportRequests').DataTable({
         language: {
             info: "_TOTAL_ Kayıttan _START_ - _END_ Arasındaki Kayıtlar Gösteriliyor.",
             infoEmpty: "Gösterilecek Hiç Kayıt Yok.",
@@ -100,14 +73,14 @@
                 text: '<i class="fas fa-undo"></i> Yenile',
                 action: function (e, dt, node, config) {
                     $('table input').val('');
-                    customers.search('').columns().search('').ajax.reload().draw();
+                    supportRequests.search('').columns().search('').ajax.reload().draw();
                 }
             }
         ],
 
         initComplete: function () {
-            var r = $('#customers tfoot tr');
-            $('#customers thead').append(r);
+            var r = $('#supportRequests tfoot tr');
+            $('#supportRequests thead').append(r);
             this.api().columns().every(function (index) {
                 var column = this;
                 var input = document.createElement('input');
@@ -123,45 +96,53 @@
         serverSide: true,
         ajax: {
             type: 'get',
-            url: '{{ route('api.v1.dealerUser.customer.datatable') }}',
+            url: '{{ route('api.v1.user.supportRequest.datatable') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
-                _auth_type: 'DealerUser'
+                _auth_type: 'User'
+            },
+            data: {
+                creator_type: 'App\\Models\\DealerUser',
+                creator_id: '{{ $id }}'
             },
             error: function (error) {
                 console.log(error)
             }
         },
         columns: [
-            {data: 'tax_number', name: 'tax_number', width: '10%'},
-            {data: 'dealer_id', name: 'dealer_id'},
             {data: 'name', name: 'name'},
+            {data: 'category_id', name: 'category_id'},
+            {data: 'priority_id', name: 'priority_id'},
+            {data: 'status_id', name: 'status_id'},
         ],
 
         responsive: true,
         select: 'single'
     });
 
+    console.log('{{ str_replace('\\', '\\\\', auth()->user()->authType()) }}')
+    console.log('{{ auth()->id() }}')
+
     $('body').on('contextmenu', function (e) {
-        var selectedRows = customers.rows({selected: true});
+        var selectedRows = supportRequests.rows({selected: true});
         if (selectedRows.count() > 0) {
             var id = selectedRows.data()[0].id;
             var encrypted_id = selectedRows.data()[0].encrypted_id;
             $("#id_edit").val(id);
             $("#encrypted_id_edit").val(encrypted_id);
             $("#EditingContexts").show();
+
+            var top = e.pageY - 10;
+            var left = e.pageX - 10;
+
+            $("#context-menu").css({
+                display: "block",
+                top: top,
+                left: left
+            });
         } else {
             $("#EditingContexts").hide();
         }
-
-        var top = e.pageY - 10;
-        var left = e.pageX - 10;
-
-        $("#context-menu").css({
-            display: "block",
-            top: top,
-            left: left
-        });
 
         return false;
     }).on("click", function () {
@@ -170,62 +151,19 @@
         $("#context-menu").hide();
     });
 
-    $('#customers tbody').on('mousedown', 'tr', function (e) {
+    $('#supportRequests tbody').on('mousedown', 'tr', function (e) {
         if (e.button === 0) {
             return false;
         } else {
-            customers.row(this).select();
+            supportRequests.row(this).select();
         }
     });
 
     $(document).click((e) => {
-        if ($.contains($("#customersCard").get(0), e.target)) {
+        if ($.contains($("#supportRequestsCard").get(0), e.target)) {
         } else {
             $("#context-menu").hide();
-            customers.rows().deselect();
-        }
-    });
-
-    CreateButton.click(function () {
-        var dealer_id = '{{ auth()->user()->getDealerId() }}';
-        var tax_number = $('#tax_number_create').val();
-        var name = $('#name_create').val();
-        var email = $('#email_create').val();
-        var gsm = $('#gsm_create').val();
-
-        if (tax_number == null || tax_number === '') {
-            toastr.warning('Vergi Numarası Boş Olamaz!');
-        } else if (tax_number.length < 10) {
-            toastr.warning('Vergi Numarası En Az 10 Karakter Olmalıdır!');
-        } else if (tax_number.length > 11) {
-            toastr.warning('Vergi Numarası En Fazla 11 Karakter Olabilir!');
-        } else if (name == null || name === '') {
-            toastr.warning('Müşteri Ünvanı Boş Olamaz!');
-        } else {
-            $.ajax({
-                type: 'get',
-                url: '{{ route('api.v1.general.customer.checkTaxNumber') }}',
-                data: {
-                    tax_number: tax_number
-                },
-                success: function (response) {
-                    if (response.response === 1) {
-                        toastr.warning('Bu Vergi Numarasına Ait Müşteri Zaten Sistemde Kayıtlı!');
-                    } else {
-                        save('post', {
-                            dealer_id: dealer_id,
-                            tax_number: tax_number,
-                            name: name,
-                            email: email,
-                            gsm: gsm
-                        });
-                    }
-                },
-                error: function (error) {
-                    console.log(error);
-                    toastr.error('Vergi Numarası Kontrolü Yapılırken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
-                }
-            });
+            supportRequests.rows().deselect();
         }
     });
 

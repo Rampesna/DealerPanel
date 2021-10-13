@@ -348,7 +348,27 @@
     });
 
     DeleteButton.click(function () {
-
+        var id = $('#id_edit').val();
+        $.ajax({
+            type: 'delete',
+            url: '{{ route('api.v1.user.customer.drop') }}',
+            headers: {
+                _token: '{{ auth()->user()->apiToken() }}',
+                _auth_type: 'User'
+            },
+            data: {
+                id: id
+            },
+            success: function () {
+                toastr.success('Başarıyla Silindi');
+                $('#DeleteModal').modal('hide');
+                customers.ajax.reload();
+            },
+            error: function (error) {
+                console.log(error);
+                toastr.error('Müşteri Silinirken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+            }
+        });
     });
 
 </script>
