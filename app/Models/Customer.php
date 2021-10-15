@@ -14,7 +14,9 @@ class Customer extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     protected $appends = [
-        'encrypted_id'
+        'encrypted_id',
+        'auth_type',
+        'balance'
     ];
 
     protected $hidden = [
@@ -32,18 +34,39 @@ class Customer extends Authenticatable
         return get_class($this);
     }
 
+    public function getAuthTypeAttribute()
+    {
+        return get_class($this);
+    }
+
     public function getEncryptedIdAttribute()
     {
         return Crypt::encrypt($this->id);
     }
 
-    public function customerServices()
+    public function getBalanceAttribute()
     {
-        return $this->hasMany(CustomerService::class);
+        $credits = $this->credits;
+        return $credits->where('direction', 1)->sum('amount') - $credits->where('direction', 0)->sum('amount');
+    }
+
+    public function services()
+    {
+        return $this->morphMany(RelationService::class, 'relation');
     }
 
     public function dealer()
     {
         return $this->belongsTo(Dealer::class);
+    }
+
+    public function credits()
+    {
+        return $this->morphMany(Credit::class, 'relation');
+    }
+
+    public function transactionStatus()
+    {
+        return $this->belongsTo(TransactionStatus::class);
     }
 }

@@ -9,6 +9,8 @@
     @include('user.pages.dealer.show.index.modals.create')
     @include('user.pages.dealer.show.index.modals.edit')
     @include('user.pages.dealer.show.index.modals.delete')
+    @include('user.pages.dealer.show.index.modals.addRelationService')
+    @include('user.pages.dealer.show.index.modals.addReceipt')
 
     <input type="hidden" id="dealer_id_edit">
     <div class="row mt-15">
@@ -30,7 +32,7 @@
                             <h5>Kontör Bilgileri</h5>
                         </div>
                         <div class="col-xl-4 text-right">
-                            <button type="button" class="btn btn-sm btn-primary mt-n2 mr-n6" data-toggle="modal" data-target="#AddCreditModal">Kontör Yükle</button>
+                            <button type="button" class="btn btn-sm btn-primary mt-n2 mr-n6" data-toggle="modal" data-target="#AddRelationServiceModal">Kontör Yükle</button>
                         </div>
                     </div>
                 </div>
@@ -38,7 +40,7 @@
                     <div class="row">
                         <label class="col-6 col-form-label">Toplam Alınan Kontör:</label>
                         <div class="col-6 text-right">
-                            <span class="form-control-plaintext font-weight-bolder" id="creatorSpan">
+                            <span class="form-control-plaintext font-weight-bolder" id="totalCreditSpan">
                                 --
                             </span>
                         </div>
@@ -46,7 +48,7 @@
                     <div class="row">
                         <label class="col-6 col-form-label">Toplam Kullanılan Kontör:</label>
                         <div class="col-6 text-right">
-                            <span class="form-control-plaintext font-weight-bolder" id="creatorSpan">
+                            <span class="form-control-plaintext font-weight-bolder" id="usedCreditSpan">
                                 --
                             </span>
                         </div>
@@ -54,7 +56,7 @@
                     <div class="row">
                         <label class="col-6 col-form-label">Kalan Kontör:</label>
                         <div class="col-6 text-right">
-                            <span class="form-control-plaintext font-weight-bolder" id="creatorSpan">
+                            <span class="form-control-plaintext font-weight-bolder" id="remainingCreditSpan">
                                 --
                             </span>
                         </div>
@@ -70,7 +72,7 @@
                             <h5>Finans Bilgileri</h5>
                         </div>
                         <div class="col-xl-4 text-right">
-                            <button type="button" class="btn btn-sm btn-primary mt-n2 mr-n6" data-toggle="modal" data-target="#AddCreditModal">Ödeme Al</button>
+                            <button type="button" class="btn btn-sm btn-primary mt-n2 mr-n6" data-toggle="modal" data-target="#AddReceiptModal">Ödeme Al</button>
                         </div>
                     </div>
                 </div>
@@ -78,15 +80,15 @@
                     <div class="row">
                         <label class="col-6 col-form-label">Toplam Borç:</label>
                         <div class="col-6 text-right">
-                            <span class="form-control-plaintext font-weight-bolder" id="creatorSpan">
+                            <span class="form-control-plaintext font-weight-bolder" id="outgoingSpan">
                                 --
                             </span>
                         </div>
                     </div>
                     <div class="row">
-                        <label class="col-6 col-form-label">Toplam Alacak:</label>
+                        <label class="col-6 col-form-label">Toplam Ödeme:</label>
                         <div class="col-6 text-right">
-                            <span class="form-control-plaintext font-weight-bolder" id="creatorSpan">
+                            <span class="form-control-plaintext font-weight-bolder" id="incomingSpan">
                                 --
                             </span>
                         </div>
@@ -94,7 +96,7 @@
                     <div class="row">
                         <label class="col-6 col-form-label">Bakiye:</label>
                         <div class="col-6 text-right">
-                            <span class="form-control-plaintext font-weight-bolder" id="creatorSpan">
+                            <span class="form-control-plaintext font-weight-bolder" id="balance">
                                 --
                             </span>
                         </div>

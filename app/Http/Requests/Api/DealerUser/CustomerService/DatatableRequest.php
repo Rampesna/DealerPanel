@@ -28,7 +28,9 @@ class DatatableRequest extends FormRequest
     public function rules()
     {
         return [
-            'customer_id' => 'required'
+            'relation_type' => 'required',
+            'relation_id' => 'required',
+            'transaction_status_id' => 'nullable'
         ];
     }
 

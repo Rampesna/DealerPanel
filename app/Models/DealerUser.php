@@ -12,7 +12,8 @@ class DealerUser extends Authenticatable
     use HasFactory, SoftDeletes;
 
     protected $appends = [
-        'encrypted_id'
+        'encrypted_id',
+        'auth_type'
     ];
 
     protected $hidden = [
@@ -30,9 +31,19 @@ class DealerUser extends Authenticatable
         return get_class($this);
     }
 
+    public function getAuthTypeAttribute()
+    {
+        return get_class($this);
+    }
+
     public function getEncryptedIdAttribute()
     {
         return Crypt::encrypt($this->id);
+    }
+
+    public function dealer()
+    {
+        return $this->belongsTo(Dealer::class);
     }
 
     public function getDealerId()

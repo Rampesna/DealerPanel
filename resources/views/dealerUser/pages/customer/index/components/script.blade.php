@@ -136,6 +136,7 @@
             {data: 'tax_number', name: 'tax_number', width: '10%'},
             {data: 'dealer_id', name: 'dealer_id'},
             {data: 'name', name: 'name'},
+            {data: 'transaction_status', name: 'transaction_status'},
         ],
 
         responsive: true,
@@ -147,9 +148,16 @@
         if (selectedRows.count() > 0) {
             var id = selectedRows.data()[0].id;
             var encrypted_id = selectedRows.data()[0].encrypted_id;
+            var transaction_status_id = selectedRows.data()[0].transaction_status_id;
             $("#id_edit").val(id);
             $("#encrypted_id_edit").val(encrypted_id);
-            $("#EditingContexts").show();
+
+            if (transaction_status_id === 2) {
+                $("#EditingContexts").show();
+            } else {
+                $("#EditingContexts").hide();
+            }
+
         } else {
             $("#EditingContexts").hide();
         }

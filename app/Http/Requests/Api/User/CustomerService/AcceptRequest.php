@@ -29,7 +29,9 @@ class AcceptRequest extends FormRequest
     {
         return [
             'customer_service_id' => 'required',
-            'transaction_status_id' => 'required'
+            'transaction_status_id' => 'required',
+            'auth_type' => 'required',
+            'auth_id' => 'required'
         ];
     }
 

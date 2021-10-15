@@ -8,16 +8,16 @@ use App\Http\Requests\Api\User\CustomerService\IndexRequest;
 use App\Http\Requests\Api\User\CustomerService\ShowRequest;
 use App\Http\Requests\Api\User\CustomerService\SaveRequest;
 use App\Http\Requests\Api\User\CustomerService\DropRequest;
-use App\Services\CustomerServiceService;
+use App\Services\RelationServiceService;
 use Illuminate\Support\Facades\Crypt;
 
-class CustomerServiceController extends Controller
+class DealerServiceController extends Controller
 {
-    private $customerServiceService;
+    private $relationServiceService;
 
     public function __construct()
     {
-        $this->customerServiceService = new CustomerServiceService;
+        $this->relationServiceService = new RelationServiceService;
     }
 
     /**
@@ -25,7 +25,11 @@ class CustomerServiceController extends Controller
      */
     public function index(IndexRequest $request)
     {
-        return $this->customerServiceService->index(Crypt::decrypt($request->customer_id), null, 2);
+        return $this->relationServiceService->index(
+            $request->relation_type,
+            gettype($request->relation_id) == 'integer' ? $request->relation_id : Crypt::decrypt($request->relation_id),
+            $request->transaction_status_id
+        );
     }
 
     /**
@@ -33,7 +37,11 @@ class CustomerServiceController extends Controller
      */
     public function datatable(DatatableRequest $request)
     {
-        return $this->customerServiceService->datatable(Crypt::decrypt($request->customer_id), null, 2);
+        return $this->relationServiceService->datatable(
+            $request->relation_type,
+            gettype($request->relation_id) == 'integer' ? $request->relation_id : Crypt::decrypt($request->relation_id),
+            $request->transaction_status_id
+        );
     }
 
     /**
@@ -41,7 +49,7 @@ class CustomerServiceController extends Controller
      */
     public function show(ShowRequest $request)
     {
-        return $this->customerServiceService->show($request->id);
+        return $this->relationServiceService->show($request->id);
     }
 
     /**
@@ -49,9 +57,12 @@ class CustomerServiceController extends Controller
      */
     public function save(SaveRequest $request)
     {
-        return $this->customerServiceService->save(
+        return $this->relationServiceService->save(
             $request->id,
-            gettype($request->customer_id) == 'integer' ? $request->customer_id : Crypt::decrypt($request->customer_id),
+            $request->creator_type,
+            $request->creator_id,
+            $request->relation_type,
+            gettype($request->relation_id) == 'integer' ? $request->relation_id : Crypt::decrypt($request->relation_id),
             $request->service_id,
             $request->start,
             $request->end,
@@ -65,6 +76,6 @@ class CustomerServiceController extends Controller
      */
     public function drop(DropRequest $request)
     {
-        return $this->customerServiceService->drop($request->id);
+        return $this->relationServiceService->drop($request->id);
     }
 }

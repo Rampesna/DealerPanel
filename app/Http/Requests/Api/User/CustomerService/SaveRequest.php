@@ -25,21 +25,13 @@ class SaveRequest extends FormRequest
      *
      * @return array
      */
-
-    /**
-     * @param int|null $id
-     * @param int $customer_id
-     * @param int $service_id
-     * @param \DateTime $start
-     * @param \DateTime $end
-     * @param double $amount
-     * @param int $status_id
-     */
     public function rules()
     {
         return [
             'id' => strtolower(request()->method() == 'put') ? 'required' : 'nullable',
-            'customer_id' => 'required',
+            'relation_type' => 'required',
+            'relation_id' => 'nullable',
+            'tax_number' => 'nullable|min:10|max:11',
             'service_id' => 'required|int',
             'start' => 'required',
             'end' => 'required',

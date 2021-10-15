@@ -4,12 +4,17 @@
 <script>
 
     var CreateButton = $('#CreateButton');
+    var AcceptButton = $('#AcceptButton');
 
     var service_id_create = $('#service_id_create');
     var status_id_create = $('#status_id_create');
 
     function create() {
         $('#CreateModal').modal('show');
+    }
+
+    function accept() {
+        $('#AcceptModal').modal('show');
     }
 
     function save(method, data) {
@@ -26,8 +31,7 @@
                 service_id_create.selectpicker('refresh');
                 status_id_create.selectpicker('refresh');
                 $('#CreateModal').modal('hide');
-                $('#EditModal').modal('hide');
-                toastr.success('Başarıyla Kaydedildi.');
+                toastr.success('Hizmet Talebi Alındı. Onaylanması Bekleniyor.');
                 services.ajax.reload();
             },
             error: function (error) {
@@ -64,7 +68,7 @@
     function getCustomerServiceStatuses() {
         $.ajax({
             type: 'get',
-            url: '{{ route('api.v1.general.customerServiceStatus.index') }}',
+            url: '{{ route('api.v1.general.relationServiceStatus.index') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
                 _auth_type: 'User'
@@ -87,7 +91,7 @@
     getServices();
     getCustomerServiceStatuses();
 
-    var services = $('#services').DataTable({
+    var relationServices = $('#relationServices').DataTable({
         language: {
             info: "_TOTAL_ Kayıttan _START_ - _END_ Arasındaki Kayıtlar Gösteriliyor.",
             infoEmpty: "Gösterilecek Hiç Kayıt Yok.",
@@ -159,8 +163,8 @@
         ],
 
         initComplete: function () {
-            var r = $('#services tfoot tr');
-            $('#services thead').append(r);
+            var r = $('#relationServices tfoot tr');
+            $('#relationServices thead').append(r);
             this.api().columns().every(function (index) {
                 var column = this;
                 var input = document.createElement('input');
@@ -187,7 +191,8 @@
                 _auth_type: 'DealerUser'
             },
             data: {
-                customer_id: '{{ $id }}'
+                relation_type: 'App\\Models\\Customer',
+                relation_id: '{{ $id }}'
             },
             error: function (error) {
                 console.log(error)
@@ -198,7 +203,7 @@
             {data: 'start', name: 'start'},
             {data: 'end', name: 'end'},
             {data: 'amount', name: 'amount'},
-            {data: 'status_id', name: 'status_id'},
+            {data: 'transaction_status', name: 'transaction_status'},
         ],
 
         responsive: true,
@@ -208,13 +213,20 @@
     });
 
     $('body').on('contextmenu', function (e) {
-        var selectedRows = services.rows({selected: true});
+        var selectedRows = relationServices.rows({selected: true});
         if (selectedRows.count() > 0) {
             var id = selectedRows.data()[0].id;
             var encrypted_id = selectedRows.data()[0].encrypted_id;
+            var transaction_status_id = selectedRows.data()[0].transaction_status_id;
             $("#id_edit").val(id);
             $("#encrypted_id_edit").val(encrypted_id);
-            $("#EditingContexts").show();
+
+            if (transaction_status_id === 1) {
+                $("#EditingContexts").show();
+            } else {
+                $("#EditingContexts").hide();
+            }
+
         } else {
             $("#EditingContexts").hide();
         }
@@ -235,31 +247,34 @@
         $("#context-menu").hide();
     });
 
-    $('#services tbody').on('mousedown', 'tr', function (e) {
+    $('#relationServices tbody').on('mousedown', 'tr', function (e) {
         if (e.button === 0) {
             return false;
         } else {
-            services.row(this).select();
+            relationServices.row(this).select();
         }
     });
 
     $(document).click((e) => {
-        if ($.contains($("#servicesCard").get(0), e.target)) {
+        if ($.contains($("#relationServicesCard").get(0), e.target)) {
         } else {
             $("#context-menu").hide();
-            services.rows().deselect();
+            relationServices.rows().deselect();
         }
     });
 
     CreateButton.click(function () {
-        var customer_id = '{{ $id }}';
+        var creator_type = 'App\\Models\\Dealer';
+        var creator_id = '{{ auth()->id() }}';
+        var relation_type = 'App\\Models\\Customer';
+        var relation_id = '{{ $id }}';
         var service_id = service_id_create.val();
         var start = $('#start_create').val();
         var end = $('#end_create').val();
         var amount = $('#amount_create').val();
         var status_id = status_id_create.val();
 
-        if (customer_id === '') {
+        if (relation_type === '' || relation_id === '') {
             toastr.warning('Müşteri Bağlantısından Bir Sorun Oluştu. Lütfen Sayfayı Yenileyip Tekrar Deneyin. Sorun Devam Ederse Geliştirici Ekibi İle İletişime Geçin.');
         } else if (service_id == null || service_id === '') {
             toastr.warning('Hizmet Seçimi Zorunludur!');
@@ -273,7 +288,10 @@
             toastr.warning('Hizmet Durumu Girilmesi Zorunludur!');
         } else {
             save('post', {
-                customer_id: customer_id,
+                creator_type: creator_type,
+                creator_id: creator_id,
+                relation_type: relation_type,
+                relation_id: relation_id,
                 service_id: service_id,
                 start: start,
                 end: end,
@@ -281,6 +299,37 @@
                 status_id: status_id
             });
         }
+    });
+
+    AcceptButton.click(function () {
+        var relation_service_id = $('#id_edit').val();
+        var transaction_status_id = 2;
+        $.ajax({
+            type: 'put',
+            url: '{{ route('api.v1.dealerUser.customer.service.updateTransactionStatus') }}',
+            headers: {
+                _token: '{{ auth()->user()->apiToken() }}',
+                _auth_type: 'DealerUser'
+            },
+            data: {
+                relation_service_id: relation_service_id,
+                transaction_status_id: transaction_status_id
+            },
+            success: function () {
+                $('#AcceptModal').modal('hide');
+                relationServices.ajax.reload();
+                toastr.success('Hizmet Onaylandı.');
+                services.ajax.reload();
+            },
+            error: function (error) {
+                if (error.responseJSON.message === 'Not enough balance') {
+                    toastr.error('Bayi Yeterli Bakiyeye Sahip Olmadığı İçin İşlem Onaylanamıyor!')
+                } else {
+                    console.log(error);
+                    toastr.error('Hizmet Onaylanırken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin');
+                }
+            }
+        });
     });
 
 </script>

@@ -22,6 +22,6 @@ class Service extends Model
 
     public function customerServices()
     {
-        return $this->hasMany(CustomerService::class);
+        return $this->hasMany(RelationService::class);
     }
 }

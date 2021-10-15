@@ -14,7 +14,8 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     protected $appends = [
-        'encrypted_id'
+        'encrypted_id',
+        'auth_type'
     ];
 
     protected $hidden = [
@@ -25,6 +26,11 @@ class User extends Authenticatable
     public function apiToken()
     {
         return $this->api_token;
+    }
+
+    public function getAuthTypeAttribute()
+    {
+        return get_class($this);
     }
 
     public function authType()

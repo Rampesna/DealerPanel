@@ -10,14 +10,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link @if(@$tab == 'credit') active @endif" href="{{ route('user.waitingTransaction.show', ['tab' => 'credit']) }}">
-                    <span class="nav-icon"><i class="fas fa-th"></i></span>
-                    <span class="nav-text">Kontör</span>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link @if(@$tab == 'customerService') active @endif" href="{{ route('user.waitingTransaction.show', ['tab' => 'customerService']) }}">
+                <a class="nav-link @if(@$tab == 'relationService') active @endif" href="{{ route('user.waitingTransaction.show', ['tab' => 'relationService']) }}">
                     <span class="nav-icon"><i class="fas fa-th"></i></span>
                     <span class="nav-text">Hizmetler</span>
                 </a>

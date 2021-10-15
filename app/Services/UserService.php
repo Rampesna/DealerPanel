@@ -35,7 +35,9 @@ class UserService
             $user->save();
         }
 
-        return $this->success('User logged in successfully', $user);
+        return $this->success('User logged in successfully', [
+            'api_token' => $user->api_token
+        ]);
     }
 
     /**

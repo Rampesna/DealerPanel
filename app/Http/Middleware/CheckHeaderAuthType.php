@@ -18,7 +18,7 @@ class CheckHeaderAuthType
     {
         if (!$request->header('_auth_type')) {
             return response()->json([
-                'message' => '_token required on header',
+                'message' => '_auth_type required on header',
                 'error' => true,
                 'code' => 400,
                 'response' => null

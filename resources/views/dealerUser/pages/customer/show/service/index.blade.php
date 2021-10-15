@@ -7,12 +7,15 @@
     @include('dealerUser.pages.customer.show.layouts.subheader')
 
     @include('dealerUser.pages.customer.show.service.modals.create')
+    @include('dealerUser.pages.customer.show.service.modals.accept')
 
+    <input type="hidden" id="id_edit">
+    <input type="hidden" id="encrypted_id_edit">
     <div class="row mt-15">
         <div class="col-xl-12">
-            <div class="card" id="servicesCard">
+            <div class="card" id="relationServicesCard">
                 <div class="card-body">
-                    <table class="table" id="services">
+                    <table class="table" id="relationServices">
                         <thead>
                         <tr>
                             <th>Hizmet Adı</th>
@@ -45,6 +48,16 @@
                 </div>
             </div>
         </a>
+        <div id="EditingContexts">
+            <hr>
+            <a onclick="accept()" class="dropdown-item cursor-pointer">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <i class="fas fa-check-circle text-primary"></i><span class="ml-4">Onayla</span>
+                    </div>
+                </div>
+            </a>
+        </div>
     </div>
 
 @endsection

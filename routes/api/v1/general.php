@@ -41,9 +41,9 @@ Route::middleware([
             ->middleware(['CheckMethod:get']);
     });
 
-    Route::prefix('customerServiceStatus')->group(function () {
-        Route::any('index', [\App\Http\Controllers\Api\General\CustomerServiceStatusController::class, 'index'])
-            ->name('api.v1.general.customerServiceStatus.index')
+    Route::prefix('relationServiceStatus')->group(function () {
+        Route::any('index', [\App\Http\Controllers\Api\General\RelationServiceStatusController::class, 'index'])
+            ->name('api.v1.general.relationServiceStatus.index')
             ->middleware(['CheckMethod:get']);
     });
 });

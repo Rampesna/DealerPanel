@@ -18,6 +18,7 @@
                             <th>VKN/TCKN</th>
                             <th>Bayi</th>
                             <th>Müşteri Adı</th>
+                            <th>Durum</th>
                         </tr>
                         </thead>
                         <tfoot>
@@ -25,6 +26,7 @@
                             <th>VKN/TCKN</th>
                             <th>Bayi</th>
                             <th>Müşteri Adı</th>
+                            <th>Durum</th>
                         </tr>
                         </tfoot>
                     </table>

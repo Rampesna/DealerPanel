@@ -6,24 +6,28 @@
 
     @include('user.pages.waitingTransaction.layouts.subheader')
 
-    @include('user.pages.waitingTransaction.customerService.modals.accept')
+    @include('user.pages.waitingTransaction.relationService.modals.accept')
 
     <input type="hidden" id="id_edit">
     <input type="hidden" id="encrypted_id_edit">
     <div class="row mt-15">
         <div class="col-xl-12">
-            <div class="card" id="customerServicesCard">
+            <div class="card" id="relationServicesCard">
                 <div class="card-body">
-                    <table class="table" id="customerServices">
+                    <table class="table" id="relationServices">
                         <thead>
                         <tr>
-                            <th>Müşteri</th>
+                            <th>Bağlantı Türü</th>
+                            <th>Bağlantı</th>
+                            <th>Adet</th>
                             <th>Hizmet</th>
                         </tr>
                         </thead>
                         <tfoot>
                         <tr>
-                            <th>Müşteri</th>
+                            <th>Bağlantı Türü</th>
+                            <th>Bağlantı</th>
+                            <th>Adet</th>
                             <th>Hizmet</th>
                         </tr>
                         </tfoot>
@@ -48,9 +52,9 @@
 @endsection
 
 @section('page-styles')
-    @include('user.pages.waitingTransaction.customerService.components.style')
+    @include('user.pages.waitingTransaction.relationService.components.style')
 @stop
 
 @section('page-script')
-    @include('user.pages.waitingTransaction.customerService.components.script')
+    @include('user.pages.waitingTransaction.relationService.components.script')
 @stop

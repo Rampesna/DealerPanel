@@ -63,7 +63,7 @@
                 status_id_create.selectpicker('refresh');
                 $('#CreateModal').modal('hide');
                 $('#EditModal').modal('hide');
-                toastr.success('Başarıyla Kaydedildi.');
+                toastr.success('Talep Alındı. Onay Bekleniyor.');
                 services.ajax.reload();
             },
             error: function (error) {
@@ -104,7 +104,7 @@
     function getCustomerServiceStatuses() {
         $.ajax({
             type: 'get',
-            url: '{{ route('api.v1.general.customerServiceStatus.index') }}',
+            url: '{{ route('api.v1.general.relationServiceStatus.index') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
                 _auth_type: 'User'
@@ -231,7 +231,9 @@
                 _auth_type: 'User'
             },
             data: {
-                customer_id: '{{ $id }}'
+                relation_type: 'App\\Models\\Customer',
+                relation_id: '{{ $id }}',
+                transaction_status_id: 2
             },
             error: function (error) {
                 console.log(error)
@@ -242,7 +244,7 @@
             {data: 'start', name: 'start'},
             {data: 'end', name: 'end'},
             {data: 'amount', name: 'amount'},
-            {data: 'status_id', name: 'status_id'},
+            {data: 'transaction_status', name: 'transaction_status'},
         ],
 
         responsive: true,
@@ -298,14 +300,15 @@
     });
 
     CreateButton.click(function () {
-        var customer_id = '{{ $id }}';
+        var relation_type = 'App\\Models\\Customer';
+        var relation_id = '{{ $id }}';
         var service_id = service_id_create.val();
         var start = $('#start_create').val();
         var end = $('#end_create').val();
         var amount = $('#amount_create').val();
         var status_id = status_id_create.val();
 
-        if (customer_id === '') {
+        if (relation_type === '' || relation_id === '') {
             toastr.warning('Müşteri Bağlantısından Bir Sorun Oluştu. Lütfen Sayfayı Yenileyip Tekrar Deneyin. Sorun Devam Ederse Geliştirici Ekibi İle İletişime Geçin.');
         } else if (service_id == null || service_id === '') {
             toastr.warning('Hizmet Seçimi Zorunludur!');
@@ -319,7 +322,8 @@
             toastr.warning('Hizmet Durumu Girilmesi Zorunludur!');
         } else {
             save('post', {
-                customer_id: customer_id,
+                relation_type: relation_type,
+                relation_id: relation_id,
                 service_id: service_id,
                 start: start,
                 end: end,
@@ -331,14 +335,15 @@
 
     UpdateButton.click(function () {
         var id = $('#id_edit').val();
-        var customer_id = '{{ $id }}';
+        var relation_type = 'App\\Models\\Customer';
+        var relation_id = '{{ $id }}';
         var service_id = service_id_edit.val();
         var start = $('#start_edit').val();
         var end = $('#end_edit').val();
         var amount = $('#amount_edit').val();
         var status_id = status_id_edit.val();
 
-        if (customer_id === '') {
+        if (relation_type === '' || relation_id === '') {
             toastr.warning('Müşteri Bağlantısından Bir Sorun Oluştu. Lütfen Sayfayı Yenileyip Tekrar Deneyin. Sorun Devam Ederse Geliştirici Ekibi İle İletişime Geçin.');
         } else if (service_id == null || service_id === '') {
             toastr.warning('Hizmet Seçimi Zorunludur!');
@@ -353,7 +358,8 @@
         } else {
             save('post', {
                 id: id,
-                customer_id: customer_id,
+                relation_type: relation_type,
+                relation_id: relation_id,
                 service_id: service_id,
                 start: start,
                 end: end,

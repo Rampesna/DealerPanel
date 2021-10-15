@@ -49,23 +49,23 @@
                 </div>
             </div>
         </a>
-        <div id="EditingContexts">
-            <hr>
-            <a onclick="edit()" class="dropdown-item cursor-pointer">
-                <div class="row">
-                    <div class="col-xl-12">
-                        <i class="fas fa-pen text-primary"></i><span class="ml-4">Düzenle</span>
-                    </div>
-                </div>
-            </a>
-            <a onclick="drop()" class="dropdown-item cursor-pointer">
-                <div class="row">
-                    <div class="col-xl-12">
-                        <i class="fas fa-trash-alt text-danger"></i><span class="ml-4">Sil</span>
-                    </div>
-                </div>
-            </a>
-        </div>
+{{--        <div id="EditingContexts">--}}
+{{--            <hr>--}}
+{{--            <a onclick="edit()" class="dropdown-item cursor-pointer">--}}
+{{--                <div class="row">--}}
+{{--                    <div class="col-xl-12">--}}
+{{--                        <i class="fas fa-pen text-primary"></i><span class="ml-4">Düzenle</span>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </a>--}}
+{{--            <a onclick="drop()" class="dropdown-item cursor-pointer">--}}
+{{--                <div class="row">--}}
+{{--                    <div class="col-xl-12">--}}
+{{--                        <i class="fas fa-trash-alt text-danger"></i><span class="ml-4">Sil</span>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </a>--}}
+{{--        </div>--}}
     </div>
 
 @endsection

@@ -16,16 +16,13 @@
                         <div class="col-xl-8">
                             <h5>Kontör Bilgileri</h5>
                         </div>
-                        <div class="col-xl-4 text-right">
-                            <button type="button" class="btn btn-sm btn-primary mt-n2 mr-n6" data-toggle="modal" data-target="#AddCreditModal">Kontör Yükle</button>
-                        </div>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <label class="col-6 col-form-label">Toplam Alınan Kontör:</label>
                         <div class="col-6 text-right">
-                            <span class="form-control-plaintext font-weight-bolder" id="creatorSpan">
+                            <span class="form-control-plaintext font-weight-bolder" id="totalCreditSpan">
                                 --
                             </span>
                         </div>
@@ -33,7 +30,7 @@
                     <div class="row">
                         <label class="col-6 col-form-label">Toplam Kullanılan Kontör:</label>
                         <div class="col-6 text-right">
-                            <span class="form-control-plaintext font-weight-bolder" id="creatorSpan">
+                            <span class="form-control-plaintext font-weight-bolder" id="usedCreditSpan">
                                 --
                             </span>
                         </div>
@@ -41,7 +38,7 @@
                     <div class="row">
                         <label class="col-6 col-form-label">Kalan Kontör:</label>
                         <div class="col-6 text-right">
-                            <span class="form-control-plaintext font-weight-bolder" id="creatorSpan">
+                            <span class="form-control-plaintext font-weight-bolder" id="remainingCreditSpan">
                                 --
                             </span>
                         </div>

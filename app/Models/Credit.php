@@ -27,6 +27,6 @@ class Credit extends Model
 
     public function service()
     {
-        return $this->hasOneThrough(Service::class, CustomerService::class);
+        return $this->hasOneThrough(Service::class, RelationService::class);
     }
 }

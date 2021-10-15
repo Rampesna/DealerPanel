@@ -20,23 +20,18 @@ Route::middleware([
         Route::any('save', [\App\Http\Controllers\Api\DealerUser\CustomerController::class, 'save'])->name('api.v1.dealerUser.customer.save')->middleware(['CheckMethod:post|put']);
 
         Route::prefix('service')->group(function () {
-            Route::any('index', [\App\Http\Controllers\Api\DealerUser\CustomerServiceController::class, 'index'])->name('api.v1.dealerUser.customer.service.index')->middleware(['CheckMethod:get']);
-            Route::any('datatable', [\App\Http\Controllers\Api\DealerUser\CustomerServiceController::class, 'datatable'])->name('api.v1.dealerUser.customer.service.datatable')->middleware(['CheckMethod:get']);
-            Route::any('save', [\App\Http\Controllers\Api\DealerUser\CustomerServiceController::class, 'save'])->name('api.v1.dealerUser.customer.service.save')->middleware(['CheckMethod:post']);
+            Route::any('index', [\App\Http\Controllers\Api\DealerUser\RelationServiceController::class, 'index'])->name('api.v1.dealerUser.customer.service.index')->middleware(['CheckMethod:get']);
+            Route::any('datatable', [\App\Http\Controllers\Api\DealerUser\RelationServiceController::class, 'datatable'])->name('api.v1.dealerUser.customer.service.datatable')->middleware(['CheckMethod:get']);
+            Route::any('save', [\App\Http\Controllers\Api\DealerUser\RelationServiceController::class, 'save'])->name('api.v1.dealerUser.customer.service.save')->middleware(['CheckMethod:post']);
+            Route::any('updateTransactionStatus', [\App\Http\Controllers\Api\DealerUser\RelationServiceController::class, 'updateTransactionStatus'])->name('api.v1.dealerUser.customer.service.updateTransactionStatus')->middleware(['CheckMethod:put']);
         });
 
         Route::prefix('supportRequest')->group(function () {
             Route::any('datatable', [\App\Http\Controllers\Api\DealerUser\CustomerSupportRequestController::class, 'datatable'])->name('api.v1.dealerUser.customer.supportRequest.datatable')->middleware(['CheckMethod:get']);
         });
-    });
-
-    Route::prefix('waitingTransaction')->group(function () {
-        Route::prefix('customer')->group(function () {
-            Route::any('datatable', [\App\Http\Controllers\Api\DealerUser\WaitingTransaction\CustomerController::class, 'datatable'])->name('api.v1.dealerUser.waitingTransaction.customer.datatable')->middleware(['CheckMethod:get']);
-        });
 
         Route::prefix('credit')->group(function () {
-            Route::any('datatable', [\App\Http\Controllers\Api\DealerUser\WaitingTransaction\CreditController::class, 'datatable'])->name('api.v1.dealerUser.waitingTransaction.credit.datatable')->middleware(['CheckMethod:get']);
+            Route::any('index', [\App\Http\Controllers\Api\DealerUser\CustomerCreditController::class, 'index'])->name('api.v1.user.dealerUser.credit.index')->middleware(['CheckMethod:get']);
         });
     });
 

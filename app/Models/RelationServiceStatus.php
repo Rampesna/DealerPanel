@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class CustomerServiceStatus extends Model
+class RelationServiceStatus extends Model
 {
     use HasFactory, SoftDeletes;
 
     public function services()
     {
-        return $this->hasMany(CustomerService::class, 'status_id', 'id');
+        return $this->hasMany(RelationService::class, 'status_id', 'id');
     }
 }

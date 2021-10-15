@@ -9,7 +9,7 @@
         $('#AcceptModal').modal('show');
     }
 
-    var customerServices = $('#customerServices').DataTable({
+    var relationServices = $('#relationServices').DataTable({
         language: {
             info: "_TOTAL_ Kayıttan _START_ - _END_ Arasındaki Kayıtlar Gösteriliyor.",
             infoEmpty: "Gösterilecek Hiç Kayıt Yok.",
@@ -75,14 +75,14 @@
                 text: '<i class="fas fa-undo"></i> Yenile',
                 action: function (e, dt, node, config) {
                     $('table input').val('');
-                    customerServices.search('').columns().search('').ajax.reload().draw();
+                    relationServices.search('').columns().search('').ajax.reload().draw();
                 }
             }
         ],
 
         initComplete: function () {
-            var r = $('#customerServices tfoot tr');
-            $('#customerServices thead').append(r);
+            var r = $('#relationServices tfoot tr');
+            $('#relationServices thead').append(r);
             this.api().columns().every(function (index) {
                 var column = this;
                 var input = document.createElement('input');
@@ -98,17 +98,22 @@
         serverSide: true,
         ajax: {
             type: 'get',
-            url: '{{ route('api.v1.user.waitingTransaction.customerService.datatable') }}',
+            url: '{{ route('api.v1.user.waitingTransaction.relationService.datatable') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
                 _auth_type: 'User'
+            },
+            data: {
+                transaction_status_id: 1
             },
             error: function (error) {
                 console.log(error)
             }
         },
         columns: [
-            {data: 'customer_id', name: 'customer_id'},
+            {data: 'relation_type', name: 'relation_type', width: '10%'},
+            {data: 'relation_id', name: 'relation_id', width: '25%'},
+            {data: 'amount', name: 'amount', width: '5%'},
             {data: 'service_id', name: 'service_id'},
         ],
 
@@ -117,7 +122,7 @@
     });
 
     $('body').on('contextmenu', function (e) {
-        var selectedRows = customerServices.rows({selected: true});
+        var selectedRows = relationServices.rows({selected: true});
         if (selectedRows.count() > 0) {
             var id = selectedRows.data()[0].id;
             var encrypted_id = selectedRows.data()[0].encrypted_id;
@@ -144,19 +149,19 @@
         $("#context-menu").hide();
     });
 
-    $('#customerServices tbody').on('mousedown', 'tr', function (e) {
+    $('#relationServices tbody').on('mousedown', 'tr', function (e) {
         if (e.button === 0) {
             return false;
         } else {
-            customerServices.row(this).select();
+            relationServices.row(this).select();
         }
     });
 
     $(document).click((e) => {
-        if ($.contains($("#customerServicesCard").get(0), e.target)) {
+        if ($.contains($("#relationServicesCard").get(0), e.target)) {
         } else {
             $("#context-menu").hide();
-            customerServices.rows().deselect();
+            relationServices.rows().deselect();
         }
     });
 
@@ -165,7 +170,7 @@
         var transaction_status_id = 2;
         $.ajax({
             type: 'put',
-            url: '{{ route('api.v1.user.waitingTransaction.customerService.accept') }}',
+            url: '{{ route('api.v1.user.waitingTransaction.relationService.accept') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
                 _auth_type: 'User'
@@ -173,11 +178,13 @@
             data: {
                 customer_service_id: customer_service_id,
                 transaction_status_id: transaction_status_id,
+                auth_type: '{{ str_replace('\\', '\\\\', auth()->user()->authType()) }}',
+                auth_id: '{{ auth()->id() }}'
             },
             success: function () {
                 $('#AcceptModal').modal('hide');
-                customerServices.ajax.reload();
-                toastr.success('Müşteri Onaylandı.');
+                relationServices.ajax.reload();
+                toastr.success('Hizmet Onaylandı.');
             },
             error: function (error) {
                 console.log(error);

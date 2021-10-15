@@ -12,6 +12,14 @@ Route::middleware([
     'CheckUser',
 ])->group(function () {
 
+    Route::prefix('credit')->group(function () {
+        Route::any('deduction', [\App\Http\Controllers\Api\User\CreditController::class, 'deduction'])->name('api.v1.user.credit.deduction')->middleware(['CheckMethod:post|put']);
+    });
+
+    Route::prefix('receipt')->group(function () {
+        Route::any('getPaid', [\App\Http\Controllers\Api\User\ReceiptController::class, 'getPaid'])->name('api.v1.user.receipt.getPaid')->middleware(['CheckMethod:post|put']);
+    });
+
     Route::prefix('dealer')->group(function () {
         Route::any('all', [\App\Http\Controllers\Api\User\DealerController::class, 'all'])->name('api.v1.user.dealer.all')->middleware(['CheckMethod:get']);
         Route::any('index', [\App\Http\Controllers\Api\User\DealerController::class, 'index'])->name('api.v1.user.dealer.index')->middleware(['CheckMethod:get']);
@@ -20,6 +28,23 @@ Route::middleware([
         Route::any('show', [\App\Http\Controllers\Api\User\DealerController::class, 'show'])->name('api.v1.user.dealer.show')->middleware(['CheckMethod:get']);
         Route::any('save', [\App\Http\Controllers\Api\User\DealerController::class, 'save'])->name('api.v1.user.dealer.save')->middleware(['CheckMethod:post|put']);
         Route::any('drop', [\App\Http\Controllers\Api\User\DealerController::class, 'drop'])->name('api.v1.user.dealer.drop')->middleware(['CheckMethod:delete']);
+
+        Route::prefix('service')->group(function () {
+            Route::any('index', [\App\Http\Controllers\Api\User\DealerServiceController::class, 'index'])->name('api.v1.user.dealer.service.index')->middleware(['CheckMethod:get']);
+            Route::any('datatable', [\App\Http\Controllers\Api\User\DealerServiceController::class, 'datatable'])->name('api.v1.user.dealer.service.datatable')->middleware(['CheckMethod:get']);
+            Route::any('show', [\App\Http\Controllers\Api\User\DealerServiceController::class, 'show'])->name('api.v1.user.dealer.service.show')->middleware(['CheckMethod:get']);
+            Route::any('save', [\App\Http\Controllers\Api\User\DealerServiceController::class, 'save'])->name('api.v1.user.dealer.service.save')->middleware(['CheckMethod:post|put']);
+            Route::any('drop', [\App\Http\Controllers\Api\User\DealerServiceController::class, 'drop'])->name('api.v1.user.dealer.service.drop')->middleware(['CheckMethod:delete']);
+        });
+
+        Route::prefix('credit')->group(function () {
+            Route::any('index', [\App\Http\Controllers\Api\User\DealerCreditController::class, 'index'])->name('api.v1.user.dealer.credit.index')->middleware(['CheckMethod:get']);
+        });
+
+        Route::prefix('receipt')->group(function () {
+            Route::any('index', [\App\Http\Controllers\Api\User\DealerReceiptController::class, 'index'])->name('api.v1.user.dealer.receipt.index')->middleware(['CheckMethod:get']);
+            Route::any('save', [\App\Http\Controllers\Api\User\DealerReceiptController::class, 'save'])->name('api.v1.user.dealer.receipt.save')->middleware(['CheckMethod:post|put']);
+        });
     });
 
     Route::prefix('customer')->group(function () {
@@ -30,15 +55,24 @@ Route::middleware([
         Route::any('drop', [\App\Http\Controllers\Api\User\CustomerController::class, 'drop'])->name('api.v1.user.customer.drop')->middleware(['CheckMethod:delete']);
 
         Route::prefix('service')->group(function () {
-            Route::any('index', [\App\Http\Controllers\Api\User\CustomerServiceController::class, 'index'])->name('api.v1.user.customer.service.index')->middleware(['CheckMethod:get']);
-            Route::any('datatable', [\App\Http\Controllers\Api\User\CustomerServiceController::class, 'datatable'])->name('api.v1.user.customer.service.datatable')->middleware(['CheckMethod:get']);
-            Route::any('show', [\App\Http\Controllers\Api\User\CustomerServiceController::class, 'show'])->name('api.v1.user.customer.service.show')->middleware(['CheckMethod:get']);
-            Route::any('save', [\App\Http\Controllers\Api\User\CustomerServiceController::class, 'save'])->name('api.v1.user.customer.service.save')->middleware(['CheckMethod:post|put']);
-            Route::any('drop', [\App\Http\Controllers\Api\User\CustomerServiceController::class, 'drop'])->name('api.v1.user.customer.service.drop')->middleware(['CheckMethod:delete']);
+            Route::any('index', [\App\Http\Controllers\Api\User\RelationServiceController::class, 'index'])->name('api.v1.user.customer.service.index')->middleware(['CheckMethod:get']);
+            Route::any('datatable', [\App\Http\Controllers\Api\User\RelationServiceController::class, 'datatable'])->name('api.v1.user.customer.service.datatable')->middleware(['CheckMethod:get']);
+            Route::any('show', [\App\Http\Controllers\Api\User\RelationServiceController::class, 'show'])->name('api.v1.user.customer.service.show')->middleware(['CheckMethod:get']);
+            Route::any('save', [\App\Http\Controllers\Api\User\RelationServiceController::class, 'save'])->name('api.v1.user.customer.service.save')->middleware(['CheckMethod:post|put']);
+            Route::any('drop', [\App\Http\Controllers\Api\User\RelationServiceController::class, 'drop'])->name('api.v1.user.customer.service.drop')->middleware(['CheckMethod:delete']);
         });
 
         Route::prefix('supportRequest')->group(function () {
             Route::any('datatable', [\App\Http\Controllers\Api\User\CustomerSupportRequestController::class, 'datatable'])->name('api.v1.user.customer.supportRequest.datatable')->middleware(['CheckMethod:get']);
+        });
+
+        Route::prefix('credit')->group(function () {
+            Route::any('index', [\App\Http\Controllers\Api\User\CustomerCreditController::class, 'index'])->name('api.v1.user.customer.credit.index')->middleware(['CheckMethod:get']);
+        });
+
+        Route::prefix('receipt')->group(function () {
+            Route::any('index', [\App\Http\Controllers\Api\User\CustomerReceiptController::class, 'index'])->name('api.v1.user.customer.receipt.index')->middleware(['CheckMethod:get']);
+            Route::any('save', [\App\Http\Controllers\Api\User\CustomerReceiptController::class, 'save'])->name('api.v1.user.customer.receipt.save')->middleware(['CheckMethod:post|put']);
         });
     });
 
@@ -48,9 +82,9 @@ Route::middleware([
             Route::any('accept', [\App\Http\Controllers\Api\User\WaitingTransaction\CustomerController::class, 'accept'])->name('api.v1.user.waitingTransaction.customer.accept')->middleware(['CheckMethod:put']);
         });
 
-        Route::prefix('customerService')->group(function () {
-            Route::any('datatable', [\App\Http\Controllers\Api\User\WaitingTransaction\CustomerServiceController::class, 'datatable'])->name('api.v1.user.waitingTransaction.customerService.datatable')->middleware(['CheckMethod:get']);
-            Route::any('accept', [\App\Http\Controllers\Api\User\WaitingTransaction\CustomerServiceController::class, 'accept'])->name('api.v1.user.waitingTransaction.customerService.accept')->middleware(['CheckMethod:put']);
+        Route::prefix('relationService')->group(function () {
+            Route::any('datatable', [\App\Http\Controllers\Api\User\WaitingTransaction\CustomerServiceController::class, 'datatable'])->name('api.v1.user.waitingTransaction.relationService.datatable')->middleware(['CheckMethod:get']);
+            Route::any('accept', [\App\Http\Controllers\Api\User\WaitingTransaction\CustomerServiceController::class, 'accept'])->name('api.v1.user.waitingTransaction.relationService.accept')->middleware(['CheckMethod:put']);
         });
 
         Route::prefix('credit')->group(function () {

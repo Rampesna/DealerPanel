@@ -13,12 +13,12 @@ class CreditService
     /**
      * @param string|null $relation_type
      * @param int|null $relation_id
-     * @param int|null $customer_service_id
+     * @param int|null $relation_service_id
      */
     public function index(
-        ?string $relation_type,
-        ?string $relation_id,
-        ?string $customer_service_id
+        $relation_type = null,
+        $relation_id = null,
+        $relation_service_id = null
     )
     {
         $credits = Credit::with([
@@ -29,8 +29,8 @@ class CreditService
             $credits->where('relation_type', $relation_type)->where('relation_id', $relation_id);
         }
 
-        if ($customer_service_id) {
-            $credits->where('customer_service_id', $customer_service_id);
+        if ($relation_service_id) {
+            $credits->where('relation_service_id', $relation_service_id);
         }
 
         return $this->success('Credits', $credits->get());
@@ -39,12 +39,12 @@ class CreditService
     /**
      * @param string|null $relation_type
      * @param int|null $relation_id
-     * @param int|null $customer_service_id
+     * @param int|null $relation_service_id
      */
     public function datatable(
-        ?string $relation_type,
-        ?string $relation_id,
-        ?string $customer_service_id
+        $relation_type,
+        $relation_id,
+        $relation_service_id
     )
     {
         $credits = Credit::with([
@@ -55,15 +55,15 @@ class CreditService
             $credits->where('relation_type', $relation_type)->where('relation_id', $relation_id);
         }
 
-        if ($customer_service_id) {
-            $credits->where('customer_service_id', $customer_service_id);
+        if ($relation_service_id) {
+            $credits->where('relation_service_id', $relation_service_id);
         }
 
         return DataTables::of($credits)->
         editColumn('relation_id', function ($credit) {
             return $credit->relation ? $credit->relation->name : '';
         })->
-        editColumn('customer_service_id', function ($credit) {
+        editColumn('relation_service_id', function ($credit) {
             return $credit->service ? $credit->service->name : '';
         })->
         make(true);
@@ -89,19 +89,21 @@ class CreditService
      * @param int|null $id
      * @param string $relation_type
      * @param int $relation_id
-     * @param int|null $customer_service_id
+     * @param int|null $relation_service_id
      * @param double $amount
      * @param boolean $direction
      * @param string $description
+     * @param string $auth_type
+     * @param int $auth_id
      */
     public function save(
-        ?int   $id,
-        string $relation_type,
-        int    $relation_id,
-        ?int   $customer_service_id,
-        float  $amount,
-        bool   $direction,
-        string $description
+        $id,
+        $relation_type,
+        $relation_id,
+        $relation_service_id,
+        $amount,
+        $direction,
+        $description
     )
     {
         $credit = $id ? Credit::find($id) : new Credit;
@@ -112,7 +114,7 @@ class CreditService
 
         $credit->relation_type = $relation_type;
         $credit->relation_id = $relation_id;
-        $credit->customer_service_id = $customer_service_id;
+        $credit->relation_service_id = $relation_service_id;
         $credit->amount = $amount;
         $credit->direction = $direction;
         $credit->description = $description;

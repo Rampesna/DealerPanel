@@ -7,5 +7,5 @@ Route::get('/', function () {
 });
 
 Route::get('/test', function () {
-    return (new \App\Services\DealerService)->jsTree([4]);
+    return \App\Models\Customer::find(1)->services;
 });

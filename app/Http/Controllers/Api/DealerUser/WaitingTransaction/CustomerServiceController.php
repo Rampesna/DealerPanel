@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api\User\WaitingTransaction;
+namespace App\Http\Controllers\Api\DealerUser\WaitingTransaction;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\User\CustomerService\AcceptRequest;
+use App\Http\Requests\Api\DealerUser\CustomerService\AcceptRequest;
 use App\Services\RelationServiceService;
 use App\Traits\Response;
+use Illuminate\Http\Request;
 
 class CustomerServiceController extends Controller
 {
@@ -18,9 +19,13 @@ class CustomerServiceController extends Controller
         $this->relationServiceService = new RelationServiceService;
     }
 
-    public function datatable()
+    public function datatable(Request $request)
     {
-        return $this->relationServiceService->datatable(null, null, 1);
+        return $this->relationServiceService->datatable(
+            $request->relation_type,
+            $request->relation_id,
+            $request->transaction_status_id
+        );
     }
 
     public function accept(AcceptRequest $request)

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Api\DealerUser\CustomerService;
+namespace App\Http\Requests\Api\User\Receipt;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -28,14 +28,11 @@ class SaveRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => strtolower(request()->method() == 'put') ? 'required' : 'nullable',
+            'id' => strtolower(request()->method()) == 'put' ? 'required' : 'nullable',
             'relation_type' => 'required',
-            'relation_id' => 'required',
-            'service_id' => 'required|int',
-            'start' => 'required',
-            'end' => 'required',
-            'amount' => 'required',
-            'status_id' => 'required'
+            'relation_id' => request()->tax_number ? 'nullable' : 'required',
+            'tax_number' => request()->relation_id ? 'nullable' : 'required',
+            'price' => 'required|numeric'
         ];
     }
 

@@ -27,7 +27,7 @@ class CustomerController extends Controller
 
     public function datatable(Request $request)
     {
-        return $this->customerService->datatable(2, $request->dealerUser->dealer_id);
+        return $this->customerService->datatable(null, $request->dealerUser->dealer_id);
     }
 
     public function show(ShowRequest $request)

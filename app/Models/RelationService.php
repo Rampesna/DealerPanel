@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Crypt;
 
-class CustomerService extends Model
+class RelationService extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -25,13 +25,18 @@ class CustomerService extends Model
         return $this->belongsTo(Service::class)->withTrashed();
     }
 
-    public function customer()
+    public function relation()
     {
-        return $this->belongsTo(Customer::class)->withTrashed();
+        return $this->morphTo()->withTrashed();
     }
 
     public function status()
     {
-        return $this->belongsTo(CustomerServiceStatus::class, 'status_id', 'id')->withTrashed();
+        return $this->belongsTo(RelationServiceStatus::class, 'status_id', 'id')->withTrashed();
+    }
+
+    public function transactionStatus()
+    {
+        return $this->belongsTo(TransactionStatus::class)->withTrashed();
     }
 }

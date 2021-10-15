@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Customer;
 use App\Models\Dealer;
+use App\Models\TransactionStatus;
 use App\Traits\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -103,8 +104,14 @@ class CustomerService
         filterColumn('dealer_id', function ($customers, $data) {
             return $customers->whereIn('dealer_id', Dealer::where('name', 'like', '%' . $data . '%')->pluck('id')->toArray());
         })->
+        filterColumn('transaction_status', function ($customers, $data) {
+            return $customers->whereIn('transaction_status_id', TransactionStatus::where('name', 'like', '%' . $data . '%')->pluck('id')->toArray());
+        })->
         editColumn('dealer_id', function ($customer) {
             return $customer->dealer ? $customer->dealer->name : '';
+        })->
+        addColumn('transaction_status', function ($customer) {
+            return $customer->transactionStatus ? $customer->transactionStatus->name : '';
         })->
         make(true);
     }
