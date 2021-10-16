@@ -37,6 +37,16 @@ Route::middleware([
             Route::any('drop', [\App\Http\Controllers\Api\User\DealerServiceController::class, 'drop'])->name('api.v1.user.dealer.service.drop')->middleware(['CheckMethod:delete']);
         });
 
+        Route::prefix('contract')->group(function () {
+            Route::any('index', [\App\Http\Controllers\Api\User\DealerContractController::class, 'index'])->name('api.v1.user.dealer.contract.index')->middleware(['CheckMethod:get']);
+            Route::any('datatable', [\App\Http\Controllers\Api\User\DealerContractController::class, 'datatable'])->name('api.v1.user.dealer.contract.datatable')->middleware(['CheckMethod:get']);
+            Route::any('show', [\App\Http\Controllers\Api\User\DealerContractController::class, 'show'])->name('api.v1.user.dealer.contract.show')->middleware(['CheckMethod:get']);
+            Route::any('save', [\App\Http\Controllers\Api\User\DealerContractController::class, 'save'])->name('api.v1.user.dealer.contract.save')->middleware(['CheckMethod:post|put']);
+            Route::any('drop', [\App\Http\Controllers\Api\User\DealerContractController::class, 'drop'])->name('api.v1.user.dealer.contract.drop')->middleware(['CheckMethod:delete']);
+            Route::any('uploadFile', [\App\Http\Controllers\Api\User\DealerContractController::class, 'uploadFile'])->name('api.v1.user.dealer.contract.uploadFile')->middleware(['CheckMethod:post']);
+
+        });
+
         Route::prefix('credit')->group(function () {
             Route::any('index', [\App\Http\Controllers\Api\User\DealerCreditController::class, 'index'])->name('api.v1.user.dealer.credit.index')->middleware(['CheckMethod:get']);
         });

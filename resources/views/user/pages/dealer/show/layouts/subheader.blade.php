@@ -17,6 +17,13 @@
             </li>
 
             <li class="nav-item">
+                <a class="nav-link @if(@$tab == 'contract') active @endif" href="{{ route('user.dealer.show', ['id' => $id, 'tab' => 'contract']) }}">
+                    <span class="nav-icon"><i class="fas fa-th"></i></span>
+                    <span class="nav-text">Sözleşmeler</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link @if(@$tab == 'supportRequest') active @endif" href="{{ route('user.dealer.show', ['id' => $id, 'tab' => 'supportRequest']) }}">
                     <span class="nav-icon"><i class="fas fa-th"></i></span>
                     <span class="nav-text">Destek Talepleri</span>

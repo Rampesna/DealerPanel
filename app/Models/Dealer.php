@@ -50,4 +50,9 @@ class Dealer extends Model
     {
         return $this->morphMany(Credit::class, 'relation');
     }
+
+    public function contracts()
+    {
+        return $this->morphMany(Contract::class, 'relation');
+    }
 }

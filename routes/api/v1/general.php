@@ -46,4 +46,10 @@ Route::middleware([
             ->name('api.v1.general.relationServiceStatus.index')
             ->middleware(['CheckMethod:get']);
     });
+
+    Route::prefix('contractStatus')->group(function () {
+        Route::any('index', [\App\Http\Controllers\Api\General\ContractStatusController::class, 'index'])
+            ->name('api.v1.general.contractStatus.index')
+            ->middleware(['CheckMethod:get']);
+    });
 });
