@@ -6,6 +6,7 @@
     var CreateButton = $('#CreateButton');
     var UpdateButton = $('#UpdateButton');
     var DeleteButton = $('#DeleteButton');
+    var UploadFileButton = $('#UploadFileButton');
 
     var status_id_create = $('#status_id_create');
     var status_id_edit = $('#status_id_edit');
@@ -74,6 +75,10 @@
         $('#DeleteModal').modal('show');
     }
 
+    function uploadFile() {
+        $('#UploadFileModal').modal('show');
+    }
+
     function save(method, data) {
         $.ajax({
             type: method,
@@ -88,13 +93,47 @@
             success: function () {
                 $('#CreateModal').modal('hide');
                 $('#CreateForm').trigger('reset');
+                status_id_create.selectpicker('refresh')
                 $('#EditModal').modal('hide');
                 toastr.success('Başarıyla Kaydedildi.');
                 contracts.ajax.reload();
             },
             error: function (error) {
-                console.log(error);
-                toastr.error('Sözleşme Kaydedilirken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+                if (error.responseJSON.code === 415) {
+                    toastr.warning('Sadece PDF türünde dosyalar desteklenmektedir!');
+                    console.log(error)
+                } else {
+                    console.log(error);
+                    toastr.error('Sözleşme Kaydedilirken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+                }
+            }
+        });
+    }
+
+    function upload(data) {
+        $.ajax({
+            type: 'post',
+            processData: false,
+            contentType: false,
+            url: '{{ route('api.v1.user.dealer.contract.uploadFile') }}',
+            headers: {
+                _token: '{{ auth()->user()->apiToken() }}',
+                _auth_type: 'User'
+            },
+            data: data,
+            success: function () {
+                $('#UploadFileModal').modal('hide');
+                toastr.success('Başarıyla Yüklendi.');
+                contracts.ajax.reload();
+            },
+            error: function (error) {
+                if (error.responseJSON.code === 415) {
+                    toastr.warning('Sadece PDF türünde dosyalar desteklenmektedir!');
+                    console.log(error)
+                } else {
+                    console.log(error);
+                    toastr.error('Sözleşme Dosyası Yüklenirken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+                }
             }
         });
     }
@@ -219,9 +258,20 @@
             var id = selectedRows.data()[0].id;
             var encrypted_id = selectedRows.data()[0].encrypted_id;
             var number = selectedRows.data()[0].number;
+            var file = selectedRows.data()[0].file;
             $("#id_edit").val(id);
             $("#encrypted_id_edit").val(encrypted_id);
+            $('#downloadFile').attr('href', `{{ asset('') }}${file}`);
             $("#deleting").html(number);
+
+            if (file == null || file === '') {
+                $('#UploadFileContext').show();
+                $('#DownloadFileContext').hide();
+            } else {
+                $('#UploadFileContext').hide();
+                $('#DownloadFileContext').show();
+            }
+
             $("#EditingContexts").show();
         } else {
             $("#EditingContexts").hide();
@@ -303,7 +353,7 @@
         } else if (end == null || end === '') {
             toastr.warning('Sözleşme Bitiş Tarihini Girmediniz!');
         } else if (status_id == null || status_id === '') {
-            toastr.warning('Durum Seçmediniz!');
+            toastr.warning('Durum Seçmediniz');
         } else {
             var data = new FormData();
             data.append('id', id);
@@ -341,6 +391,14 @@
                 toastr.error('Sözleşme Silinirken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
             }
         });
+    });
+
+    UploadFileButton.click(function () {
+        var id = $('#id_edit').val();
+        var data = new FormData();
+        data.append('id', id);
+        data.append('file', $('#file_upload')[0].files[0]);
+        upload(data);
     });
 
 </script>

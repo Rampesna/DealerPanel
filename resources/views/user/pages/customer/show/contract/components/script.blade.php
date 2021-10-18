@@ -79,10 +79,6 @@
         $('#UploadFileModal').modal('show');
     }
 
-    function downloadFile() {
-
-    }
-
     function save(method, data) {
         $.ajax({
             type: method,
@@ -103,8 +99,13 @@
                 contracts.ajax.reload();
             },
             error: function (error) {
-                console.log(error);
-                toastr.error('Sözleşme Kaydedilirken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+                if (error.responseJSON.code === 415) {
+                    toastr.warning('Sadece PDF türünde dosyalar desteklenmektedir!');
+                    console.log(error)
+                } else {
+                    console.log(error);
+                    toastr.error('Sözleşme Kaydedilirken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+                }
             }
         });
     }
@@ -126,8 +127,13 @@
                 contracts.ajax.reload();
             },
             error: function (error) {
-                console.log(error);
-                toastr.error('Sözleşme Dosyası Yüklenirken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+                if (error.responseJSON.code === 415) {
+                    toastr.warning('Sadece PDF türünde dosyalar desteklenmektedir!');
+                    console.log(error)
+                } else {
+                    console.log(error);
+                    toastr.error('Sözleşme Dosyası Yüklenirken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+                }
             }
         });
     }
@@ -255,6 +261,7 @@
             var file = selectedRows.data()[0].file;
             $("#id_edit").val(id);
             $("#encrypted_id_edit").val(encrypted_id);
+            $('#downloadFile').attr('href', `{{ asset('') }}${file}`);
             $("#deleting").html(number);
 
             if (file == null || file === '') {

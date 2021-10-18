@@ -111,8 +111,12 @@ class ContractService
         $contract->description = $description;
         $contract->status_id = $status_id;
         if ($file) {
+            if ($file->getMimeType() != "application/pdf") {
+                return $this->error('File mime type must be pdf', 415);
+            }
+
             $name = $file->getClientOriginalName();
-            $path = explodeNamespace($contract->relation_type) . '/' . $contract->relation_id . '/';
+            $path = 'Contract/' . explodeNamespace($contract->relation_type) . '/' . $contract->relation_id . '/';
             $file->move($path, $name);
             $contract->file = $path . $name;
         } else {
@@ -150,8 +154,12 @@ class ContractService
             return $this->error('Contract not found', 404);
         }
 
+        if ($file->getMimeType() != "application/pdf") {
+            return $this->error('File mime type must be pdf', 415);
+        }
+
         $name = $file->getClientOriginalName();
-        $path = explodeNamespace($contract->relation_type) . '/' . $contract->relation_id . '/';
+        $path = 'Contract/' . explodeNamespace($contract->relation_type) . '/' . $contract->relation_id . '/';
         $file->move($path, $name);
         $contract->file = $path . $name;
         $contract->save();

@@ -9,9 +9,11 @@
     @include('user.pages.dealer.show.contract.modals.create')
     @include('user.pages.dealer.show.contract.modals.edit')
     @include('user.pages.dealer.show.contract.modals.delete')
+    @include('user.pages.dealer.show.contract.modals.uploadFile')
 
     <input type="hidden" id="id_edit">
     <input type="hidden" id="encrypted_id_edit">
+    <input type="hidden" id="file_path">
     <div class="row mt-15">
         <div class="col-xl-12">
             <div class="card" id="contractsCard">
@@ -50,6 +52,26 @@
             </div>
         </a>
         <div id="EditingContexts">
+            <div id="UploadFileContext">
+                <hr>
+                <a onclick="uploadFile()" class="dropdown-item cursor-pointer">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <i class="fas fa-upload text-dark-75"></i><span class="ml-4">Dosya Yükle</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div id="DownloadFileContext">
+                <hr>
+                <a id="downloadFile" class="dropdown-item cursor-pointer" download>
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <i class="fas fa-download text-dark-75"></i><span class="ml-4">Dosya İndir</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
             <hr>
             <a onclick="edit()" class="dropdown-item cursor-pointer">
                 <div class="row">

@@ -34,7 +34,7 @@ class SaveRequest extends FormRequest
             'number' => 'required',
             'start' => 'required',
             'end' => 'required',
-            'status_id' => 'required',
+            'status_id' => 'required'
         ];
     }
 

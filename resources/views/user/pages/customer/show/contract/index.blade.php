@@ -13,6 +13,7 @@
 
     <input type="hidden" id="id_edit">
     <input type="hidden" id="encrypted_id_edit">
+    <input type="hidden" id="file_path">
     <div class="row mt-15">
         <div class="col-xl-12">
             <div class="card" id="contractsCard">
@@ -63,7 +64,7 @@
             </div>
             <div id="DownloadFileContext">
                 <hr>
-                <a onclick="downloadFile()" class="dropdown-item cursor-pointer">
+                <a id="downloadFile" class="dropdown-item cursor-pointer" download>
                     <div class="row">
                         <div class="col-xl-12">
                             <i class="fas fa-download text-dark-75"></i><span class="ml-4">Dosya İndir</span>
