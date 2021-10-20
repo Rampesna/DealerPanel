@@ -47,6 +47,14 @@ Route::middleware([
 
         });
 
+        Route::prefix('dealerUser')->group(function () {
+            Route::any('index', [\App\Http\Controllers\Api\User\DealerDealerUserController::class, 'index'])->name('api.v1.user.dealer.dealerUser.index')->middleware(['CheckMethod:get']);
+            Route::any('datatable', [\App\Http\Controllers\Api\User\DealerDealerUserController::class, 'datatable'])->name('api.v1.user.dealer.dealerUser.datatable')->middleware(['CheckMethod:get']);
+            Route::any('show', [\App\Http\Controllers\Api\User\DealerDealerUserController::class, 'show'])->name('api.v1.user.dealer.dealerUser.show')->middleware(['CheckMethod:get']);
+            Route::any('save', [\App\Http\Controllers\Api\User\DealerDealerUserController::class, 'save'])->name('api.v1.user.dealer.dealerUser.save')->middleware(['CheckMethod:post|put']);
+            Route::any('drop', [\App\Http\Controllers\Api\User\DealerDealerUserController::class, 'drop'])->name('api.v1.user.dealer.dealerUser.drop')->middleware(['CheckMethod:delete']);
+        });
+
         Route::prefix('credit')->group(function () {
             Route::any('index', [\App\Http\Controllers\Api\User\DealerCreditController::class, 'index'])->name('api.v1.user.dealer.credit.index')->middleware(['CheckMethod:get']);
         });
@@ -84,6 +92,14 @@ Route::middleware([
             Route::any('index', [\App\Http\Controllers\Api\User\CustomerReceiptController::class, 'index'])->name('api.v1.user.customer.receipt.index')->middleware(['CheckMethod:get']);
             Route::any('save', [\App\Http\Controllers\Api\User\CustomerReceiptController::class, 'save'])->name('api.v1.user.customer.receipt.save')->middleware(['CheckMethod:post|put']);
         });
+    });
+
+    Route::prefix('opportunity')->group(function () {
+        Route::any('index', [\App\Http\Controllers\Api\User\OpportunityController::class, 'index'])->name('api.v1.user.opportunity.index')->middleware(['CheckMethod:get']);
+        Route::any('datatable', [\App\Http\Controllers\Api\User\OpportunityController::class, 'datatable'])->name('api.v1.user.opportunity.datatable')->middleware(['CheckMethod:get']);
+        Route::any('show', [\App\Http\Controllers\Api\User\OpportunityController::class, 'show'])->name('api.v1.user.opportunity.show')->middleware(['CheckMethod:get']);
+        Route::any('save', [\App\Http\Controllers\Api\User\OpportunityController::class, 'save'])->name('api.v1.user.opportunity.save')->middleware(['CheckMethod:post|put']);
+        Route::any('drop', [\App\Http\Controllers\Api\User\OpportunityController::class, 'drop'])->name('api.v1.user.opportunity.drop')->middleware(['CheckMethod:delete']);
     });
 
     Route::prefix('waitingTransaction')->group(function () {

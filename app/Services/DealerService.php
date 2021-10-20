@@ -25,7 +25,7 @@ class DealerService
         $dealers = Dealer::with([]);
 
         if ($dealer_id) {
-            $dealers->whereIn('dealer_id', (new DealerService)->getSubDealersIds($dealer_id));
+            $dealers->whereIn('id', (new DealerService)->getSubDealersIds($dealer_id));
         }
 
         return $this->success('All dealers', $dealers->get());

@@ -45,6 +45,53 @@
                         </div>
                     </div>
                 </div>
+                <hr>
+                <div class="row">
+                    <div class="col-xl-4">
+                        <div class="form-group">
+                            <label for="tax_office_edit">Vergi Dairesi</label>
+                            <input id="tax_office_edit" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-xl-4">
+                        <div class="form-group">
+                            <label for="website_edit">Website Adresi</label>
+                            <input id="website_edit" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-xl-4">
+                        <div class="form-group">
+                            <label for="foundation_date_edit">Firma Kuruluş Tarihi</label>
+                            <input id="foundation_date_edit" type="date" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-4">
+                        <div class="form-group">
+                            <label for="country_id_edit">Ülke</label>
+                            <select id="country_id_edit" class="form-control selectpicker" data-live-search="true">
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xl-4">
+                        <div class="form-group">
+                            <label for="province_id_edit">Şehir</label>
+                            <select id="province_id_edit" class="form-control selectpicker" data-live-search="true">
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xl-4">
+                        <div class="form-group">
+                            <label for="district_id_edit">İlçe</label>
+                            <select id="district_id_edit" class="form-control selectpicker" data-live-search="true">
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Vazgeç</button>

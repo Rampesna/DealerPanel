@@ -15,8 +15,7 @@ class Customer extends Authenticatable
 
     protected $appends = [
         'encrypted_id',
-        'auth_type',
-        'balance'
+        'auth_type'
     ];
 
     protected $hidden = [
@@ -73,5 +72,20 @@ class Customer extends Authenticatable
     public function contracts()
     {
         return $this->morphMany(Contract::class, 'relation');
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+    public function province()
+    {
+        return $this->belongsTo(Province::class);
+    }
+
+    public function district()
+    {
+        return $this->belongsTo(District::class);
     }
 }

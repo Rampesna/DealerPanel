@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('login', [\App\Http\Controllers\Web\Customer\AuthenticationController::class, 'login'])->name('customer.login');
 Route::post('oAuthLogin', [\App\Http\Controllers\Web\Customer\AuthenticationController::class, 'oAuthLogin'])->name('customer.oAuthLogin');
+Route::get('oAuthLoginWithTaxNumber', [\App\Http\Controllers\Web\Customer\AuthenticationController::class, 'oAuthLoginWithTaxNumber'])->name('customer.oAuthLoginWithTaxNumber');
 Route::post('logout', [\App\Http\Controllers\Web\Customer\AuthenticationController::class, 'logout'])->name('customer.logout');
 
 Route::middleware([

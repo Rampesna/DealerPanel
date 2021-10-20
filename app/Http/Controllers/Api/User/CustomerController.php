@@ -42,10 +42,16 @@ class CustomerController extends Controller
         return $this->customerService->save(
             $request->id,
             $request->dealer_id,
-            $request->tax_number,
             $request->name,
+            $request->tax_number,
+            $request->tax_office,
             $request->email,
-            $request->gsm
+            $request->gsm,
+            $request->website,
+            $request->country_id,
+            $request->province_id,
+            $request->district_id,
+            $request->foundation_date
         );
     }
 

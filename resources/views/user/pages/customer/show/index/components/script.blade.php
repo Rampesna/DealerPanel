@@ -175,6 +175,38 @@
         });
     }
 
+    function getCustomer() {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('api.v1.user.customer.show') }}',
+            headers: {
+                _token: '{{ auth()->user()->apiToken() }}',
+                _auth_type: 'User'
+            },
+            data: {
+                id: '{{ $id }}'
+            },
+            success: function (response) {
+                $('#dealer_id_span').html(response.response.dealer ? response.response.dealer.name : '--');
+                $('#name_span').html(response.response.name ?? '--');
+                $('#tax_number_span').html(response.response.tax_number ?? '--');
+                $('#tax_office_span').html(response.response.tax_office ?? '--');
+                $('#email_span').html(response.response.email ?? '--');
+                $('#gsm_span').html(response.response.gsm ?? '--');
+                $('#website_span').html(response.response.website ?? '--');
+                $('#foundation_date_span').html(response.response.foundation_date ? reformatDateForHuman(response.response.foundation_date) : '--');
+                $('#country_id_span').html(response.response.country ? response.response.country.name : '--');
+                $('#province_id_span').html(response.response.province ? response.response.province.name : '--');
+                $('#district_id_span').html(response.response.district ? response.response.district.name : '--');
+            },
+            error: function (error) {
+                console.log(error);
+                toastr.error('Müşteri Bilgileri Alınırken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+            }
+        });
+    }
+
+    getCustomer();
     getCustomerCredits();
     getCustomerFinance();
     getServices();

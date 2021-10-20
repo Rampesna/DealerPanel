@@ -6,6 +6,7 @@ use App\Services\CustomerService;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Web\Customer\Auth\OAuthLoginRequest;
+use App\Http\Requests\Web\Customer\Auth\OAuthLoginWithTaxNumberRequest;
 
 class AuthenticationController extends Controller
 {
@@ -24,6 +25,14 @@ class AuthenticationController extends Controller
     public function oAuthLogin(OAuthLoginRequest $request)
     {
         return (new CustomerService)->oAuthLogin($request->api_token);
+    }
+
+    /**
+     * @param OAuthLoginWithTaxNumberRequest $request
+     */
+    public function oAuthLoginWithTaxNumber(OAuthLoginWithTaxNumberRequest $request)
+    {
+        return (new CustomerService)->oAuthLoginWithTaxNumber(base64_decode($request->encrypted_tax_number));
     }
 
     public function logout()

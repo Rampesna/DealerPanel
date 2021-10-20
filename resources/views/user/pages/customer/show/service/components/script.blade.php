@@ -322,6 +322,8 @@
             toastr.warning('Hizmet Durumu Girilmesi Zorunludur!');
         } else {
             save('post', {
+                creator_type: 'App\\Models\\User',
+                creator_id: '{{ auth()->id() }}',
                 relation_type: relation_type,
                 relation_id: relation_id,
                 service_id: service_id,

@@ -1,0 +1,68 @@
+@extends('dealerUser.layouts.master')
+@section('title', 'Fırsatlar')
+@php(setlocale(LC_TIME, 'Turkish'))
+
+@section('content')
+
+    @include('dealerUser.pages.opportunity.modals.create')
+
+    <input type="hidden" id="id_edit">
+    <input type="hidden" id="encrypted_id_edit">
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card" id="opportunitiesCard">
+                <div class="card-body">
+                    <table class="table" id="opportunities">
+                        <thead>
+                        <tr>
+                            <th>Bayi</th>
+                            <th>Müşteri Ünvanı</th>
+                            <th>Vergi Numarası</th>
+                            <th>Vergi Dairesi</th>
+                            <th>E-posta</th>
+                            <th>GSM</th>
+                            <th>Ülke</th>
+                            <th>Şehir</th>
+                            <th>İlçe</th>
+                            <th>Durum</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th>Bayi</th>
+                            <th>Müşteri Ünvanı</th>
+                            <th>Vergi Numarası</th>
+                            <th>Vergi Dairesi</th>
+                            <th>E-posta</th>
+                            <th>GSM</th>
+                            <th>Ülke</th>
+                            <th>Şehir</th>
+                            <th>İlçe</th>
+                            <th>Durum</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="context-menu" style="width: 300px">
+        <a onclick="create()" class="dropdown-item cursor-pointer">
+            <div class="row">
+                <div class="col-xl-12">
+                    <i class="fas fa-plus-circle text-success"></i><span class="ml-4">Yeni Oluştur</span>
+                </div>
+            </div>
+        </a>
+    </div>
+
+@endsection
+
+@section('page-styles')
+    @include('dealerUser.pages.opportunity.components.style')
+@stop
+
+@section('page-script')
+    @include('dealerUser.pages.opportunity.components.script')
+@stop

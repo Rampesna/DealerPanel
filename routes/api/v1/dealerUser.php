@@ -26,13 +26,19 @@ Route::middleware([
             Route::any('updateTransactionStatus', [\App\Http\Controllers\Api\DealerUser\RelationServiceController::class, 'updateTransactionStatus'])->name('api.v1.dealerUser.customer.service.updateTransactionStatus')->middleware(['CheckMethod:put']);
         });
 
+        Route::prefix('credit')->group(function () {
+            Route::any('index', [\App\Http\Controllers\Api\DealerUser\CreditController::class, 'index'])->name('api.v1.dealerUser.customer.credit.index')->middleware(['CheckMethod:get']);
+            Route::any('datatable', [\App\Http\Controllers\Api\DealerUser\CreditController::class, 'datatable'])->name('api.v1.dealerUser.customer.credit.datatable')->middleware(['CheckMethod:get']);
+        });
+
         Route::prefix('supportRequest')->group(function () {
             Route::any('datatable', [\App\Http\Controllers\Api\DealerUser\CustomerSupportRequestController::class, 'datatable'])->name('api.v1.dealerUser.customer.supportRequest.datatable')->middleware(['CheckMethod:get']);
         });
+    });
 
-        Route::prefix('credit')->group(function () {
-            Route::any('index', [\App\Http\Controllers\Api\DealerUser\CustomerCreditController::class, 'index'])->name('api.v1.user.dealerUser.credit.index')->middleware(['CheckMethod:get']);
-        });
+    Route::prefix('dealer')->group(function () {
+        Route::any('index', [\App\Http\Controllers\Api\DealerUser\DealerController::class, 'index'])->name('api.v1.dealerUser.dealer.index')->middleware(['CheckMethod:get']);
+        Route::any('datatable', [\App\Http\Controllers\Api\DealerUser\DealerController::class, 'datatable'])->name('api.v1.dealerUser.dealer.datatable')->middleware(['CheckMethod:get']);
     });
 
     Route::prefix('supportRequest')->group(function () {
@@ -41,6 +47,13 @@ Route::middleware([
         Route::any('show', [\App\Http\Controllers\Api\DealerUser\SupportRequestController::class, 'show'])->name('api.v1.dealerUser.supportRequest.show')->middleware(['CheckMethod:get']);
         Route::any('save', [\App\Http\Controllers\Api\DealerUser\SupportRequestController::class, 'save'])->name('api.v1.dealerUser.supportRequest.save')->middleware(['CheckMethod:post|put']);
         Route::any('updateStatus', [\App\Http\Controllers\Api\DealerUser\SupportRequestController::class, 'updateStatus'])->name('api.v1.dealerUser.supportRequest.updateStatus')->middleware(['CheckMethod:put']);
+    });
+
+    Route::prefix('opportunity')->group(function () {
+        Route::any('index', [\App\Http\Controllers\Api\DealerUser\OpportunityController::class, 'index'])->name('api.v1.dealerUser.opportunity.index')->middleware(['CheckMethod:get']);
+        Route::any('datatable', [\App\Http\Controllers\Api\DealerUser\OpportunityController::class, 'datatable'])->name('api.v1.dealerUser.opportunity.datatable')->middleware(['CheckMethod:get']);
+        Route::any('show', [\App\Http\Controllers\Api\DealerUser\OpportunityController::class, 'show'])->name('api.v1.dealerUser.opportunity.show')->middleware(['CheckMethod:get']);
+        Route::any('save', [\App\Http\Controllers\Api\DealerUser\OpportunityController::class, 'save'])->name('api.v1.dealerUser.opportunity.save')->middleware(['CheckMethod:post|put']);
     });
 
     Route::prefix('supportRequestMessage')->group(function () {

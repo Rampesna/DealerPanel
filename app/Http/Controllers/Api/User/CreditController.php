@@ -26,7 +26,7 @@ class CreditController extends Controller
             $request->relation_type,
             $request->relation_id ?
                 (gettype($request->relation_id) == 'integer' ? $request->relation_id : Crypt::decrypt($request->relation_id)) :
-                ($request->relation_type::where('tax_number', $request->tax_number)->first()->id),
+                ($request->relation_type::where('tax_number', $request->tax_number)->first()->id ?? null),
             null,
             $request->amount,
             0,

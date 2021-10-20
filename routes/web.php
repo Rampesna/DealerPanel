@@ -7,5 +7,5 @@ Route::get('/', function () {
 });
 
 Route::get('/test', function () {
-    return \App\Models\Customer::find(1)->services;
+    return base64_encode('98765432100');
 });

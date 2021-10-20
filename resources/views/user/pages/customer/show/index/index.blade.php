@@ -8,8 +8,79 @@
 
     @include('user.pages.customer.show.index.modals.addRelationService')
     @include('user.pages.customer.show.index.modals.addReceipt')
+    @include('user.pages.customer.show.index.modals.edit')
 
     <div class="row mt-15">
+        <div class="col-xl-4">
+            <div class="card">
+                <div class="card-header pt-4 pb-3">
+                    <div class="row">
+                        <div class="col-xl-8">
+                            <h5>Müşteri Bilgileri</h5>
+                        </div>
+                        <div class="col-xl-4 text-right">
+                            <button class="btn btn-sm btn-primary mr-n4" data-toggle="modal" data-target="#EditModal">Düzenle</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>Bayi</div>
+                        <div id="dealer_id_span">--</div>
+                    </div>
+                    <br>
+                    <div class="d-flex justify-content-between">
+                        <div>Ünvan</div>
+                        <div id="name_span">--</div>
+                    </div>
+                    <br>
+                    <div class="d-flex justify-content-between">
+                        <div>Vergi Numarası</div>
+                        <div id="tax_number_span">--</div>
+                    </div>
+                    <br>
+                    <div class="d-flex justify-content-between">
+                        <div>Vergi Dairesi</div>
+                        <div id="tax_office_span">--</div>
+                    </div>
+                    <br>
+                    <div class="d-flex justify-content-between">
+                        <div>E-posta Adresi</div>
+                        <div id="email_span">--</div>
+                    </div>
+                    <br>
+                    <div class="d-flex justify-content-between">
+                        <div>GSM</div>
+                        <div id="gsm_span">--</div>
+                    </div>
+                    <br>
+                    <div class="d-flex justify-content-between">
+                        <div>Website</div>
+                        <div id="website_span">--</div>
+                    </div>
+                    <br>
+                    <div class="d-flex justify-content-between">
+                        <div>Kuruluş Tarihi</div>
+                        <div id="foundation_date_span">--</div>
+                    </div>
+                    <br>
+                    <div class="d-flex justify-content-between">
+                        <div>Ülke</div>
+                        <div id="country_id_span">--</div>
+                    </div>
+                    <br>
+                    <div class="d-flex justify-content-between">
+                        <div>Şehir</div>
+                        <div id="province_id_span">--</div>
+                    </div>
+                    <br>
+                    <div class="d-flex justify-content-between">
+                        <div>İlçe</div>
+                        <div id="district_id_span">--</div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="col-xl-4">
             <div class="card">
                 <div class="card-header pt-4 pb-3">

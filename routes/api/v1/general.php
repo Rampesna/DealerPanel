@@ -52,4 +52,22 @@ Route::middleware([
             ->name('api.v1.general.contractStatus.index')
             ->middleware(['CheckMethod:get']);
     });
+
+    Route::prefix('country')->group(function () {
+        Route::any('index', [\App\Http\Controllers\Api\General\CountryController::class, 'index'])
+            ->name('api.v1.general.country.index')
+            ->middleware(['CheckMethod:get']);
+    });
+
+    Route::prefix('province')->group(function () {
+        Route::any('index', [\App\Http\Controllers\Api\General\ProvinceController::class, 'index'])
+            ->name('api.v1.general.province.index')
+            ->middleware(['CheckMethod:get']);
+    });
+
+    Route::prefix('district')->group(function () {
+        Route::any('index', [\App\Http\Controllers\Api\General\DistrictController::class, 'index'])
+            ->name('api.v1.general.district.index')
+            ->middleware(['CheckMethod:get']);
+    });
 });

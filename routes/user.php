@@ -21,6 +21,8 @@ Route::middleware([
         Route::get('show/{id?}/{tab?}', [\App\Http\Controllers\Web\User\CustomerController::class, 'show'])->name('user.customer.show');
     });
 
+    Route::get('opportunity', [\App\Http\Controllers\Web\User\OpportunityController::class, 'index'])->name('user.opportunity.index');
+
     Route::prefix('waitingTransaction')->group(function () {
         Route::get('{tab?}', [\App\Http\Controllers\Web\User\WaitingTransactionController::class, 'show'])->name('user.waitingTransaction.show');
     });

@@ -5,6 +5,10 @@
 
     var CreateButton = $('#CreateButton');
 
+    var country_id_create = $('#country_id_create');
+    var province_id_create = $('#province_id_create');
+    var district_id_create = $('#district_id_create');
+
     function create() {
         $('#CreateModal').modal('show');
     }
@@ -23,6 +27,10 @@
             },
             data: data,
             success: function () {
+                $('#CreateForm').trigger('reset');
+                country_id_create.selectpicker('refresh');
+                province_id_create.selectpicker('refresh');
+                district_id_create.selectpicker('refresh');
                 toastr.success('Müşteri Oluşturma Talebiniz Alındı. Onaylandığında Müşteri Listenize Eklenecektir.');
                 $('#CreateModal').modal('hide');
                 customers.ajax.reload();
@@ -33,6 +41,86 @@
             }
         });
     }
+
+    function getCountries() {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('api.v1.general.country.index') }}',
+            headers: {
+                _token: '{{ auth()->user()->apiToken() }}',
+                auth_type: 'DealerUser'
+            },
+            data: {},
+            success: function (response) {
+                country_id_create.empty();
+                country_id_create.append(`<optgroup label=""><option value="">Seçim Yapılmadı</option></optgroup>`);
+                $.each(response.response, function (i, country) {
+                    country_id_create.append(`<option value="${country.id}">${country.name}</option>`);
+                });
+                country_id_create.selectpicker('refresh');
+            },
+            error: function (error) {
+                console.log(error);
+                toastr.error('Ülke Listesi Alınırken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+            }
+        });
+    }
+
+    function getProvincesForCreate() {
+        var country_id = country_id_create.val();
+        $.ajax({
+            type: 'get',
+            url: '{{ route('api.v1.general.province.index') }}',
+            headers: {
+                _token: '{{ auth()->user()->apiToken() }}',
+                auth_type: 'DealerUser'
+            },
+            data: {
+                country_id: country_id
+            },
+            success: function (response) {
+                province_id_create.empty();
+                province_id_create.append(`<optgroup label=""><option value="">Seçim Yapılmadı</option></optgroup>`);
+                $.each(response.response, function (i, province) {
+                    province_id_create.append(`<option value="${province.id}">${province.name}</option>`);
+                });
+                province_id_create.selectpicker('refresh');
+            },
+            error: function (error) {
+                console.log(error);
+                toastr.error('Şehir Listesi Alınırken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+            }
+        });
+    }
+
+    function getDistrictsForCreate() {
+        var province_id = province_id_create.val();
+        $.ajax({
+            type: 'get',
+            url: '{{ route('api.v1.general.district.index') }}',
+            headers: {
+                _token: '{{ auth()->user()->apiToken() }}',
+                auth_type: 'DealerUser'
+            },
+            data: {
+                province_id: province_id
+            },
+            success: function (response) {
+                district_id_create.empty();
+                district_id_create.append(`<optgroup label=""><option value="">Seçim Yapılmadı</option></optgroup>`);
+                $.each(response.response, function (i, district) {
+                    district_id_create.append(`<option value="${district.id}">${district.name}</option>`);
+                });
+                district_id_create.selectpicker('refresh');
+            },
+            error: function (error) {
+                console.log(error);
+                toastr.error('İlçe Listesi Alınırken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+            }
+        });
+    }
+
+    getCountries();
 
     var customers = $('#customers').DataTable({
         language: {
@@ -200,6 +288,12 @@
         var name = $('#name_create').val();
         var email = $('#email_create').val();
         var gsm = $('#gsm_create').val();
+        var tax_office = $('#tax_office_create').val();
+        var website = $('#website_create').val();
+        var foundation_date = $('#foundation_date_create').val();
+        var country_id = country_id_create.val();
+        var province_id = province_id_create.val();
+        var district_id = district_id_create.val();
 
         if (tax_number == null || tax_number === '') {
             toastr.warning('Vergi Numarası Boş Olamaz!');
@@ -225,7 +319,13 @@
                             tax_number: tax_number,
                             name: name,
                             email: email,
-                            gsm: gsm
+                            gsm: gsm,
+                            tax_office: tax_office,
+                            website: website,
+                            foundation_date: foundation_date,
+                            country_id: country_id,
+                            province_id: province_id,
+                            district_id: district_id,
                         });
                     }
                 },
@@ -235,6 +335,17 @@
                 }
             });
         }
+    });
+
+    country_id_create.change(function () {
+        province_id_create.empty().selectpicker('refresh');
+        district_id_create.empty().selectpicker('refresh');
+        getProvincesForCreate();
+    });
+
+    province_id_create.change(function () {
+        district_id_create.empty().selectpicker('refresh');
+        getDistrictsForCreate();
     });
 
 </script>

@@ -22,6 +22,8 @@ Route::middleware([
 
     Route::get('finance', [\App\Http\Controllers\Web\DealerUser\FinanceController::class, 'index'])->name('dealerUser.finance.index');
 
+    Route::get('opportunity', [\App\Http\Controllers\Web\DealerUser\OpportunityController::class, 'index'])->name('dealerUser.opportunity.index');
+
     Route::prefix('supportRequest')->group(function () {
         Route::get('index', [\App\Http\Controllers\Web\DealerUser\SupportRequestController::class, 'index'])->name('dealerUser.supportRequest.index');
         Route::get('show/{id?}', [\App\Http\Controllers\Web\DealerUser\SupportRequestController::class, 'show'])->name('dealerUser.supportRequest.show');

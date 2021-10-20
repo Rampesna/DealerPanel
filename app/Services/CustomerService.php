@@ -60,6 +60,24 @@ class CustomerService
     }
 
     /**
+     * @param string $tax_number
+     */
+    public function oAuthLoginWithTaxNumber(
+        $tax_number
+    )
+    {
+        $customer = Customer::where('tax_number', $tax_number)->first();
+
+        if (!$customer) {
+            return $this->error('Customer not found');
+        }
+
+        Auth::guard('customer')->login($customer);
+
+        return redirect()->route('customer.dashboard.index');
+    }
+
+    /**
      * @param int|null $transaction_status_id
      * @param int|null $dealer_id
      */
@@ -123,7 +141,12 @@ class CustomerService
         $id
     )
     {
-        if (!$customer = Customer::find($id)) {
+        if (!$customer = Customer::with([
+            'dealer',
+            'country',
+            'province',
+            'district'
+        ])->find($id)) {
             return $this->error('Customer not found', 404);
         }
 
@@ -133,17 +156,30 @@ class CustomerService
     /**
      * @param int|null $id
      * @param int $dealer_id
+     * @param string $name
      * @param string $tax_number
-     * @param string|null $name
-     * @param string|null $password
+     * @param string|null $tax_office
+     * @param string|null $email
+     * @param string|null $gsm
+     * @param string|null $website
+     * @param int|null $country_id
+     * @param int|null $province_id
+     * @param int|null $district_id
+     * @param string $foundation_date
      */
     public function save(
         $id,
         $dealer_id,
-        $tax_number,
         $name,
+        $tax_number,
+        $tax_office,
         $email,
-        $gsm
+        $gsm,
+        $website,
+        $country_id,
+        $province_id,
+        $district_id,
+        $foundation_date
     )
     {
         $customer = $id ? Customer::find($id) : new Customer;
@@ -153,10 +189,16 @@ class CustomerService
         }
 
         $customer->dealer_id = $dealer_id;
-        $customer->tax_number = $tax_number;
         $customer->name = $name;
+        $customer->tax_number = $tax_number;
+        $customer->tax_office = $tax_office;
         $customer->email = $email;
         $customer->gsm = $gsm;
+        $customer->website = $website;
+        $customer->country_id = $country_id;
+        $customer->province_id = $province_id;
+        $customer->district_id = $district_id;
+        $customer->foundation_date = $foundation_date;
         $customer->save();
 
         return $this->success('Customer created successfully', $customer);

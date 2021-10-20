@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\Credit;
+use App\Models\RelationService;
+use App\Models\Service;
 use App\Traits\Response;
 use Yajra\DataTables\DataTables;
 
@@ -42,9 +44,9 @@ class CreditService
      * @param int|null $relation_service_id
      */
     public function datatable(
-        $relation_type,
-        $relation_id,
-        $relation_service_id
+        $relation_type = null,
+        $relation_id = null,
+        $relation_service_id = null
     )
     {
         $credits = Credit::with([
@@ -60,11 +62,29 @@ class CreditService
         }
 
         return DataTables::of($credits)->
+        filterColumn('created_at', function ($credits, $data) {
+            return $credits->where('created_at', '>=', $data);
+        })->
+        filterColumn('relation_service_id', function ($credits, $data) {
+            return $credits->whereIn(
+                'relation_service_id',
+                RelationService::whereIn(
+                    'service_id',
+                    Service::where('name', 'like', '%' . $data . '%')->pluck('id')->toArray()
+                )->pluck('id')->toArray()
+            );
+        })->
         editColumn('relation_id', function ($credit) {
             return $credit->relation ? $credit->relation->name : '';
         })->
         editColumn('relation_service_id', function ($credit) {
-            return $credit->service ? $credit->service->name : '';
+            return $credit->service ? $credit->service->name : '--';
+        })->
+        editColumn('created_at', function ($credit) {
+            return date('d.m.Y, H:i', strtotime($credit->created_at));
+        })->
+        editColumn('direction', function ($credit) {
+            return $credit->direction == 1 ? 'Alındı' : 'Kullanıldı';
         })->
         make(true);
     }
@@ -106,6 +126,10 @@ class CreditService
         $description
     )
     {
+        if (!$relation_id) {
+            return $this->error('Relation not found', 404);
+        }
+
         $credit = $id ? Credit::find($id) : new Credit;
 
         if ($id && !$credit) {
