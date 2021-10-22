@@ -19,4 +19,14 @@ class Receipt extends Model
     {
         return Crypt::encrypt($this->id);
     }
+
+    public function service()
+    {
+        return $this->hasOneThrough(Service::class, RelationService::class, 'id', 'id', 'relation_service_id', 'service_id');
+    }
+
+    public function relation()
+    {
+        return $this->morphTo();
+    }
 }

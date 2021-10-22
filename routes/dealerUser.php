@@ -20,6 +20,8 @@ Route::middleware([
         Route::get('{tab?}', [\App\Http\Controllers\Web\DealerUser\WaitingTransactionController::class, 'show'])->name('dealerUser.waitingTransaction.show');
     });
 
+    Route::get('credit', [\App\Http\Controllers\Web\DealerUser\CreditController::class, 'index'])->name('dealerUser.credit.index');
+
     Route::get('finance', [\App\Http\Controllers\Web\DealerUser\FinanceController::class, 'index'])->name('dealerUser.finance.index');
 
     Route::get('opportunity', [\App\Http\Controllers\Web\DealerUser\OpportunityController::class, 'index'])->name('dealerUser.opportunity.index');

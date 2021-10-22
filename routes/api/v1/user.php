@@ -57,10 +57,12 @@ Route::middleware([
 
         Route::prefix('credit')->group(function () {
             Route::any('index', [\App\Http\Controllers\Api\User\DealerCreditController::class, 'index'])->name('api.v1.user.dealer.credit.index')->middleware(['CheckMethod:get']);
+            Route::any('datatable', [\App\Http\Controllers\Api\User\DealerCreditController::class, 'datatable'])->name('api.v1.user.dealer.credit.datatable')->middleware(['CheckMethod:get']);
         });
 
         Route::prefix('receipt')->group(function () {
             Route::any('index', [\App\Http\Controllers\Api\User\DealerReceiptController::class, 'index'])->name('api.v1.user.dealer.receipt.index')->middleware(['CheckMethod:get']);
+            Route::any('datatable', [\App\Http\Controllers\Api\User\DealerReceiptController::class, 'datatable'])->name('api.v1.user.dealer.receipt.datatable')->middleware(['CheckMethod:get']);
             Route::any('save', [\App\Http\Controllers\Api\User\DealerReceiptController::class, 'save'])->name('api.v1.user.dealer.receipt.save')->middleware(['CheckMethod:post|put']);
         });
     });
@@ -91,6 +93,7 @@ Route::middleware([
 
         Route::prefix('receipt')->group(function () {
             Route::any('index', [\App\Http\Controllers\Api\User\CustomerReceiptController::class, 'index'])->name('api.v1.user.customer.receipt.index')->middleware(['CheckMethod:get']);
+            Route::any('datatable', [\App\Http\Controllers\Api\User\CustomerReceiptController::class, 'datatable'])->name('api.v1.user.customer.receipt.datatable')->middleware(['CheckMethod:get']);
             Route::any('save', [\App\Http\Controllers\Api\User\CustomerReceiptController::class, 'save'])->name('api.v1.user.customer.receipt.save')->middleware(['CheckMethod:post|put']);
         });
     });

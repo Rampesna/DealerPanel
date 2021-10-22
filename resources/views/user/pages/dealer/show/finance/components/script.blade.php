@@ -97,13 +97,13 @@
         serverSide: true,
         ajax: {
             type: 'get',
-            url: '{{ route('api.v1.user.customer.receipt.datatable') }}',
+            url: '{{ route('api.v1.user.dealer.receipt.datatable') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
                 _auth_type: 'User'
             },
             data: {
-                relation_type: 'App\\Models\\Customer',
+                relation_type: 'App\\Models\\Dealer',
                 relation_id: '{{ $id }}'
             },
             error: function (error) {
@@ -124,11 +124,11 @@
     });
 
     function getCredits() {
-        var relation_type = 'App\\Models\\Customer';
+        var relation_type = 'App\\Models\\Dealer';
         var relation_id = '{{ $id }}';
         $.ajax({
             type: 'get',
-            url: '{{ route('api.v1.user.customer.receipt.index') }}',
+            url: '{{ route('api.v1.user.dealer.receipt.index') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
                 _auth_type: 'User'

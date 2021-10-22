@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\Receipt;
+use App\Models\RelationService;
+use App\Models\Service;
 use App\Traits\Response;
 use Illuminate\Support\Facades\Crypt;
 use Yajra\DataTables\DataTables;
@@ -56,11 +58,39 @@ class ReceiptService
             $receipts->where('creator_type', $creator_type)->where('creator_id', $creator_id);
         }
 
-        if ($creator_type && $creator_id) {
+        if ($relation_type && $relation_id) {
             $receipts->where('relation_type', $relation_type)->where('relation_id', $relation_id);
         }
 
-        return DataTables::of($receipts)->make(true);
+        return DataTables::of($receipts)->
+        filterColumn('created_at', function ($credits, $data) {
+            return $credits->where('created_at', '>=', $data);
+        })->
+        filterColumn('relation_service_id', function ($credits, $data) {
+            return $credits->whereIn(
+                'relation_service_id',
+                RelationService::whereIn(
+                    'service_id',
+                    Service::where('name', 'like', '%' . $data . '%')->pluck('id')->toArray()
+                )->pluck('id')->toArray()
+            );
+        })->
+        editColumn('relation_id', function ($credit) {
+            return $credit->relation ? $credit->relation->name : '';
+        })->
+        editColumn('relation_service_id', function ($credit) {
+            return $credit->service ? $credit->service->name : '--';
+        })->
+        editColumn('created_at', function ($credit) {
+            return date('d.m.Y, H:i', strtotime($credit->created_at));
+        })->
+        editColumn('direction', function ($credit) {
+            return $credit->direction == 1 ? 'Satın Alım' : 'Ödeme';
+        })->
+        editColumn('price', function ($credit) {
+            return $credit->price . ' TL';
+        })->
+        make(true);
     }
 
     /**

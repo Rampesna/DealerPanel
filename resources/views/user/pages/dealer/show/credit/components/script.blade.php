@@ -3,7 +3,7 @@
 
 <script>
 
-    var receipts = $('#receipts').DataTable({
+    var credits = $('#credits').DataTable({
         language: {
             info: "_TOTAL_ Kayıttan _START_ - _END_ Arasındaki Kayıtlar Gösteriliyor.",
             infoEmpty: "Gösterilecek Hiç Kayıt Yok.",
@@ -69,14 +69,14 @@
                 text: '<i class="fas fa-undo"></i> Yenile',
                 action: function (e, dt, node, config) {
                     $('table input').val('');
-                    receipts.search('').columns().search('').ajax.reload().draw();
+                    credits.search('').columns().search('').ajax.reload().draw();
                 }
             }
         ],
 
         initComplete: function () {
-            var r = $('#receipts tfoot tr');
-            $('#receipts thead').append(r);
+            var r = $('#credits tfoot tr');
+            $('#credits thead').append(r);
             this.api().columns().every(function (index) {
                 var column = this;
                 var input = document.createElement('input');
@@ -97,13 +97,13 @@
         serverSide: true,
         ajax: {
             type: 'get',
-            url: '{{ route('api.v1.user.customer.receipt.datatable') }}',
+            url: '{{ route('api.v1.user.dealer.credit.datatable') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
                 _auth_type: 'User'
             },
             data: {
-                relation_type: 'App\\Models\\Customer',
+                relation_type: 'App\\Models\\Dealer',
                 relation_id: '{{ $id }}'
             },
             error: function (error) {
@@ -124,11 +124,11 @@
     });
 
     function getCredits() {
-        var relation_type = 'App\\Models\\Customer';
+        var relation_type = 'App\\Models\\Dealer';
         var relation_id = '{{ $id }}';
         $.ajax({
             type: 'get',
-            url: '{{ route('api.v1.user.customer.receipt.index') }}',
+            url: '{{ route('api.v1.user.dealer.credit.index') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
                 _auth_type: 'User'
@@ -138,20 +138,20 @@
                 relation_id: relation_id
             },
             success: function (response) {
-                var outgoing = 0;
-                var incoming = 0;
-                $.each(response.response, function (i, receipt) {
-                    if (receipt.direction === 1) outgoing += receipt.price;
-                    if (receipt.direction === 0) incoming += receipt.price;
+                var total = 0;
+                var used = 0;
+                $.each(response.response, function (i, credit) {
+                    if (credit.direction === 1) total += credit.amount;
+                    if (credit.direction === 0) used += credit.amount;
                 });
-                var balance = outgoing - incoming;
-                $('#outgoingSpan').html(`${outgoing} TL`);
-                $('#incomingSpan').html(`${incoming} TL`);
-                $('#balanceSpan').html(`${balance} TL`);
+                var remaining = total - used;
+                $('#totalSpan').html(total);
+                $('#usedSpan').html(used);
+                $('#remainingSpan').html(remaining);
             },
             error: function (error) {
                 console.log(error);
-                toastr.error('Finans Bilgileri Alınırken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+                toastr.error('Kontör Bilgileri Alınırken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
             }
         });
     }

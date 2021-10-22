@@ -1,12 +1,12 @@
-@extends('customer.layouts.master')
-@section('title', 'Finans Yönetimi')
+@extends('user.layouts.master')
+@section('title', 'Bayi Finans Raporu')
 @php(setlocale(LC_TIME, 'Turkish'))
 
 @section('content')
 
-    @include('customer.pages.finance.modals.create')
+    @include('user.pages.dealer.show.layouts.subheader')
 
-    <div class="row">
+    <div class="row mt-15">
         <div class="col-xl-4">
             <div class="card">
                 <div class="card-header pt-4 pb-3 text-center">
@@ -69,9 +69,9 @@
 @endsection
 
 @section('page-styles')
-    @include('customer.pages.finance.components.style')
+    @include('user.pages.dealer.show.finance.components.style')
 @stop
 
 @section('page-script')
-    @include('customer.pages.finance.components.script')
+    @include('user.pages.dealer.show.finance.components.script')
 @stop
