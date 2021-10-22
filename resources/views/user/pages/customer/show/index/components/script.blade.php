@@ -38,7 +38,7 @@
             },
             error: function (error) {
                 console.log(error);
-                toastr.error('Bayi Kontör Bilgileri Alınırken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+                toastr.error('Müşteri Kontör Bilgileri Alınırken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
             }
         });
     }
@@ -64,7 +64,7 @@
                     if (receipt.direction === 1) outgoing += receipt.price;
                     if (receipt.direction === 0) incoming += receipt.price;
                 });
-                var balance = incoming - outgoing;
+                var balance = outgoing - incoming;
                 $('#outgoingSpan').html(`${outgoing} TL`);
                 $('#incomingSpan').html(`${incoming} TL`);
                 $('#balance').html(`${balance} TL`);

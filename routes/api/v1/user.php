@@ -86,6 +86,7 @@ Route::middleware([
 
         Route::prefix('credit')->group(function () {
             Route::any('index', [\App\Http\Controllers\Api\User\CustomerCreditController::class, 'index'])->name('api.v1.user.customer.credit.index')->middleware(['CheckMethod:get']);
+            Route::any('datatable', [\App\Http\Controllers\Api\User\CustomerCreditController::class, 'datatable'])->name('api.v1.user.customer.credit.datatable')->middleware(['CheckMethod:get']);
         });
 
         Route::prefix('receipt')->group(function () {

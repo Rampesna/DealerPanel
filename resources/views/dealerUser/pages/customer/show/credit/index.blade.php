@@ -1,5 +1,5 @@
 @extends('dealerUser.layouts.master')
-@section('title', 'Müşteri Hizmetleri')
+@section('title', 'Müşteri Kontör Raporu')
 @php(setlocale(LC_TIME, 'Turkish'))
 
 @section('content')

@@ -69,7 +69,7 @@
                     if (receipt.direction === 1) outgoing += receipt.price;
                     if (receipt.direction === 0) incoming += receipt.price;
                 });
-                var balance = incoming - outgoing;
+                var balance = outgoing - incoming;
                 $('#outgoingSpan').html(`${outgoing} TL`);
                 $('#incomingSpan').html(`${incoming} TL`);
                 $('#balance').html(`${balance} TL`);

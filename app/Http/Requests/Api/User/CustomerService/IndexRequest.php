@@ -28,7 +28,8 @@ class IndexRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'relation_type' => 'required',
+            'relation_id' => 'required'
         ];
     }
 

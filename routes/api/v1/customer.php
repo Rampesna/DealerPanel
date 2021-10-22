@@ -23,6 +23,11 @@ Route::middleware([
         Route::any('datatable', [\App\Http\Controllers\Api\Customer\CreditController::class, 'datatable'])->name('api.v1.customer.credit.datatable')->middleware(['CheckMethod:get']);
     });
 
+    Route::prefix('receipt')->group(function () {
+        Route::any('index', [\App\Http\Controllers\Api\Customer\ReceiptController::class, 'index'])->name('api.v1.customer.receipt.index')->middleware(['CheckMethod:get']);
+        Route::any('datatable', [\App\Http\Controllers\Api\Customer\ReceiptController::class, 'datatable'])->name('api.v1.customer.receipt.datatable')->middleware(['CheckMethod:get']);
+    });
+
     Route::prefix('supportRequest')->group(function () {
         Route::any('index', [\App\Http\Controllers\Api\Customer\SupportRequestController::class, 'index'])->name('api.v1.customer.supportRequest.index')->middleware(['CheckMethod:get']);
         Route::any('datatable', [\App\Http\Controllers\Api\Customer\SupportRequestController::class, 'datatable'])->name('api.v1.customer.supportRequest.datatable')->middleware(['CheckMethod:get']);
