@@ -27,6 +27,8 @@ Route::middleware([
         Route::get('{tab?}', [\App\Http\Controllers\Web\User\WaitingTransactionController::class, 'show'])->name('user.waitingTransaction.show');
     });
 
+    Route::get('batchTransaction', [\App\Http\Controllers\Web\User\BatchTransactionController::class, 'index'])->name('user.batchTransaction.index');
+
     Route::prefix('supportRequest')->group(function () {
         Route::get('index', [\App\Http\Controllers\Web\User\SupportRequestController::class, 'index'])->name('user.supportRequest.index');
         Route::get('show/{id?}', [\App\Http\Controllers\Web\User\SupportRequestController::class, 'show'])->name('user.supportRequest.show');
