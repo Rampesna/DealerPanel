@@ -6,7 +6,7 @@
         <div class="login-aside d-flex flex-column flex-row-auto">
             <div class="d-flex flex-column-auto flex-column">
                 <a class="login-logo text-center pb-10" style="margin-top: 100px">
-                    <img src="{{ asset('assets/media/logos/logo-dark.png') }}" class="max-h-75px" alt="" />
+                    <img src="{{ asset('assets/media/logos/bien.png') }}" class="max-h-75px" alt="" />
                 </a>
             </div>
             <div class="aside-img d-flex flex-row-fluid bgi-no-repeat bgi-position-x-center" style="background-position-y: calc(95%); background-image: url({{ asset('assets/media/logos/bg.png') }});"></div>

@@ -431,6 +431,8 @@
             toastr.warning('Vergi Numarası En Fazla 11 Karakter Olmalıdır!');
         } else if (name == null || name === '') {
             toastr.warning('Müşteri Ünvanı Boş Olamaz!');
+        } else if (email == null || email === '') {
+            toastr.warning('E-posta Adresi Boş Olamaz!');
         } else {
             $.ajax({
                 type: 'get',
@@ -489,6 +491,8 @@
             toastr.warning('Vergi Numarası En Fazla 11 Karakter Olmalıdır!');
         } else if (name == null || name === '') {
             toastr.warning('Müşteri Ünvanı Boş Olamaz!');
+        } else if (email == null || email === '') {
+            toastr.warning('E-posta Adresi Boş Olamaz!');
         } else {
             $.ajax({
                 type: 'get',

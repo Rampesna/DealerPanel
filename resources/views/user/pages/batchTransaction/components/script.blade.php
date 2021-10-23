@@ -1,6 +1,25 @@
 <script>
 
+    var SelectAllButton = $('#SelectAllButton');
+    var DeSelectAllButton = $('#DeSelectAllButton');
+    var UpdateDealersButton = $('#UpdateDealersButton');
+
+    var customersArray = [];
+
     var customers = $('#customers');
+    var dealers = $('#dealers');
+
+    function updateDealersModalTrigger() {
+        $('#UpdateDealersModal').modal('show');
+    }
+
+    function setCustomersArray() {
+        var selectedCustomers = $('.selectedCustomer');
+        customersArray = [];
+        $.each(selectedCustomers, function () {
+            customersArray.push($(this).data('id'));
+        });
+    }
 
     function getCustomers() {
         $.ajax({
@@ -66,6 +85,100 @@
         });
     }
 
+    function getDealers() {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('api.v1.user.dealer.index') }}',
+            headers: {
+                _token: '{{ auth()->user()->apiToken() }}',
+                _auth_type: 'User'
+            },
+            data: {},
+            success: function (response) {
+                dealers.empty().append(`<optgroup label=""><option value="">Seçim Yapılmadı</option></optgroup>`);
+                $.each(response.response, function (i, dealer) {
+                    dealers.append(`<option value="${dealer.id}">${dealer.name}</option>`);
+                });
+                dealers.selectpicker('refresh');
+            },
+            error: function (error) {
+                console.log(error);
+                toastr.error('Bayi Listesi Alınırken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+            }
+        });
+    }
+
     getCustomers();
+    getDealers();
+
+    $(document).delegate('.customerSelector', 'click', function () {
+        $(this).toggleClass('selectedCustomer');
+        setCustomersArray();
+    });
+
+    SelectAllButton.click(function () {
+        $('.customerSelector').removeClass('selectedCustomer').addClass('selectedCustomer');
+        setCustomersArray();
+    });
+
+    DeSelectAllButton.click(function () {
+        $('.customerSelector').removeClass('selectedCustomer');
+        setCustomersArray();
+    });
+
+    $('body').on('contextmenu', function (e) {
+        if (customersArray.length > 0) {
+            var top = e.pageY - 10;
+            var left = e.pageX - 10;
+
+            $("#context-menu").css({
+                display: "block",
+                top: top,
+                left: left
+            });
+        }
+
+        return false;
+    }).on("click", function () {
+        $("#context-menu").hide();
+    }).on('focusout', function () {
+        $("#context-menu").hide();
+    });
+
+    UpdateDealersButton.click(function () {
+        var dealer_id = dealers.val();
+
+        if (dealer_id == null || dealer_id === '') {
+            toastr.warning('Bayi Seçimi Yapılması Zorunludur!');
+        } else if (customersArray.length <= 0) {
+            toastr.warning('En Az 1 Müşteri Seçilmelidir!');
+        } else {
+            $.ajax({
+                type: 'post',
+                url: '{{ route('api.v1.user.customer.updateDealer') }}',
+                headers: {
+                    _token: '{{ auth()->user()->apiToken() }}',
+                    _auth_type: 'User'
+                },
+                data: {
+                    dealer_id: dealer_id,
+                    customer_ids: customersArray
+                },
+                success: function (response) {
+                    console.log(response)
+                    $('#UpdateDealersModal').modal('hide');
+                    $('#UpdateDealersForm').trigger('reset');
+                    dealers.selectpicker('refresh');
+                    $('.customerSelector').removeClass('selectedCustomer');
+                    setCustomersArray();
+                    toastr.success('Atamalar Başarıyla Yapıldı');
+                },
+                error: function (error) {
+                    console.log(error);
+                    toastr.error('Müşteriler Bayiye Atanırken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+                }
+            });
+        }
+    });
 
 </script>

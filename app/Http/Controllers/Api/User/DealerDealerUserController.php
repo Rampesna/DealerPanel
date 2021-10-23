@@ -8,6 +8,7 @@ use App\Http\Requests\Api\User\DealerUser\DatatableRequest;
 use App\Http\Requests\Api\User\DealerUser\ShowRequest;
 use App\Http\Requests\Api\User\DealerUser\SaveRequest;
 use App\Http\Requests\Api\User\DealerUser\DropRequest;
+use App\Http\Requests\Api\User\DealerUser\SendPasswordRequest;
 use App\Services\DealerUserService;
 use Illuminate\Support\Facades\Crypt;
 
@@ -63,5 +64,13 @@ class DealerDealerUserController extends Controller
     public function drop(DropRequest $request)
     {
         return $this->dealerUserService->drop($request->id);
+    }
+
+    /**
+     * @param SendPasswordRequest $request
+     */
+    public function sendPassword(SendPasswordRequest $request)
+    {
+        return $this->dealerUserService->sendPassword($request->id);
     }
 }

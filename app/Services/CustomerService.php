@@ -2,12 +2,15 @@
 
 namespace App\Services;
 
+use App\Mail\SendCustomerPasswordEmail;
 use App\Models\Customer;
 use App\Models\Dealer;
 use App\Models\TransactionStatus;
 use App\Traits\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
 
 class CustomerService
@@ -252,8 +255,33 @@ class CustomerService
         }
 
         $customer->transaction_status_id = $transaction_status_id;
+
+        if ($transaction_status_id == 2) {
+            $password = Str::random(8);
+            $customer->password = bcrypt($password);
+            Mail::to($customer->email)->send(new SendCustomerPasswordEmail($customer->name, $customer->tax_number, $password));
+        }
+
         $customer->save();
 
         return $this->success('Customer transaction status updated successfully', $customer_id);
+    }
+
+    /**
+     * @param array $customer_ids
+     * @param int $dealer_id
+     */
+    public function updateDealer(
+        $customer_ids,
+        int $dealer_id
+    )
+    {
+        foreach ($customer_ids as $customer_id) {
+            $customer = Customer::find($customer_id);
+            $customer->dealer_id = $dealer_id;
+            $customer->save();
+        }
+
+        return $this->success('Customers dealer ids successfully updated', null);
     }
 }

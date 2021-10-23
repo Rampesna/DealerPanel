@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\User\Customer\DropRequest;
 use App\Http\Requests\Api\User\Customer\SaveRequest;
 use App\Http\Requests\Api\User\Customer\ShowRequest;
+use App\Http\Requests\Api\User\Customer\UpdateDealerRequest;
 use App\Services\CustomerService;
 use App\Traits\Response;
 use Illuminate\Http\Request;
@@ -58,5 +59,10 @@ class CustomerController extends Controller
     public function drop(DropRequest $request)
     {
         $this->customerService->drop($request->id);
+    }
+
+    public function updateDealer(UpdateDealerRequest $request)
+    {
+        return $this->customerService->updateDealer($request->customer_ids, $request->dealer_id);
     }
 }

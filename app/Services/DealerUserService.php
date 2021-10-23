@@ -2,11 +2,14 @@
 
 namespace App\Services;
 
+use App\Mail\SendDealerUserPasswordEmail;
 use App\Models\Dealer;
 use App\Models\DealerUser;
 use App\Traits\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
 
 class DealerUserService
@@ -154,5 +157,26 @@ class DealerUserService
         }
 
         return $this->success('Dealer user deleted successfully', $dealerUser->delete());
+    }
+
+    /**
+     * @param int $id
+     */
+    public function sendPassword(
+        $id
+    )
+    {
+        $dealerUser = DealerUser::find($id);
+
+        if (!$dealerUser) {
+            return $this->error('Dealer user not found', 404);
+        }
+
+        $password = Str::random(8);
+        $dealerUser->password = bcrypt($password);
+        Mail::to($dealerUser->email)->send(new SendDealerUserPasswordEmail($dealerUser->name, $dealerUser->email, $password));
+        $dealerUser->save();
+
+        return $this->success('Dealer user password successfully sent', null);
     }
 }

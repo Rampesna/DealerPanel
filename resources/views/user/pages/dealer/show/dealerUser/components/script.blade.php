@@ -62,6 +62,29 @@
         });
     }
 
+    function sendPassword() {
+        toastr.info('İşleminiz Yapılıyor Lütfen Bekleyin...');
+        var id = $('#id_edit').val();
+        $.ajax({
+            type: 'post',
+            url: '{{ route('api.v1.user.dealer.dealerUser.sendPassword') }}',
+            headers: {
+                _token: '{{ auth()->user()->apiToken() }}',
+                _auth_type: 'User'
+            },
+            data: {
+                id: id
+            },
+            success: function () {
+                toastr.success('Bayi Kullanıcı Şifresi Başarıyla Mail Olarak Gönderildi');
+            },
+            error: function (error) {
+                console.log(error);
+                toastr.error('Bayi Kullanıcı Şifresi Mail Gönderilirken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+            }
+        });
+    }
+
     var dealerUsers = $('#dealerUsers').DataTable({
         language: {
             info: "_TOTAL_ Kayıttan _START_ - _END_ Arasındaki Kayıtlar Gösteriliyor.",

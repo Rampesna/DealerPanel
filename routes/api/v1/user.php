@@ -53,6 +53,7 @@ Route::middleware([
             Route::any('show', [\App\Http\Controllers\Api\User\DealerDealerUserController::class, 'show'])->name('api.v1.user.dealer.dealerUser.show')->middleware(['CheckMethod:get']);
             Route::any('save', [\App\Http\Controllers\Api\User\DealerDealerUserController::class, 'save'])->name('api.v1.user.dealer.dealerUser.save')->middleware(['CheckMethod:post|put']);
             Route::any('drop', [\App\Http\Controllers\Api\User\DealerDealerUserController::class, 'drop'])->name('api.v1.user.dealer.dealerUser.drop')->middleware(['CheckMethod:delete']);
+            Route::any('sendPassword', [\App\Http\Controllers\Api\User\DealerDealerUserController::class, 'sendPassword'])->name('api.v1.user.dealer.dealerUser.sendPassword')->middleware(['CheckMethod:post|put']);
         });
 
         Route::prefix('credit')->group(function () {
@@ -73,6 +74,7 @@ Route::middleware([
         Route::any('show', [\App\Http\Controllers\Api\User\CustomerController::class, 'show'])->name('api.v1.user.customer.show')->middleware(['CheckMethod:get']);
         Route::any('save', [\App\Http\Controllers\Api\User\CustomerController::class, 'save'])->name('api.v1.user.customer.save')->middleware(['CheckMethod:post|put']);
         Route::any('drop', [\App\Http\Controllers\Api\User\CustomerController::class, 'drop'])->name('api.v1.user.customer.drop')->middleware(['CheckMethod:delete']);
+        Route::any('updateDealer', [\App\Http\Controllers\Api\User\CustomerController::class, 'updateDealer'])->name('api.v1.user.customer.updateDealer')->middleware(['CheckMethod:post|put']);
 
         Route::prefix('service')->group(function () {
             Route::any('index', [\App\Http\Controllers\Api\User\RelationServiceController::class, 'index'])->name('api.v1.user.customer.service.index')->middleware(['CheckMethod:get']);

@@ -16,14 +16,14 @@ class CheckHeaderAuthType
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!$request->header('_auth_type')) {
-            return response()->json([
-                'message' => '_auth_type required on header',
-                'error' => true,
-                'code' => 400,
-                'response' => null
-            ], 400);
-        }
+//        if (!$request->header('_auth_type')) {
+//            return response()->json([
+//                'message' => '_auth_type required on header',
+//                'error' => true,
+//                'code' => 400,
+//                'response' => null
+//            ], 400);
+//        }
 
         return $next($request);
     }

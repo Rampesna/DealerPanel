@@ -16,14 +16,14 @@ class CheckHeaderToken
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!$request->header('_token')) {
-            return response()->json([
-                'message' => '_token required on header',
-                'error' => true,
-                'code' => 400,
-                'response' => null
-            ], 400);
-        }
+//        if (!$request->header('_token')) {
+//            return response()->json([
+//                'message' => '_token required on header',
+//                'error' => true,
+//                'code' => 400,
+//                'response' => null
+//            ], 400);
+//        }
 
         return $next($request);
     }

@@ -164,6 +164,7 @@
     AcceptButton.click(function () {
         var customer_id = $('#id_edit').val();
         var transaction_status_id = 2;
+        toastr.info('İşleminiz Yapılıyor Lütfen Bekleyin...');
         $.ajax({
             type: 'put',
             url: '{{ route('api.v1.user.waitingTransaction.customer.accept') }}',

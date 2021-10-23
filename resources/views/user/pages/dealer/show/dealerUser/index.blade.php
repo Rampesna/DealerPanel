@@ -45,6 +45,14 @@
         </a>
         <div id="EditingContexts">
             <hr>
+            <a onclick="sendPassword()" class="dropdown-item cursor-pointer">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <i class="fas fa-lock text-dark-75"></i><span class="ml-4">Şifre Gönder</span>
+                    </div>
+                </div>
+            </a>
+            <hr>
             <a onclick="edit()" class="dropdown-item cursor-pointer">
                 <div class="row">
                     <div class="col-xl-12">
