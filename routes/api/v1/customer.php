@@ -39,4 +39,9 @@ Route::middleware([
     Route::prefix('supportRequestMessage')->group(function () {
         Route::any('save', [\App\Http\Controllers\Api\Customer\SupportRequestMessageController::class, 'save'])->name('api.v1.customer.supportRequestMessage.save')->middleware(['CheckMethod:post|put']);
     });
+
+    Route::prefix('password')->group(function () {
+        Route::any('check', [\App\Http\Controllers\Api\Customer\PasswordController::class, 'check'])->name('api.v1.customer.password.check')->middleware(['CheckMethod:get']);
+        Route::any('update', [\App\Http\Controllers\Api\Customer\PasswordController::class, 'update'])->name('api.v1.customer.password.update')->middleware(['CheckMethod:post']);
+    });
 });

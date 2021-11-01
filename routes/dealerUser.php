@@ -9,6 +9,8 @@ Route::post('logout', [\App\Http\Controllers\Web\DealerUser\AuthenticationContro
 Route::middleware([
     'auth:dealerUser'
 ])->group(function () {
+    Route::get('profile', [\App\Http\Controllers\Web\DealerUser\ProfileController::class, 'index'])->name('dealerUser.profile.index');
+
     Route::get('dashboard', [\App\Http\Controllers\Web\DealerUser\DashboardController::class, 'index'])->name('dealerUser.dashboard.index');
 
     Route::prefix('customer')->group(function () {

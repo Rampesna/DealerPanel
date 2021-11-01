@@ -10,6 +10,8 @@ Route::post('logout', [\App\Http\Controllers\Web\Customer\AuthenticationControll
 Route::middleware([
     'auth:customer'
 ])->group(function () {
+    Route::get('profile', [\App\Http\Controllers\Web\Customer\ProfileController::class, 'index'])->name('customer.profile.index');
+
     Route::get('dashboard', [\App\Http\Controllers\Web\Customer\DashboardController::class, 'index'])->name('customer.dashboard.index');
 
     Route::get('credit', [\App\Http\Controllers\Web\Customer\CreditController::class, 'index'])->name('customer.credit.index');

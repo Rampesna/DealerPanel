@@ -144,8 +144,13 @@ Route::middleware([
     Route::prefix('report')->group(function () {
         Route::prefix('credit')->group(function () {
             Route::prefix('customer')->group(function () {
-                Route::get('datatable', [\App\Http\Controllers\Api\User\Report\Credit\CustomerController::class, 'creditReportDatatable'])->name('api.v1.user.report.credit.customer.datatable');
+                Route::any('datatable', [\App\Http\Controllers\Api\User\Report\Credit\CustomerController::class, 'creditReportDatatable'])->name('api.v1.user.report.credit.customer.datatable');
             });
         });
+    });
+
+    Route::prefix('password')->group(function () {
+        Route::any('check', [\App\Http\Controllers\Api\User\PasswordController::class, 'check'])->name('api.v1.user.password.check')->middleware(['CheckMethod:get']);
+        Route::any('update', [\App\Http\Controllers\Api\User\PasswordController::class, 'update'])->name('api.v1.user.password.update')->middleware(['CheckMethod:post']);
     });
 });

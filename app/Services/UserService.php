@@ -57,4 +57,43 @@ class UserService
 
         return $this->success('User logged in successfully with oAuth', $user);
     }
+
+    /**
+     * @param int $user_id
+     * @param string $password
+     */
+    public function checkPassword(
+        $user_id,
+        $password
+    )
+    {
+        $user = User::find($user_id);
+
+        if (!$user) {
+            return $this->error('User not found', 404);
+        }
+
+        return $this->success('User password check status', Hash::check($password, $user->password) ? 1 : 0);
+    }
+
+    /**
+     * @param int $user_id
+     * @param string $password
+     */
+    public function updatePassword(
+        $user_id,
+        $password
+    )
+    {
+        $user = User::find($user_id);
+
+        if (!$user) {
+            return $this->error('User not found', 404);
+        }
+
+        $user->password = $password;
+        $user->save();
+
+        return $this->success('User password updated successfully', null);
+    }
 }

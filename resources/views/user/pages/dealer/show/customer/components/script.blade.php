@@ -143,6 +143,10 @@
             {data: 'tax_number', name: 'tax_number', width: '10%'},
             {data: 'dealer_id', name: 'dealer_id'},
             {data: 'name', name: 'name'},
+            {data: 'email', name: 'email'},
+            {data: 'gsm', name: 'gsm'},
+            {data: 'province_id', name: 'province_id'},
+            {data: 'balance', name: 'balance'},
         ],
 
         responsive: true,

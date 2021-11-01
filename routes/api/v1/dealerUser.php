@@ -109,4 +109,9 @@ Route::middleware([
             });
         });
     });
+
+    Route::prefix('password')->group(function () {
+        Route::any('check', [\App\Http\Controllers\Api\DealerUser\PasswordController::class, 'check'])->name('api.v1.dealerUser.password.check')->middleware(['CheckMethod:get']);
+        Route::any('update', [\App\Http\Controllers\Api\DealerUser\PasswordController::class, 'update'])->name('api.v1.dealerUser.password.update')->middleware(['CheckMethod:post']);
+    });
 });

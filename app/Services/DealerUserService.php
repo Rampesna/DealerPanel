@@ -179,4 +179,43 @@ class DealerUserService
 
         return $this->success('Dealer user password successfully sent', null);
     }
+
+    /**
+     * @param int $dealer_user_id
+     * @param string $password
+     */
+    public function checkPassword(
+        $dealer_user_id,
+        $password
+    )
+    {
+        $dealerUser = DealerUser::find($dealer_user_id);
+
+        if (!$dealerUser) {
+            return $this->error('Dealer user not found', 404);
+        }
+
+        return $this->success('Dealer user password check status', Hash::check($password, $dealerUser->password) ? 1 : 0);
+    }
+
+    /**
+     * @param int $dealer_user_id
+     * @param string $password
+     */
+    public function updatePassword(
+        $dealer_user_id,
+        $password
+    )
+    {
+        $dealerUser = DealerUser::find($dealer_user_id);
+
+        if (!$dealerUser) {
+            return $this->error('Dealer user not found', 404);
+        }
+
+        $dealerUser->password = $password;
+        $dealerUser->save();
+
+        return $this->success('Dealer user password updated successfully', null);
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Mail\SendCustomerPasswordEmail;
 use App\Models\Customer;
 use App\Models\Dealer;
+use App\Models\Province;
 use App\Models\TransactionStatus;
 use App\Traits\Response;
 use Illuminate\Support\Facades\Auth;
@@ -111,7 +112,9 @@ class CustomerService
         $dealer_id = null
     )
     {
-        $customers = Customer::with([]);
+        $customers = Customer::with([
+            'credits'
+        ]);
 
         if ($transaction_status_id) {
             $customers->where('transaction_status_id', $transaction_status_id);
@@ -128,11 +131,20 @@ class CustomerService
         filterColumn('transaction_status', function ($customers, $data) {
             return $customers->whereIn('transaction_status_id', TransactionStatus::where('name', 'like', '%' . $data . '%')->pluck('id')->toArray());
         })->
+        filterColumn('province_id', function ($customers, $data) {
+            return $customers->whereIn('province_id', Province::where('name', 'like', '%' . $data . '%')->pluck('id')->toArray());
+        })->
         editColumn('dealer_id', function ($customer) {
             return $customer->dealer ? $customer->dealer->name : '';
         })->
+        editColumn('province_id', function ($customer) {
+            return $customer->province ? $customer->province->name : '';
+        })->
         addColumn('transaction_status', function ($customer) {
             return $customer->transactionStatus ? $customer->transactionStatus->name : '';
+        })->
+        addColumn('balance', function ($customer) {
+            return $customer->credits->where('direction', 1)->sum('amount') - $customer->credits->where('direction', 0)->sum('amount');
         })->
         make(true);
     }
@@ -311,5 +323,44 @@ class CustomerService
             return $customer->credits->where('direction', 1)->sum('amount') - $customer->credits->where('direction', 0)->sum('amount');
         })->
         make(true);
+    }
+
+    /**
+     * @param int $customer_id
+     * @param string $password
+     */
+    public function checkPassword(
+        $customer_id,
+        $password
+    )
+    {
+        $customer = Customer::find($customer_id);
+
+        if (!$customer) {
+            return $this->error('Customer not found', 404);
+        }
+
+        return $this->success('Customer password check status', Hash::check($password, $customer->password) ? 1 : 0);
+    }
+
+    /**
+     * @param int $customer_id
+     * @param string $password
+     */
+    public function updatePassword(
+        $customer_id,
+        $password
+    )
+    {
+        $customer = Customer::find($customer_id);
+
+        if (!$customer) {
+            return $this->error('Customer not found', 404);
+        }
+
+        $customer->password = $password;
+        $customer->save();
+
+        return $this->success('Customer password updated successfully', null);
     }
 }
