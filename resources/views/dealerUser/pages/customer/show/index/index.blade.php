@@ -7,6 +7,7 @@
     @include('dealerUser.pages.customer.show.layouts.subheader')
 
     @include('dealerUser.pages.customer.show.index.modals.create')
+    @include('dealerUser.pages.customer.show.index.modals.addService')
 
     <div class="row mt-15">
         <div class="col-xl-4">
@@ -82,6 +83,9 @@
                     <div class="row">
                         <div class="col-xl-8">
                             <h5>Kontör Bilgileri</h5>
+                        </div>
+                        <div class="col-xl-4 text-right">
+                            <button class="btn btn-sm btn-primary mr-n5 mt-n1" id="AddServiceModalTriggerButton">Kontör Yükle</button>
                         </div>
                     </div>
                 </div>

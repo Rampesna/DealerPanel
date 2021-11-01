@@ -10,6 +10,7 @@
     @include('user.pages.customer.show.index.modals.addReceipt')
     @include('user.pages.customer.show.index.modals.edit')
 
+    <input type="hidden" id="id_edit">
     <div class="row mt-15">
         <div class="col-xl-4">
             <div class="card">
@@ -19,7 +20,7 @@
                             <h5>Müşteri Bilgileri</h5>
                         </div>
                         <div class="col-xl-4 text-right">
-                            <button class="btn btn-sm btn-primary mr-n4" data-toggle="modal" data-target="#EditModal">Düzenle</button>
+                            <button class="btn btn-sm btn-primary mr-n4" id="EditButton">Düzenle</button>
                         </div>
                     </div>
                 </div>

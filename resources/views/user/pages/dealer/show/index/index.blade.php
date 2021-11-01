@@ -123,7 +123,7 @@
                     </div>
                 </div>
             </a>
-            <a onclick="drop()" class="dropdown-item cursor-pointer">
+            <a onclick="drop()" class="dropdown-item cursor-pointer" id="DeleteContext">
                 <div class="row">
                     <div class="col-xl-12">
                         <i class="fas fa-trash-alt text-danger"></i><span class="ml-4">Sil</span>

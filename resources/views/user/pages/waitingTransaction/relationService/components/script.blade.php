@@ -187,8 +187,12 @@
                 toastr.success('Hizmet Onaylandı.');
             },
             error: function (error) {
-                console.log(error);
-                toastr.error('Müşteri Onaylanırken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin');
+                if (error.responseJSON.message === 'Not enough balance') {
+                    toastr.error('Talebi Oluşturanın Yeterli Kontör Bakiyesi Bulunmadığından İşlem Onaylanamıyor!');
+                } else {
+                    console.log(error);
+                    toastr.error('Müşteri Onaylanırken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin');
+                }
             }
         });
     });

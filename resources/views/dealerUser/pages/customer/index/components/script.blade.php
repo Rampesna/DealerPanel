@@ -216,6 +216,9 @@
                 _token: '{{ auth()->user()->apiToken() }}',
                 _auth_type: 'DealerUser'
             },
+            data: {
+                dealer_id: '{{ auth()->user()->getDealerId() }}'
+            },
             error: function (error) {
                 console.log(error)
             }

@@ -23,12 +23,12 @@ class CustomerController extends Controller
 
     public function index(Request $request)
     {
-        return $this->customerService->index(2, $request->dealerUser->dealer_id);
+        return $this->customerService->index(2, $request->dealer_id);
     }
 
     public function datatable(Request $request)
     {
-        return $this->customerService->datatable(null, $request->dealerUser->dealer_id);
+        return $this->customerService->datatable(null, $request->dealer_id);
     }
 
     public function show(ShowRequest $request)

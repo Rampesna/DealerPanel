@@ -30,4 +30,15 @@ Route::middleware([
         Route::get('index', [\App\Http\Controllers\Web\DealerUser\SupportRequestController::class, 'index'])->name('dealerUser.supportRequest.index');
         Route::get('show/{id?}', [\App\Http\Controllers\Web\DealerUser\SupportRequestController::class, 'show'])->name('dealerUser.supportRequest.show');
     });
+
+    Route::prefix('dealer')->group(function () {
+        Route::get('index', [\App\Http\Controllers\Web\DealerUser\DealerController::class, 'index'])->name('dealerUser.dealer.index');
+        Route::get('show/{id?}/{tab?}', [\App\Http\Controllers\Web\DealerUser\DealerController::class, 'show'])->name('dealerUser.dealer.show');
+    });
+
+    Route::prefix('report')->group(function () {
+        Route::get('index', [\App\Http\Controllers\Web\DealerUser\ReportController::class, 'index'])->name('dealerUser.report.index');
+        Route::get('show/{report?}', [\App\Http\Controllers\Web\DealerUser\ReportController::class, 'show'])->name('dealerUser.report.show');
+    });
+
 });

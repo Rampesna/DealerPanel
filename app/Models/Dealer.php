@@ -55,4 +55,9 @@ class Dealer extends Model
     {
         return $this->morphMany(Contract::class, 'relation');
     }
+
+    public function transactionStatus()
+    {
+        return $this->belongsTo(TransactionStatus::class);
+    }
 }

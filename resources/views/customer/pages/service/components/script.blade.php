@@ -102,6 +102,9 @@
                 _token: '{{ auth()->user()->apiToken() }}',
                 _auth_type: 'Customer'
             },
+            data: {
+                customer_id: '{{ auth()->id() }}'
+            },
             error: function (error) {
                 console.log(error)
             }

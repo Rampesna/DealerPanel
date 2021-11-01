@@ -114,6 +114,11 @@ Route::middleware([
             Route::any('accept', [\App\Http\Controllers\Api\User\WaitingTransaction\CustomerController::class, 'accept'])->name('api.v1.user.waitingTransaction.customer.accept')->middleware(['CheckMethod:put']);
         });
 
+        Route::prefix('dealer')->group(function () {
+            Route::any('datatable', [\App\Http\Controllers\Api\User\WaitingTransaction\DealerController::class, 'datatable'])->name('api.v1.user.waitingTransaction.dealer.datatable')->middleware(['CheckMethod:get']);
+            Route::any('accept', [\App\Http\Controllers\Api\User\WaitingTransaction\DealerController::class, 'accept'])->name('api.v1.user.waitingTransaction.dealer.accept')->middleware(['CheckMethod:put']);
+        });
+
         Route::prefix('relationService')->group(function () {
             Route::any('datatable', [\App\Http\Controllers\Api\User\WaitingTransaction\CustomerServiceController::class, 'datatable'])->name('api.v1.user.waitingTransaction.relationService.datatable')->middleware(['CheckMethod:get']);
             Route::any('accept', [\App\Http\Controllers\Api\User\WaitingTransaction\CustomerServiceController::class, 'accept'])->name('api.v1.user.waitingTransaction.relationService.accept')->middleware(['CheckMethod:put']);
@@ -134,5 +139,13 @@ Route::middleware([
 
     Route::prefix('supportRequestMessage')->group(function () {
         Route::any('save', [\App\Http\Controllers\Api\User\SupportRequestMessageController::class, 'save'])->name('api.v1.user.supportRequestMessage.save')->middleware(['CheckMethod:post|put']);
+    });
+
+    Route::prefix('report')->group(function () {
+        Route::prefix('credit')->group(function () {
+            Route::prefix('customer')->group(function () {
+                Route::get('datatable', [\App\Http\Controllers\Api\User\Report\Credit\CustomerController::class, 'creditReportDatatable'])->name('api.v1.user.report.credit.customer.datatable');
+            });
+        });
     });
 });

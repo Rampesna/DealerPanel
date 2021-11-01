@@ -117,8 +117,8 @@ class CustomerService
             $customers->where('transaction_status_id', $transaction_status_id);
         }
 
-        if ($dealer_id) {
-            $customers->whereIn('dealer_id', (new DealerService)->getSubDealersIds($dealer_id));
+        if ($dealer_id != null) {
+            $customers->whereIn('dealer_id', (new DealerService)->getSubDealersIds(intval($dealer_id)));
         }
 
         return DataTables::of($customers)->
@@ -264,7 +264,7 @@ class CustomerService
 
         $customer->save();
 
-        return $this->success('Customer transaction status updated successfully', $customer_id);
+        return $this->success('Customer transaction status updated successfully', null);
     }
 
     /**
@@ -283,5 +283,33 @@ class CustomerService
         }
 
         return $this->success('Customers dealer ids successfully updated', null);
+    }
+
+    /**
+     * @param int|null $dealer_id
+     */
+    public function creditReportDatatable(
+        $dealer_id = null
+    )
+    {
+        $customers = Customer::with([
+            'credits'
+        ]);
+
+        if ($dealer_id != null) {
+            $customers->whereIn('dealer_id', (new DealerService)->getSubDealersIds(intval($dealer_id)));
+        }
+
+        return DataTables::of($customers)->
+        addColumn('total', function ($customer) {
+            return $customer->credits->where('direction', 1)->sum('amount');
+        })->
+        addColumn('used', function ($customer) {
+            return $customer->credits->where('direction', 0)->sum('amount');
+        })->
+        addColumn('remaining', function ($customer) {
+            return $customer->credits->where('direction', 1)->sum('amount') - $customer->credits->where('direction', 0)->sum('amount');
+        })->
+        make(true);
     }
 }

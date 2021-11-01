@@ -29,6 +29,6 @@ class ServiceController extends Controller
      */
     public function datatable(DatatableRequest $request)
     {
-        return $this->relationServiceService->datatable($request->customer->id, null, 2);
+        return $this->relationServiceService->datatable($request->customer_id, null, 2);
     }
 }

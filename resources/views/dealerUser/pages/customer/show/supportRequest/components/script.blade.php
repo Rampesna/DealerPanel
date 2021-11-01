@@ -204,18 +204,18 @@
             $("#id_edit").val(id);
             $("#encrypted_id_edit").val(encrypted_id);
             $("#EditingContexts").show();
+
+            var top = e.pageY - 10;
+            var left = e.pageX - 10;
+
+            $("#context-menu").css({
+                display: "block",
+                top: top,
+                left: left
+            });
         } else {
             $("#EditingContexts").hide();
         }
-
-        var top = e.pageY - 10;
-        var left = e.pageX - 10;
-
-        $("#context-menu").css({
-            display: "block",
-            top: top,
-            left: left
-        });
 
         return false;
     }).on("click", function () {

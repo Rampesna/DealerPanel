@@ -44,6 +44,33 @@ Route::middleware([
     Route::prefix('dealer')->group(function () {
         Route::any('index', [\App\Http\Controllers\Api\DealerUser\DealerController::class, 'index'])->name('api.v1.dealerUser.dealer.index')->middleware(['CheckMethod:get']);
         Route::any('datatable', [\App\Http\Controllers\Api\DealerUser\DealerController::class, 'datatable'])->name('api.v1.dealerUser.dealer.datatable')->middleware(['CheckMethod:get']);
+        Route::any('show', [\App\Http\Controllers\Api\DealerUser\DealerController::class, 'show'])->name('api.v1.dealerUser.dealer.show')->middleware(['CheckMethod:get']);
+        Route::any('save', [\App\Http\Controllers\Api\DealerUser\DealerController::class, 'save'])->name('api.v1.dealerUser.dealer.save')->middleware(['CheckMethod:post|put']);
+        Route::any('drop', [\App\Http\Controllers\Api\DealerUser\DealerController::class, 'drop'])->name('api.v1.dealerUser.dealer.drop')->middleware(['CheckMethod:delete']);
+
+        Route::prefix('customer')->group(function () {
+            Route::any('index', [\App\Http\Controllers\Api\DealerUser\DealerCustomerController::class, 'index'])->name('api.v1.dealerUser.dealer.customer.index')->middleware(['CheckMethod:get']);
+            Route::any('datatable', [\App\Http\Controllers\Api\DealerUser\DealerCustomerController::class, 'datatable'])->name('api.v1.dealerUser.dealer.customer.datatable')->middleware(['CheckMethod:get']);
+        });
+
+        Route::prefix('dealerUser')->group(function () {
+            Route::any('index', [\App\Http\Controllers\Api\DealerUser\DealerDealerUserController::class, 'index'])->name('api.v1.dealerUser.dealer.dealerUser.index')->middleware(['CheckMethod:get']);
+            Route::any('datatable', [\App\Http\Controllers\Api\DealerUser\DealerDealerUserController::class, 'datatable'])->name('api.v1.dealerUser.dealer.dealerUser.datatable')->middleware(['CheckMethod:get']);
+            Route::any('show', [\App\Http\Controllers\Api\DealerUser\DealerDealerUserController::class, 'show'])->name('api.v1.dealerUser.dealer.dealerUser.show')->middleware(['CheckMethod:get']);
+            Route::any('save', [\App\Http\Controllers\Api\DealerUser\DealerDealerUserController::class, 'save'])->name('api.v1.dealerUser.dealer.dealerUser.save')->middleware(['CheckMethod:post|put']);
+            Route::any('drop', [\App\Http\Controllers\Api\DealerUser\DealerDealerUserController::class, 'drop'])->name('api.v1.dealerUser.dealer.dealerUser.drop')->middleware(['CheckMethod:delete']);
+            Route::any('sendPassword', [\App\Http\Controllers\Api\DealerUser\DealerDealerUserController::class, 'sendPassword'])->name('api.v1.dealerUser.dealer.dealerUser.sendPassword')->middleware(['CheckMethod:post|put']);
+        });
+
+        Route::prefix('credit')->group(function () {
+            Route::any('index', [\App\Http\Controllers\Api\DealerUser\DealerCreditController::class, 'index'])->name('api.v1.dealerUser.dealer.credit.index')->middleware(['CheckMethod:get']);
+            Route::any('datatable', [\App\Http\Controllers\Api\DealerUser\DealerCreditController::class, 'datatable'])->name('api.v1.dealerUser.dealer.credit.datatable')->middleware(['CheckMethod:get']);
+        });
+
+        Route::prefix('receipt')->group(function () {
+            Route::any('index', [\App\Http\Controllers\Api\DealerUser\DealerReceiptController::class, 'index'])->name('api.v1.dealerUser.dealer.receipt.index')->middleware(['CheckMethod:get']);
+            Route::any('datatable', [\App\Http\Controllers\Api\DealerUser\DealerReceiptController::class, 'datatable'])->name('api.v1.dealerUser.dealer.receipt.datatable')->middleware(['CheckMethod:get']);
+        });
     });
 
     Route::prefix('supportRequest')->group(function () {
@@ -73,5 +100,13 @@ Route::middleware([
 
     Route::prefix('supportRequestMessage')->group(function () {
         Route::any('save', [\App\Http\Controllers\Api\DealerUser\SupportRequestMessageController::class, 'save'])->name('api.v1.dealerUser.supportRequestMessage.save')->middleware(['CheckMethod:post|put']);
+    });
+
+    Route::prefix('report')->group(function () {
+        Route::prefix('credit')->group(function () {
+            Route::prefix('customer')->group(function () {
+                Route::get('datatable', [\App\Http\Controllers\Api\DealerUser\Report\Credit\CustomerController::class, 'creditReportDatatable'])->name('api.v1.dealerUser.report.credit.customer.datatable');
+            });
+        });
     });
 });

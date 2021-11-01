@@ -33,4 +33,9 @@ Route::middleware([
         Route::get('index', [\App\Http\Controllers\Web\User\SupportRequestController::class, 'index'])->name('user.supportRequest.index');
         Route::get('show/{id?}', [\App\Http\Controllers\Web\User\SupportRequestController::class, 'show'])->name('user.supportRequest.show');
     });
+
+    Route::prefix('report')->group(function () {
+        Route::get('index', [\App\Http\Controllers\Web\User\ReportController::class, 'index'])->name('user.report.index');
+        Route::get('show/{report?}', [\App\Http\Controllers\Web\User\ReportController::class, 'show'])->name('user.report.show');
+    });
 });

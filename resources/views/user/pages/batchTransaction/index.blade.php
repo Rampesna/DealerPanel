@@ -7,13 +7,6 @@
     @include('user.pages.batchTransaction.modals.updateDealers')
 
     <div class="row">
-        <div class="col-xl-4">
-            <div class="form-group">
-                <label style="width: 100%">
-                    <input type="text" class="form-control" placeholder="Arayın...">
-                </label>
-            </div>
-        </div>
         <div class="col-xl-2">
             <div class="form-group">
                 <button class="btn btn-success btn-block" id="SelectAllButton">Tümünü Seç</button>

@@ -9,6 +9,7 @@ use App\Http\Requests\Api\User\Dealer\ShowRequest;
 use App\Http\Requests\Api\User\Dealer\JsTreeRequest;
 use App\Services\DealerService;
 use App\Traits\Response;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
 class DealerController extends Controller
@@ -22,24 +23,24 @@ class DealerController extends Controller
         $this->dealerService = new DealerService;
     }
 
-    public function all()
+    public function all(Request $request)
     {
-        return $this->dealerService->all();
+        return $this->dealerService->all($request->transaction_status_id);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return $this->dealerService->index();
+        return $this->dealerService->index($request->dealer_id, $request->transaction_status_id);
     }
 
-    public function datatable()
+    public function datatable(Request $request)
     {
-        return $this->dealerService->datatable();
+        return $this->dealerService->datatable($request->dealer_id, $request->transaction_status_id);
     }
 
     public function jsTree(JsTreeRequest $request)
     {
-        return $this->dealerService->jsTree([Crypt::decrypt($request->dealer_id)]);
+        return $this->dealerService->jsTree([Crypt::decrypt($request->dealer_id)], $request->transaction_status_id);
     }
 
     public function show(ShowRequest $request)
@@ -54,6 +55,14 @@ class DealerController extends Controller
             $request->top_id,
             $request->tax_number,
             $request->name,
+            $request->email,
+            $request->gsm,
+            $request->tax_office,
+            $request->website,
+            $request->foundation_date,
+            $request->country_id,
+            $request->province_id,
+            $request->district_id
         );
     }
 

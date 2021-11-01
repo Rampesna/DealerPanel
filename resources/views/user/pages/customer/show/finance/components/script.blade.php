@@ -113,7 +113,7 @@
         columns: [
             {data: 'created_at', name: 'created_at'},
             {data: 'relation_service_id', name: 'relation_service_id'},
-            {data: 'amount', name: 'amount'},
+            {data: 'price', name: 'price'},
             {data: 'direction', name: 'direction'},
         ],
 

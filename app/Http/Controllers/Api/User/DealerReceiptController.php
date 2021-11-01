@@ -51,8 +51,8 @@ class DealerReceiptController extends Controller
     {
         return $this->receiptService->save(
             $request->id,
-            get_class($request->user),
-            $request->user->id,
+            $request->creator_type,
+            $request->creator_id,
             $request->relation_type,
             gettype($request->relation_id) == 'integer' ? $request->relation_id : Crypt::decrypt($request->relation_id),
             $request->direction,

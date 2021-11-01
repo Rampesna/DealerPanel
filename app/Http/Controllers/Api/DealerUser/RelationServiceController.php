@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api\DealerUser;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\DealerUser\CustomerService\AcceptRequest;
-use App\Http\Requests\Api\DealerUser\CustomerService\DatatableRequest;
-use App\Http\Requests\Api\DealerUser\CustomerService\IndexRequest;
-use App\Http\Requests\Api\DealerUser\CustomerService\SaveRequest;
+use App\Http\Requests\Api\DealerUser\RelationService\AcceptRequest;
+use App\Http\Requests\Api\DealerUser\RelationService\DatatableRequest;
+use App\Http\Requests\Api\DealerUser\RelationService\IndexRequest;
+use App\Http\Requests\Api\DealerUser\RelationService\SaveRequest;
 use App\Services\RelationServiceService;
 use Illuminate\Support\Facades\Crypt;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Api\DealerUser\CustomerService;
+namespace App\Http\Requests\Api\DealerUser\RelationService;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -29,8 +29,7 @@ class DatatableRequest extends FormRequest
     {
         return [
             'relation_type' => 'required',
-            'relation_id' => 'required',
-            'transaction_status_id' => 'nullable'
+            'relation_id' => 'required'
         ];
     }
 
