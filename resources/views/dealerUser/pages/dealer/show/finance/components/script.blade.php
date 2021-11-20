@@ -97,7 +97,7 @@
         serverSide: true,
         ajax: {
             type: 'get',
-            url: '{{ route('api.v1.user.dealer.receipt.datatable') }}',
+            url: '{{ route('api.v1.dealerUser.dealer.receipt.datatable') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
                 _auth_type: 'User'
@@ -128,7 +128,7 @@
         var relation_id = '{{ $id }}';
         $.ajax({
             type: 'get',
-            url: '{{ route('api.v1.user.dealer.receipt.index') }}',
+            url: '{{ route('api.v1.dealerUser.dealer.receipt.index') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
                 _auth_type: 'User'

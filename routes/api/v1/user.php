@@ -14,6 +14,16 @@ Route::middleware([
 
     Route::prefix('credit')->group(function () {
         Route::any('deduction', [\App\Http\Controllers\Api\User\CreditController::class, 'deduction'])->name('api.v1.user.credit.deduction')->middleware(['CheckMethod:post|put']);
+
+        Route::prefix('creditDetail')->group(function () {
+            Route::any('index', [\App\Http\Controllers\Api\User\CreditDetailController::class, 'index'])->name('api.v1.user.credit.creditDetail.index')->middleware(['CheckMethod:get']);
+            Route::any('datatable', [\App\Http\Controllers\Api\User\CreditDetailController::class, 'datatable'])->name('api.v1.user.credit.creditDetail.datatable')->middleware(['CheckMethod:get']);
+            Route::any('save', [\App\Http\Controllers\Api\User\CreditDetailController::class, 'save'])->name('api.v1.user.credit.creditDetail.save')->middleware(['CheckMethod:post|put']);
+        });
+    });
+
+    Route::prefix('creditDetailType')->group(function () {
+        Route::any('index', [\App\Http\Controllers\Api\User\CreditDetailTypeController::class, 'index'])->name('api.v1.user.creditDetailType.index')->middleware(['CheckMethod:get']);
     });
 
     Route::prefix('receipt')->group(function () {
@@ -70,6 +80,7 @@ Route::middleware([
 
     Route::prefix('customer')->group(function () {
         Route::any('index', [\App\Http\Controllers\Api\User\CustomerController::class, 'index'])->name('api.v1.user.customer.index')->middleware(['CheckMethod:get']);
+        Route::any('searching', [\App\Http\Controllers\Api\User\CustomerController::class, 'searching'])->name('api.v1.user.customer.searching')->middleware(['CheckMethod:get']);
         Route::any('datatable', [\App\Http\Controllers\Api\User\CustomerController::class, 'datatable'])->name('api.v1.user.customer.datatable')->middleware(['CheckMethod:get']);
         Route::any('show', [\App\Http\Controllers\Api\User\CustomerController::class, 'show'])->name('api.v1.user.customer.show')->middleware(['CheckMethod:get']);
         Route::any('save', [\App\Http\Controllers\Api\User\CustomerController::class, 'save'])->name('api.v1.user.customer.save')->middleware(['CheckMethod:post|put']);

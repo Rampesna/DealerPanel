@@ -25,9 +25,14 @@ class DealerServiceController extends Controller
      */
     public function index(IndexRequest $request)
     {
+        try {
+            $relation_id = Crypt::decrypt($request->relation_id);
+        } catch (\Exception $exception) {
+            $relation_id = $request->relation_id;
+        }
         return $this->relationServiceService->index(
             $request->relation_type,
-            gettype($request->relation_id) == 'integer' ? $request->relation_id : Crypt::decrypt($request->relation_id),
+            $relation_id,
             $request->transaction_status_id
         );
     }
@@ -37,9 +42,14 @@ class DealerServiceController extends Controller
      */
     public function datatable(DatatableRequest $request)
     {
+        try {
+            $relation_id = Crypt::decrypt($request->relation_id);
+        } catch (\Exception $exception) {
+            $relation_id = $request->relation_id;
+        }
         return $this->relationServiceService->datatable(
             $request->relation_type,
-            gettype($request->relation_id) == 'integer' ? $request->relation_id : Crypt::decrypt($request->relation_id),
+            $relation_id,
             $request->transaction_status_id
         );
     }
@@ -57,12 +67,17 @@ class DealerServiceController extends Controller
      */
     public function save(SaveRequest $request)
     {
+        try {
+            $relation_id = Crypt::decrypt($request->relation_id);
+        } catch (\Exception $exception) {
+            $relation_id = $request->relation_id;
+        }
         return $this->relationServiceService->save(
             $request->id,
             $request->creator_type,
             $request->creator_id,
             $request->relation_type,
-            gettype($request->relation_id) == 'integer' ? $request->relation_id : Crypt::decrypt($request->relation_id),
+            $relation_id,
             $request->service_id,
             $request->start,
             $request->end,

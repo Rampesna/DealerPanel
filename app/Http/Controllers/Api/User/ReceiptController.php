@@ -21,14 +21,21 @@ class ReceiptController extends Controller
      */
     public function getPaid(GetPaidRequest $request)
     {
+        if ($request->relation_id) {
+            try {
+                $relation_id = Crypt::decrypt($request->relation_id);
+            } catch (\Exception $exception) {
+                $relation_id = $request->relation_id;
+            }
+        } else {
+            $relation_id = $request->relation_type::where('tax_number', $request->tax_number)->first()->id;
+        }
         return $this->receiptService->save(
             null,
             get_class($request->user),
             $request->user->id,
             $request->relation_type,
-            $request->relation_id ?
-                (gettype($request->relation_id) == 'integer' ? $request->relation_id : Crypt::decrypt($request->relation_id)) :
-                ($request->relation_type::where('tax_number', $request->tax_number)->first()->id),
+            $relation_id,
             0,
             null,
             $request->price

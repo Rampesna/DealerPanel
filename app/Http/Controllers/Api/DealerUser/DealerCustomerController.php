@@ -23,11 +23,21 @@ class DealerCustomerController extends Controller
 
     public function index(Request $request)
     {
-        return $this->customerService->index(2, Crypt::decrypt($request->dealer_id));
+        try {
+            $dealer_id = Crypt::decrypt($request->dealer_id);
+        } catch (\Exception $exception) {
+            $dealer_id = $request->dealer_id;
+        }
+        return $this->customerService->index(2, $dealer_id);
     }
 
     public function datatable(Request $request)
     {
-        return $this->customerService->datatable(null, Crypt::decrypt($request->dealer_id));
+        try {
+            $dealer_id = Crypt::decrypt($request->dealer_id);
+        } catch (\Exception $exception) {
+            $dealer_id = $request->dealer_id;
+        }
+        return $this->customerService->datatable(null, $dealer_id);
     }
 }

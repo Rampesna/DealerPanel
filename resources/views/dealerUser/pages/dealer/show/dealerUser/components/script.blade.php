@@ -15,7 +15,7 @@
         var id = $('#id_edit').val();
         $.ajax({
             type: 'get',
-            url: '{{ route('api.v1.user.dealer.dealerUser.show') }}',
+            url: '{{ route('api.v1.dealerUser.dealer.dealerUser.show') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
                 _auth_type: 'User'
@@ -42,7 +42,7 @@
     function save(method, data) {
         $.ajax({
             type: method,
-            url: '{{ route('api.v1.user.dealer.dealerUser.save') }}',
+            url: '{{ route('api.v1.dealerUser.dealer.dealerUser.save') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
                 _auth_type: 'User'
@@ -67,7 +67,7 @@
         var id = $('#id_edit').val();
         $.ajax({
             type: 'post',
-            url: '{{ route('api.v1.user.dealer.dealerUser.sendPassword') }}',
+            url: '{{ route('api.v1.dealerUser.dealer.dealerUser.sendPassword') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
                 _auth_type: 'User'
@@ -174,7 +174,7 @@
         serverSide: true,
         ajax: {
             type: 'get',
-            url: '{{ route('api.v1.user.dealer.dealerUser.datatable') }}',
+            url: '{{ route('api.v1.dealerUser.dealer.dealerUser.datatable') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
                 _auth_type: 'User'
@@ -284,7 +284,7 @@
         var id = $('#id_edit').val();
         $.ajax({
             type: 'delete',
-            url: '{{ route('api.v1.user.dealer.dealerUser.drop') }}',
+            url: '{{ route('api.v1.dealerUser.dealer.dealerUser.drop') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
                 _auth_type: 'User'

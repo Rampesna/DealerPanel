@@ -107,6 +107,33 @@ class CustomerService
      * @param int|null $transaction_status_id
      * @param int|null $dealer_id
      */
+    public function searching(
+        $keyword,
+        $dealer_id = null
+    )
+    {
+        $customers = Customer::with([])->where('transaction_status_id', 2);
+
+        if ($dealer_id) {
+            $customers->whereIn('dealer_id', (new DealerService)->getSubDealersIds($dealer_id));
+        }
+
+        if ($keyword) {
+            $customers->where(function ($customers) use ($keyword) {
+                $customers
+                    ->where('name', 'like', '%' . $keyword . '%')
+                    ->orWhere('tax_number', 'like', '%' . $keyword . '%')
+                    ->orWhere('email', 'like', '%' . $keyword . '%');
+            });
+        }
+
+        return $this->success('All customers', $customers->get());
+    }
+
+    /**
+     * @param int|null $transaction_status_id
+     * @param int|null $dealer_id
+     */
     public function datatable(
         $transaction_status_id = null,
         $dealer_id = null
@@ -144,7 +171,7 @@ class CustomerService
             return $customer->transactionStatus ? $customer->transactionStatus->name : '';
         })->
         addColumn('balance', function ($customer) {
-            return $customer->credits->where('direction', 1)->sum('amount') - $customer->credits->where('direction', 0)->sum('amount');
+            return number_format($customer->credits->where('direction', 1)->sum('amount') - $customer->credits->where('direction', 0)->sum('amount'), 2);
         })->
         make(true);
     }

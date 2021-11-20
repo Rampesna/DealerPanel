@@ -24,20 +24,12 @@ class SupportRequestController extends Controller
 
     public function index(IndexRequest $request)
     {
-        return $this->supportRequestService->index(
-            $request->creator_type,
-            $request->creator_id
-        );
+        return $this->supportRequestService->index();
     }
 
     public function datatable(DatatableRequest $request)
     {
-        return $this->supportRequestService->datatable(
-            $request->creator_type,
-            $request->creator_id ?
-                gettype($request->creator_id) == 'integer' ?
-                    $request->creator_id : Crypt::decrypt($request->creator_id) : null
-        );
+        return $this->supportRequestService->datatable();
     }
 
     public function show(ShowRequest $request)

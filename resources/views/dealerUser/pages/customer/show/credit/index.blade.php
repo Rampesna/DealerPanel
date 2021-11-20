@@ -6,6 +6,8 @@
 
     @include('dealerUser.pages.customer.show.layouts.subheader')
 
+    @include('dealerUser.pages.customer.show.credit.modals.creditDetail')
+
     <div class="row mt-15">
         <div class="col-xl-4">
             <div class="card">
@@ -39,6 +41,9 @@
         </div>
     </div>
     <hr>
+
+    <input type="hidden" id="id_edit">
+    <input type="hidden" id="encrypted_id_edit">
     <div class="row">
         <div class="col-xl-12">
             <div class="card" id="creditsCard">
@@ -46,6 +51,7 @@
                     <table class="table" id="credits">
                         <thead>
                         <tr>
+                            <th></th>
                             <th>İşlem Tarihi</th>
                             <th>Bağlı Hizmet</th>
                             <th>Miktar</th>
@@ -54,6 +60,7 @@
                         </thead>
                         <tfoot>
                         <tr>
+                            <th></th>
                             <th>İşlem Tarihi</th>
                             <th>Bağlı Hizmet</th>
                             <th>Miktar</th>

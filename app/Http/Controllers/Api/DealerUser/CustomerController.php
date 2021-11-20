@@ -33,7 +33,12 @@ class CustomerController extends Controller
 
     public function show(ShowRequest $request)
     {
-        return $this->customerService->show(gettype($request->id) == 'integer' ? $request->id : Crypt::decrypt($request->id));
+        try {
+            $id = Crypt::decrypt($request->id);
+        } catch (\Exception $exception) {
+            $id = $request->id;
+        }
+        return $this->customerService->show($id);
     }
 
     public function save(SaveRequest $request)

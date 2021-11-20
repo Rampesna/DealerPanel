@@ -32,7 +32,7 @@ class DeductionRequest extends FormRequest
             'relation_type' => 'required',
             'relation_id' => request()->tax_number ? 'nullable' : 'required',
             'tax_number' => request()->relation_id ? 'nullable' : 'required',
-            'amount' => 'required|integer',
+            'amount' => 'required|numeric',
             'description' => 'nullable'
         ];
     }

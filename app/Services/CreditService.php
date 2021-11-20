@@ -86,6 +86,15 @@ class CreditService
         editColumn('direction', function ($credit) {
             return $credit->direction == 1 ? 'Alındı' : 'Kullanıldı';
         })->
+        editColumn('amount', function ($credit) {
+            return number_format($credit->amount, 2);
+        })->
+        addColumn('show_credit_details', function ($credit) {
+            return $credit->direction == 0 ? '<i class="fa fa-plus-circle text-success cursor-pointer show_credit_details" data-id="' . $credit->id . '"></i>' : '';
+        })->
+        rawColumns([
+            'show_credit_details'
+        ])->
         make(true);
     }
 

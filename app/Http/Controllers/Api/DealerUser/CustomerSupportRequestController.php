@@ -21,9 +21,14 @@ class CustomerSupportRequestController extends Controller
 
     public function datatable(DatatableRequest $request)
     {
+        try {
+            $creator_id = Crypt::decrypt($request->creator_id);
+        } catch (\Exception $exception) {
+            $creator_id = $request->creator_id;
+        }
         return $this->supportRequestService->datatable(
             $request->creator_type,
-            Crypt::decrypt($request->creator_id)
+            $creator_id
         );
     }
 }

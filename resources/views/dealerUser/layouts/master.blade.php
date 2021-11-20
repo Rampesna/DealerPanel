@@ -50,7 +50,7 @@
 <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
 <script src="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.js?v=7.0.3') }}"></script>
 <script src="{{ asset('assets/js/scripts.bundle.js?v=7.0.3') }}"></script>
-<script src="{{ asset('assets/js/custom.js') }}"></script>
+<script src="{{ asset('assets/js/custom.js?v1.0.0.0') }}"></script>
 
 @include('dealerUser.layouts.components.script')
 

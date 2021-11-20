@@ -12,7 +12,7 @@ class Credit extends Model
     use HasFactory, SoftDeletes;
 
     protected $appends = [
-        'encrypted_id'
+        'encrypted_id',
     ];
 
     public function getEncryptedIdAttribute()
@@ -28,5 +28,10 @@ class Credit extends Model
     public function service()
     {
         return $this->hasOneThrough(Service::class, RelationService::class, 'id', 'id', 'relation_service_id', 'service_id');
+    }
+
+    public function details()
+    {
+        return $this->hasMany(CreditDetail::class);
     }
 }

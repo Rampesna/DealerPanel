@@ -11,25 +11,24 @@ Route::get('/', function () {
 });
 
 Route::get('/test', function () {
-    $jsonData = file_get_contents(public_path('data.json'));
-    $collection = collect(json_decode($jsonData));
+    $list = collect(json_decode(file_get_contents(public_path('newlist.json'))));
     $array = [];
-
-    foreach ($collection as $data) {
-
-        $customer = \App\Models\Customer::where('tax_number', $data->tax_number)->first();
+    foreach ($list as $item) {
+        $customer = \App\Models\Customer::where('tax_number', $item->tax_number)->first();
 
         if ($customer) {
             $array[] = [
                 'relation_type' => 'App\\Models\\Customer',
                 'relation_id' => $customer->id,
-                'relation_service_id' => null,
-                'amount' => $data->amount,
+                'amount' => doubleval($item->amount),
                 'direction' => 1,
-                'created_at' => date('Y-m-d'),
-                'updated_at' => date('Y-m-d')
+                'description' => $item->description,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
             ];
         }
     }
+
+    return $array;
 
 });

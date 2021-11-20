@@ -13,6 +13,7 @@
                     <table class="table" id="customers">
                         <thead>
                         <tr>
+                            <th>Vergi Numarası</th>
                             <th>Ünvan</th>
                             <th>Toplam Alınan Kontör</th>
                             <th>Toplam Harcanan Kontör</th>
@@ -21,6 +22,7 @@
                         </thead>
                         <tfoot>
                         <tr>
+                            <th>Vergi Numarası</th>
                             <th>Ünvan</th>
                             <th>Toplam Alınan Kontör</th>
                             <th>Toplam Harcanan Kontör</th>

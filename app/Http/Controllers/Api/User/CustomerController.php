@@ -7,9 +7,9 @@ use App\Http\Requests\Api\User\Customer\DropRequest;
 use App\Http\Requests\Api\User\Customer\SaveRequest;
 use App\Http\Requests\Api\User\Customer\ShowRequest;
 use App\Http\Requests\Api\User\Customer\UpdateDealerRequest;
+use App\Http\Requests\Api\User\Customer\SearchingRequest;
 use App\Services\CustomerService;
 use App\Traits\Response;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
 class CustomerController extends Controller
@@ -28,14 +28,24 @@ class CustomerController extends Controller
         return $this->customerService->index();
     }
 
-    public function datatable(Request $request)
+    public function searching(SearchingRequest $request)
+    {
+        return $this->customerService->searching($request->keyword);
+    }
+
+    public function datatable()
     {
         return $this->customerService->datatable(2);
     }
 
     public function show(ShowRequest $request)
     {
-        return $this->customerService->show(Crypt::decrypt($request->id));
+        try {
+            $id = Crypt::decrypt($request->id);
+        } catch (\Exception $exception) {
+            $id = $request->id;
+        }
+        return $this->customerService->show($id);
     }
 
     public function save(SaveRequest $request)

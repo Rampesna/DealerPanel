@@ -9,6 +9,8 @@
     var customers = $('#customers');
     var dealers = $('#dealers');
 
+    var searching = $('#searching');
+
     function updateDealersModalTrigger() {
         $('#UpdateDealersModal').modal('show');
     }
@@ -22,14 +24,17 @@
     }
 
     function getCustomers() {
+        $('#loader').fadeIn(250);
         $.ajax({
             type: 'get',
-            url: '{{ route('api.v1.user.customer.index') }}',
+            url: '{{ route('api.v1.user.customer.searching') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
                 _auth_type: 'User'
             },
-            data: {},
+            data: {
+                keyword: searching.val()
+            },
             success: function (response) {
                 var baseAsset = '{{ asset('') }}';
                 customers.empty();
@@ -78,9 +83,12 @@
                         </div>
                     `);
                 });
+                $('#loader').fadeOut(250);
             },
             error: function (error) {
-                console.log(error)
+                console.log(error);
+                toastr.error('Müşteri Listesi Alınırken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+                $('#loader').fadeOut(250);
             }
         });
     }
@@ -178,6 +186,13 @@
                     toastr.error('Müşteriler Bayiye Atanırken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
                 }
             });
+        }
+    });
+
+    searching.on('keypress', function (e) {
+        if (e.which === 13) {
+            console.log('deneme')
+            getCustomers();
         }
     });
 

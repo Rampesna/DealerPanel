@@ -115,6 +115,10 @@ function reformatDateForInput(date) {
         String(formattedDate.getDate()).padStart(2, '0');
 }
 
+function reformatFloatNumber(number) {
+    return number.toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+}
+
 $('.decimal').on("copy cut paste drop", function () {
     return false;
 }).keyup(function () {

@@ -145,9 +145,9 @@
                     if (credit.direction === 0) used += credit.amount;
                 });
                 var remaining = total - used;
-                $('#totalSpan').html(total);
-                $('#usedSpan').html(used);
-                $('#remainingSpan').html(remaining);
+                $('#totalSpan').html(reformatFloatNumber(total));
+                $('#usedSpan').html(reformatFloatNumber(used));
+                $('#remainingSpan').html(reformatFloatNumber(remaining));
             },
             error: function (error) {
                 console.log(error);

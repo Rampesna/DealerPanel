@@ -22,7 +22,12 @@ class CreditController extends Controller
      */
     public function index(IndexRequest $request)
     {
-        return $this->creditService->index($request->relation_type, $request->relation_id);
+        try {
+            $relation_id = Crypt::decrypt($request->relation_id);
+        } catch (\Exception $exception) {
+            $relation_id = $request->relation_id;
+        }
+        return $this->creditService->index($request->relation_type, $relation_id);
     }
 
     /**
@@ -30,6 +35,11 @@ class CreditController extends Controller
      */
     public function datatable(DatatableRequest $request)
     {
-        return $this->creditService->datatable($request->relation_type, $request->relation_id);
+        try {
+            $relation_id = Crypt::decrypt($request->relation_id);
+        } catch (\Exception $exception) {
+            $relation_id = $request->relation_id;
+        }
+        return $this->creditService->datatable($request->relation_type, $relation_id);
     }
 }

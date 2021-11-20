@@ -26,7 +26,12 @@ class DealerContractController extends Controller
      */
     public function index(IndexRequest $request)
     {
-        return $this->contractService->index($request->relation_type, $request->relation_id);
+        try {
+            $relation_id = Crypt::decrypt($request->relation_id);
+        } catch (\Exception $exception) {
+            $relation_id = $request->relation_id;
+        }
+        return $this->contractService->index($request->relation_type, $relation_id);
     }
 
     /**
@@ -34,7 +39,12 @@ class DealerContractController extends Controller
      */
     public function datatable(DatatableRequest $request)
     {
-        return $this->contractService->datatable($request->relation_type, gettype($request->relation_id) == 'integer' ? $request->relation_id : Crypt::decrypt($request->relation_id));
+        try {
+            $relation_id = Crypt::decrypt($request->relation_id);
+        } catch (\Exception $exception) {
+            $relation_id = $request->relation_id;
+        }
+        return $this->contractService->datatable($request->relation_type, $relation_id);
     }
 
     /**
@@ -50,10 +60,15 @@ class DealerContractController extends Controller
      */
     public function save(SaveRequest $request)
     {
+        try {
+            $relation_id = Crypt::decrypt($request->relation_id);
+        } catch (\Exception $exception) {
+            $relation_id = $request->relation_id;
+        }
         return $this->contractService->save(
             $request->id,
             $request->relation_type,
-            gettype($request->relation_id) == 'integer' ? $request->relation_id : Crypt::decrypt($request->relation_id),
+            $relation_id,
             $request->number,
             $request->start,
             $request->end,

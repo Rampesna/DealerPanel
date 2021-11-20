@@ -26,7 +26,12 @@ class DealerDealerUserController extends Controller
      */
     public function index(IndexRequest $request)
     {
-        return $this->dealerUserService->index(gettype($request->dealer_id) == 'integer' ? $request->dealer_id : Crypt::decrypt($request->dealer_id));
+        try {
+            $dealer_id = Crypt::decrypt($request->dealer_id);
+        } catch (\Exception $exception) {
+            $dealer_id = $request->dealer_id;
+        }
+        return $this->dealerUserService->index($dealer_id);
     }
 
     /**
@@ -34,7 +39,12 @@ class DealerDealerUserController extends Controller
      */
     public function datatable(DatatableRequest $request)
     {
-        return $this->dealerUserService->datatable(gettype($request->dealer_id) == 'integer' ? $request->dealer_id : Crypt::decrypt($request->dealer_id));
+        try {
+            $dealer_id = Crypt::decrypt($request->dealer_id);
+        } catch (\Exception $exception) {
+            $dealer_id = $request->dealer_id;
+        }
+        return $this->dealerUserService->datatable($dealer_id);
     }
 
     /**
@@ -50,9 +60,14 @@ class DealerDealerUserController extends Controller
      */
     public function save(SaveRequest $request)
     {
+        try {
+            $dealer_id = Crypt::decrypt($request->dealer_id);
+        } catch (\Exception $exception) {
+            $dealer_id = $request->dealer_id;
+        }
         return $this->dealerUserService->save(
             $request->id,
-            gettype($request->dealer_id) == 'integer' ? $request->dealer_id : Crypt::decrypt($request->dealer_id),
+            $dealer_id,
             $request->name,
             $request->email
         );

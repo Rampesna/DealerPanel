@@ -22,9 +22,14 @@ class DealerCreditController extends Controller
      */
     public function index(IndexRequest $request)
     {
+        try {
+            $relation_id = Crypt::decrypt($request->relation_id);
+        } catch (\Exception $exception) {
+            $relation_id = $request->relation_id;
+        }
         return $this->creditService->index(
             $request->relation_type,
-            Crypt::decrypt($request->relation_id),
+            $relation_id,
             null
         );
     }
@@ -34,9 +39,14 @@ class DealerCreditController extends Controller
      */
     public function datatable(DatatableRequest $request)
     {
+        try {
+            $relation_id = Crypt::decrypt($request->relation_id);
+        } catch (\Exception $exception) {
+            $relation_id = $request->relation_id;
+        }
         return $this->creditService->datatable(
             $request->relation_type,
-            Crypt::decrypt($request->relation_id),
+            $relation_id,
             null
         );
     }

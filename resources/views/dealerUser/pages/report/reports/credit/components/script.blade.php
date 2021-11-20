@@ -115,6 +115,7 @@
             }
         },
         columns: [
+            {data: 'tax_number', name: 'tax_number'},
             {data: 'name', name: 'name'},
             {data: 'total', name: 'total'},
             {data: 'used', name: 'used'},

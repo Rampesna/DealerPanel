@@ -18,17 +18,21 @@ class SupportRequestService
     use Response;
 
     /**
-     * @param string $creator_type
-     * @param int $creator_id
+     * @param string|null $creator_type
+     * @param int|null $creator_id
      */
     public function index(
-        $creator_type,
-        $creator_id
+        $creator_type = null,
+        $creator_id = null
     )
     {
-        return $this->success('Support requests', SupportRequest::with([
-            'creator',
-        ])->where('creator_type', $creator_type)->where('creator_id', $creator_id)->get());
+        $supportRequests = SupportRequest::with([]);
+
+        if ($creator_type && $creator_id) {
+            $supportRequests->where('creator_type', $creator_type)->where('creator_id', $creator_id);
+        }
+
+        return $this->success('Support requests', $supportRequests->get());
     }
 
     /**

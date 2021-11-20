@@ -22,7 +22,12 @@ class CustomerReceiptController extends Controller
      */
     public function index(IndexRequest $request)
     {
-        return $this->receiptService->index(null, null, $request->relation_type, Crypt::decrypt($request->relation_id));
+        try {
+            $relation_id = Crypt::decrypt($request->relation_id);
+        } catch (\Exception $exception) {
+            $relation_id = $request->relation_id;
+        }
+        return $this->receiptService->index(null, null, $request->relation_type, $relation_id);
     }
 
     /**
@@ -30,6 +35,11 @@ class CustomerReceiptController extends Controller
      */
     public function datatable(DatatableRequest $request)
     {
-        return $this->receiptService->datatable(null, null, $request->relation_type, Crypt::decrypt($request->relation_id));
+        try {
+            $relation_id = Crypt::decrypt($request->relation_id);
+        } catch (\Exception $exception) {
+            $relation_id = $request->relation_id;
+        }
+        return $this->receiptService->datatable(null, null, $request->relation_type, $relation_id);
     }
 }

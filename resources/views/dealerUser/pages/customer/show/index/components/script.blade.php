@@ -45,6 +45,7 @@
                 transaction_status_id: 2
             },
             success: function (response) {
+                console.log(response)
                 var total = 0;
                 var used = 0;
                 $.each(response.response, function (i, credit) {
@@ -52,9 +53,9 @@
                     if (credit.direction === 0) used += credit.amount;
                 });
                 var remaining = total - used;
-                $('#totalCreditSpan').html(total);
-                $('#usedCreditSpan').html(used);
-                $('#remainingCreditSpan').html(remaining);
+                $('#totalCreditSpan').html(reformatFloatNumber(total));
+                $('#usedCreditSpan').html(reformatFloatNumber(used));
+                $('#remainingCreditSpan').html(reformatFloatNumber(remaining));
             },
             error: function (error) {
                 console.log(error);

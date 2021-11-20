@@ -3,6 +3,36 @@
 
 <script>
 
+    function getSupportRequests() {
+        $.ajax({
+            type: 'get',
+            url: ' {{ route('api.v1.user.supportRequest.index') }}',
+            headers: {
+                _token: '{{ auth()->user()->apiToken() }}',
+                _auth_type: 'User'
+            },
+            data: {},
+            success: function (response) {
+                var waiting = 0;
+                var answered = 0;
+                var completed = 0;
+                $.each(response.response, function (i, supportRequest) {
+                    if (parseInt(supportRequest.status_id) === 1) waiting += 1;
+                    if (parseInt(supportRequest.status_id) === 2) answered += 1;
+                    if (parseInt(supportRequest.status_id) === 3) completed += 1;
+                });
+                $('#waiting_span').html(waiting);
+                $('#answered_span').html(answered);
+                $('#completed_span').html(completed);
+            },
+            error: function () {
+
+            }
+        });
+    }
+
+    getSupportRequests();
+
     function show() {
         $(location).prop('href', `{{ route('user.supportRequest.show') }}/${$('#encrypted_id_edit').val()}`);
     }
@@ -37,7 +67,7 @@
             }
         },
 
-        dom: 'Brtipl',
+        dom: 'rtipl',
 
         order: [
             [
@@ -125,7 +155,7 @@
             data: {},
             error: function (error) {
                 console.log(error)
-            }
+            },
         },
         columns: [
             {data: 'creator_type', name: 'creator_type', width: '10%'},

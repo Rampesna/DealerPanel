@@ -21,16 +21,29 @@ class CreditController extends Controller
      */
     public function deduction(DeductionRequest $request)
     {
-        return $this->creditService->save(
-            null,
-            $request->relation_type,
-            $request->relation_id ?
-                (gettype($request->relation_id) == 'integer' ? $request->relation_id : Crypt::decrypt($request->relation_id)) :
-                ($request->relation_type::where('tax_number', $request->tax_number)->first()->id ?? null),
-            null,
-            $request->amount,
-            0,
-            $request->desciption
-        );
+        $relation = $request->relation_type::where('tax_number', $request->tax_number)->first();
+
+        $file = fopen(public_path(date('Y_m_d') . '_credits_logs.txt'), 'w');
+        fwrite($file, date('Y-m-d H:i:s') . '   =>   Relation: ' . serialize($relation));
+        fclose($file);
+
+        if ($relation) {
+            return $this->creditService->save(
+                null,
+                $request->relation_type,
+                $relation->id,
+                null,
+                $request->amount,
+                0,
+                $request->desciption
+            );
+        } else {
+            return response()->json([
+                'message' => 'Relation not found',
+                'error' => true,
+                'code' => 404,
+                'response' => null
+            ], 404);
+        }
     }
 }

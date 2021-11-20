@@ -84,6 +84,11 @@ Route::middleware([
     Route::prefix('credit')->group(function () {
         Route::any('index', [\App\Http\Controllers\Api\DealerUser\CreditController::class, 'index'])->name('api.v1.dealerUser.credit.index')->middleware(['CheckMethod:get']);
         Route::any('datatable', [\App\Http\Controllers\Api\DealerUser\CreditController::class, 'datatable'])->name('api.v1.dealerUser.credit.datatable')->middleware(['CheckMethod:get']);
+
+        Route::prefix('creditDetail')->group(function () {
+            Route::any('index', [\App\Http\Controllers\Api\DealerUser\CreditDetailController::class, 'index'])->name('api.v1.dealerUser.credit.creditDetail.index')->middleware(['CheckMethod:get']);
+            Route::any('datatable', [\App\Http\Controllers\Api\DealerUser\CreditDetailController::class, 'datatable'])->name('api.v1.dealerUser.credit.creditDetail.datatable')->middleware(['CheckMethod:get']);
+        });
     });
 
     Route::prefix('receipt')->group(function () {

@@ -23,11 +23,16 @@ class DealerReceiptController extends Controller
      */
     public function index(IndexRequest $request)
     {
+        try {
+            $relation_id = Crypt::decrypt($request->relation_id);
+        } catch (\Exception $exception) {
+            $relation_id = $request->relation_id;
+        }
         return $this->receiptService->index(
             null,
             null,
             $request->relation_type,
-            gettype($request->relation_id) == 'integer' ? $request->relation_id : Crypt::decrypt($request->relation_id)
+            $relation_id
         );
     }
 
@@ -36,11 +41,16 @@ class DealerReceiptController extends Controller
      */
     public function datatable(DatatableRequest $request)
     {
+        try {
+            $relation_id = Crypt::decrypt($request->relation_id);
+        } catch (\Exception $exception) {
+            $relation_id = $request->relation_id;
+        }
         return $this->receiptService->datatable(
             null,
             null,
             $request->relation_type,
-            gettype($request->relation_id) == 'integer' ? $request->relation_id : Crypt::decrypt($request->relation_id)
+            $relation_id
         );
     }
 
@@ -49,12 +59,17 @@ class DealerReceiptController extends Controller
      */
     public function save(SaveRequest $request)
     {
+        try {
+            $relation_id = Crypt::decrypt($request->relation_id);
+        } catch (\Exception $exception) {
+            $relation_id = $request->relation_id;
+        }
         return $this->receiptService->save(
             $request->id,
             $request->creator_type,
             $request->creator_id,
             $request->relation_type,
-            gettype($request->relation_id) == 'integer' ? $request->relation_id : Crypt::decrypt($request->relation_id),
+            $relation_id,
             $request->direction,
             null,
             $request->price

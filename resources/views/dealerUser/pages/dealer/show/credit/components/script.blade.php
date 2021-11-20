@@ -97,7 +97,7 @@
         serverSide: true,
         ajax: {
             type: 'get',
-            url: '{{ route('api.v1.user.dealer.credit.datatable') }}',
+            url: '{{ route('api.v1.dealerUser.dealer.credit.datatable') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
                 _auth_type: 'User'
@@ -128,7 +128,7 @@
         var relation_id = '{{ $id }}';
         $.ajax({
             type: 'get',
-            url: '{{ route('api.v1.user.dealer.credit.index') }}',
+            url: '{{ route('api.v1.dealerUser.dealer.credit.index') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
                 _auth_type: 'User'
@@ -145,9 +145,9 @@
                     if (credit.direction === 0) used += credit.amount;
                 });
                 var remaining = total - used;
-                $('#totalSpan').html(total);
-                $('#usedSpan').html(used);
-                $('#remainingSpan').html(remaining);
+                $('#totalSpan').html(reformatFloatNumber(total));
+                $('#usedSpan').html(reformatFloatNumber(used));
+                $('#remainingSpan').html(reformatFloatNumber(remaining));
             },
             error: function (error) {
                 console.log(error);

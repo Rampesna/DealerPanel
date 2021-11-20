@@ -79,6 +79,11 @@
                         <div>İlçe</div>
                         <div id="district_id_span">--</div>
                     </div>
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                        <div>Fatura Gönderim Durumu</div>
+                        <div id="invoice_send_status_span">--</div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -30,17 +30,32 @@ class DealerController extends Controller
 
     public function index(Request $request)
     {
-        return $this->dealerService->index($request->dealer_id, $request->transaction_status_id);
+        try {
+            $dealer_id = Crypt::decrypt($request->dealer_id);
+        } catch (\Exception $exception) {
+            $dealer_id = $request->dealer_id;
+        }
+        return $this->dealerService->index($dealer_id, $request->transaction_status_id);
     }
 
     public function datatable(Request $request)
     {
-        return $this->dealerService->datatable($request->dealer_id, $request->transaction_status_id);
+        try {
+            $dealer_id = Crypt::decrypt($request->dealer_id);
+        } catch (\Exception $exception) {
+            $dealer_id = $request->dealer_id;
+        }
+        return $this->dealerService->datatable($dealer_id, $request->transaction_status_id);
     }
 
     public function jsTree(JsTreeRequest $request)
     {
-        return $this->dealerService->jsTree([Crypt::decrypt($request->dealer_id)], $request->transaction_status_id);
+        try {
+            $dealer_id = Crypt::decrypt($request->dealer_id);
+        } catch (\Exception $exception) {
+            $dealer_id = $request->dealer_id;
+        }
+        return $this->dealerService->jsTree([$dealer_id], $request->transaction_status_id);
     }
 
     public function show(ShowRequest $request)
