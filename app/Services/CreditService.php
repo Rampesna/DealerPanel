@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Credit;
 use App\Models\RelationService;
 use App\Models\Service;
+use App\SoapServices\BienSoapService;
 use App\Traits\Response;
 use Yajra\DataTables\DataTables;
 
@@ -24,7 +25,8 @@ class CreditService
     )
     {
         $credits = Credit::with([
-            'relation'
+            'relation',
+            'service'
         ]);
 
         if ($relation_type && $relation_id) {
@@ -154,5 +156,24 @@ class CreditService
         $credit->save();
 
         return $this->success('Credit saved successfully', $credit);
+    }
+
+    /**
+     * @param string $taxNumber
+     * @param string $startDate
+     * @param string $endDate
+     */
+    public function usageReport(
+        $taxNumber,
+        $startDate,
+        $endDate
+    )
+    {
+        $bienSoapService = new BienSoapService();
+        return $bienSoapService->GetCustomerReportWithSoftware(
+            $taxNumber,
+            $startDate,
+            $endDate
+        );
     }
 }

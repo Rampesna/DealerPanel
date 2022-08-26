@@ -1,242 +1,34 @@
-<script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js?v=7.0.3') }}"></script>
-<script src="{{ asset('assets/js/pages/crud/datatables/extensions/buttons.js?v=7.0.3') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxcore.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxbuttons.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxscrollbar.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxlistbox.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxdropdownlist.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxmenu.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxgrid.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxgrid.selection.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxgrid.columnsresize.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxgrid.filter.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxgrid.sort.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxdata.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxgrid.pager.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxnumberinput.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxwindow.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxdata.export.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxgrid.export.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxexport.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxgrid.grouping.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/globalization/globalize.js') }}"></script>
+<script src="{{ asset('assets/js/jqgrid-localization.js') }}"></script>
+<script src="{{ asset('assets/js/jszip.min.js') }}"></script>
 
 <script>
 
-    var credits = $('#credits').DataTable({
-        language: {
-            info: "_TOTAL_ Kayıttan _START_ - _END_ Arasındaki Kayıtlar Gösteriliyor.",
-            infoEmpty: "Gösterilecek Hiç Kayıt Yok.",
-            loadingRecords: "Kayıtlar Yükleniyor.",
-            zeroRecords: "Tablo Boş",
-            search: "Arama:",
-            infoFiltered: "(Toplam _MAX_ Kayıttan Filtrelenenler)",
-            lengthMenu: "Sayfa Başı _MENU_ Kayıt Göster",
-            sProcessing: "Yükleniyor...",
-            paginate: {
-                first: "İlk",
-                previous: "Önceki",
-                next: "Sonraki",
-                last: "Son"
-            },
-            select: {
-                rows: {
-                    "_": "%d kayıt seçildi",
-                    "0": "",
-                    "1": "1 kayıt seçildi"
-                }
-            },
-            buttons: {
-                print: {
-                    title: 'Yazdır'
-                }
-            }
-        },
+    var usageDiv = $('#usages');
 
-        dom: 'Brtipl',
-
-        order: [
-            [
-                0,
-                "desc"
-            ]
-        ],
-
-        buttons: [
-            {
-                extend: 'collection',
-                text: '<i class="fa fa-download"></i> Dışa Aktar',
-                buttons: [
-                    {
-                        extend: 'pdf',
-                        text: '<i class="fa fa-file-pdf"></i> PDF İndir'
-                    },
-                    {
-                        extend: 'excel',
-                        text: '<i class="fa fa-file-excel"></i> Excel İndir'
-                    }
-                ]
-            },
-            {
-                extend: 'print',
-                text: '<i class="fa fa-print"></i> Yazdır'
-            },
-            {
-                extend: 'colvis',
-                text: '<i class="fa fa-columns"></i> Sütunlar'
-            },
-            {
-                text: '<i class="fas fa-undo"></i> Yenile',
-                action: function (e, dt, node, config) {
-                    $('table input').val('');
-                    credits.search('').columns().search('').ajax.reload().draw();
-                }
-            }
-        ],
-
-        initComplete: function () {
-            var r = $('#credits tfoot tr');
-            $('#credits thead').append(r);
-            this.api().columns().every(function (index) {
-                var column = this;
-                var input = document.createElement('input');
-
-                if (index === 1) {
-                    input.setAttribute("type", "datetime-local");
-                }
-
-                input.className = 'form-control';
-                $(input).appendTo($(column.footer()).empty())
-                    .on('change', function () {
-                        column.search($(this).val(), false, false, true).draw();
-                    });
-            });
-        },
-
-        processing: true,
-        serverSide: true,
-        ajax: {
-            type: 'get',
-            url: '{{ route('api.v1.dealerUser.customer.credit.datatable') }}',
-            headers: {
-                _token: '{{ auth()->user()->apiToken() }}',
-                _auth_type: 'DealerUser'
-            },
-            data: {
-                relation_type: 'App\\Models\\Customer',
-                relation_id: '{{ $id }}'
-            },
-            error: function (error) {
-                console.log(error)
-            }
-        },
-        columns: [
-            {data: 'show_credit_details', name: 'show_credit_details', width: '2%', sortable: false, orderable: false},
-            {data: 'created_at', name: 'created_at'},
-            {data: 'relation_service_id', name: 'relation_service_id'},
-            {data: 'amount', name: 'amount'},
-            {data: 'direction', name: 'direction'},
-        ],
-
-        responsive: true,
-        colReorder: true,
-        stateSave: true,
-        select: 'single'
-    });
-
-    var creditDetails = $('#creditDetails').DataTable({
-        language: {
-            info: "_TOTAL_ Kayıttan _START_ - _END_ Arasındaki Kayıtlar Gösteriliyor.",
-            infoEmpty: "Gösterilecek Hiç Kayıt Yok.",
-            loadingRecords: "Kayıtlar Yükleniyor.",
-            zeroRecords: "Tablo Boş",
-            search: "Arama:",
-            infoFiltered: "(Toplam _MAX_ Kayıttan Filtrelenenler)",
-            lengthMenu: "Sayfa Başı _MENU_ Kayıt Göster",
-            sProcessing: "Yükleniyor...",
-            paginate: {
-                first: "İlk",
-                previous: "Önceki",
-                next: "Sonraki",
-                last: "Son"
-            },
-            select: {
-                rows: {
-                    "_": "%d kayıt seçildi",
-                    "0": "",
-                    "1": "1 kayıt seçildi"
-                }
-            },
-            buttons: {
-                print: {
-                    title: 'Yazdır'
-                }
-            }
-        },
-
-        dom: 'rtipl',
-
-        order: [
-            [
-                0,
-                "desc"
-            ]
-        ],
-
-        buttons: [
-            {
-                extend: 'collection',
-                text: '<i class="fa fa-download"></i> Dışa Aktar',
-                buttons: [
-                    {
-                        extend: 'pdf',
-                        text: '<i class="fa fa-file-pdf"></i> PDF İndir'
-                    },
-                    {
-                        extend: 'excel',
-                        text: '<i class="fa fa-file-excel"></i> Excel İndir'
-                    }
-                ]
-            },
-            {
-                extend: 'print',
-                text: '<i class="fa fa-print"></i> Yazdır'
-            },
-            {
-                extend: 'colvis',
-                text: '<i class="fa fa-columns"></i> Sütunlar'
-            },
-            {
-                text: '<i class="fas fa-undo"></i> Yenile',
-                action: function (e, dt, node, config) {
-                    $('table input').val('');
-                    credits.search('').columns().search('').ajax.reload().draw();
-                }
-            }
-        ],
-
-        initComplete: function () {
-            var r = $('#creditDetails tfoot tr');
-            $('#creditDetails thead').append(r);
-            this.api().columns().every(function (index) {
-                var column = this;
-                var input = document.createElement('input');
-                input.className = 'form-control';
-                $(input).appendTo($(column.footer()).empty())
-                    .on('change', function () {
-                        column.search($(this).val(), false, false, true).draw();
-                    });
-            });
-        },
-
-        processing: true,
-        serverSide: true,
-        ajax: {
-            type: 'get',
-            url: '{{ route('api.v1.dealerUser.credit.creditDetail.datatable') }}',
-            headers: {
-                _token: '{{ auth()->user()->apiToken() }}',
-                _auth_type: 'User'
-            },
-            data: function (d) {
-                return $.extend({}, d, {
-                    credit_id: $('#id_edit').val()
-                });
-            },
-            error: function (error) {
-                console.log(error)
-            }
-        },
-        columns: [
-            {data: 'type', name: 'type'},
-            {data: 'amount', name: 'amount'},
-        ],
-
-        responsive: true,
-        colReorder: true,
-        stateSave: true,
-        select: 'single'
-    });
+    function creditDetail() {
+        creditDetails.ajax.reload();
+        $('#CreditDetailModal').modal('show');
+    }
 
     function getCredits() {
         var relation_type = 'App\\Models\\Customer';
@@ -246,23 +38,41 @@
             url: '{{ route('api.v1.dealerUser.customer.credit.index') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
-                _auth_type: 'DealerUser'
+                _auth_type: 'User'
             },
             data: {
                 relation_type: relation_type,
                 relation_id: relation_id
             },
             success: function (response) {
-                var total = 0;
-                var used = 0;
-                $.each(response.response, function (i, credit) {
-                    if (credit.direction === 1) total += credit.amount;
-                    if (credit.direction === 0) used += credit.amount;
+                var credits = response.response;
+                $.ajax({
+                    type: 'get',
+                    url: '{{ route('api.v1.dealerUser.bienSoapService.usageReportByCustomerId') }}',
+                    headers: {
+                        _token: '{{ auth()->user()->apiToken() }}',
+                        _auth_type: 'User'
+                    },
+                    data: {
+                        customer_id: '{{ $id }}',
+                        start_date: '2015-01-01T00:00:00',
+                        end_date: '2050-01-01T00:00:00'
+                    },
+                    success: function (usageResponse) {
+                        var total = 0;
+                        $.each(credits, function (i, credit) {
+                            if (credit.direction === 1) total += credit.amount;
+                        });
+                        var remaining = total - usageResponse.response;
+                        $('#totalSpan').html(reformatFloatNumber(total));
+                        $('#usedSpan').html(reformatFloatNumber(usageResponse.response));
+                        $('#remainingSpan').html(reformatFloatNumber(remaining));
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        toastr.error('Kontör Kullanım Raporu Alınırken Serviste Hata Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+                    }
                 });
-                var remaining = total - used;
-                $('#totalSpan').html(reformatFloatNumber(total));
-                $('#usedSpan').html(reformatFloatNumber(used));
-                $('#remainingSpan').html(reformatFloatNumber(remaining));
             },
             error: function (error) {
                 console.log(error);
@@ -271,12 +81,212 @@
         });
     }
 
-    getCredits();
+    function getCreditUsages() {
+        var customer_id = '{{ $id }}';
+        var relation_type = 'App\\Models\\Customer';
+        var start_date = '2015-01-01T00:00:00';
+        var end_date = '2050-01-01T00:00:00';
+        $.ajax({
+            type: 'get',
+            url: '{{ route('api.v1.dealerUser.customer.credit.index') }}',
+            headers: {
+                _token: '{{ auth()->user()->apiToken() }}',
+                _auth_type: 'User'
+            },
+            data: {
+                relation_id: customer_id,
+                relation_type: relation_type
+            },
+            success: function (creditsResponse) {
+                console.log(creditsResponse);
+                var credits = creditsResponse.response;
+                $.ajax({
+                    type: 'get',
+                    url: '{{ route('api.v1.dealerUser.bienSoapService.usageListByCustomerId') }}',
+                    headers: {
+                        _token: '{{ auth()->user()->apiToken() }}',
+                        _auth_type: 'User'
+                    },
+                    data: {
+                        customer_id: customer_id,
+                        start_date: start_date,
+                        end_date: end_date
+                    },
+                    success: function (response) {
+                        var usages = response.response.Usages;
+                        var usageArray = [];
 
-    $(document).delegate('.show_credit_details', 'click', function () {
-        $('#id_edit').val($(this).data('id'));
-        creditDetails.ajax.reload();
-        $('#CreditDetailModal').modal('show');
-    });
+                        console.log(usages);
+
+                        if ($.isArray(usages)) {
+                            $.each(usages, function (i, usage) {
+
+                                var date = '';
+                                var service = '';
+                                var amount = 0;
+                                var direction = '';
+
+                                if (usage.Type === 'InboxInvoice') {
+                                    service = 'E-fatura Gelen';
+                                } else if (usage.Type === 'OutboxEInvoice') {
+                                    service = 'E-fatura Giden';
+                                } else if (usage.Type === 'OutboxEArchive') {
+                                    service = 'E-arşiv Giden';
+                                } else if (usage.Type === 'Ledger') {
+                                    service = 'E-Defter';
+                                } else if (usage.Type === 'Ticket') {
+                                    service = 'E-Posta';
+                                } else if (usage.Type === 'EseVoucher') {
+                                    service = 'E-MM';
+                                } else {
+                                    service = usage.Type;
+                                }
+
+                                amount = usage.Items ? usage.Items.Count : 0;
+                                direction = 'Kullanıldı';
+
+                                usageArray.push({
+                                    date: date,
+                                    service: service,
+                                    amount: amount,
+                                    direction: direction
+                                });
+                            });
+                        } else {
+                            var date = '';
+                            var service = '';
+                            var amount = 0;
+                            var direction = '';
+
+                            if (usages.Type === 'InboxInvoice') {
+                                service = 'E-fatura Gelen';
+                            } else if (usages.Type === 'OutboxEInvoice') {
+                                service = 'E-fatura Giden';
+                            } else if (usages.Type === 'OutboxEArchive') {
+                                service = 'E-arşiv Giden';
+                            } else if (usages.Type === 'Ledger') {
+                                service = 'E-Defter';
+                            } else if (usages.Type === 'Ticket') {
+                                service = 'E-Posta';
+                            } else if (usages.Type === 'EseVoucher') {
+                                service = 'E-MM';
+                            } else {
+                                service = usages.Type;
+                            }
+
+                            amount = usages.Items ? usages.Items.Count : 0;
+                            direction = 'Kullanıldı';
+
+                            usageArray.push({
+                                date: date,
+                                service: service,
+                                amount: amount,
+                                direction: direction
+                            });
+                        }
+
+
+                        $.each(credits, function (i, credit) {
+                            if (credit.direction === 1) {
+                                usageArray.push({
+                                    date: reformatDateForHuman(credit.created_at),
+                                    service: credit.service.name || '',
+                                    amount: credit.amount,
+                                    direction: 'Satın Alındı'
+                                });
+                            }
+                        });
+
+                        var usageSource =
+                            {
+                                localdata: usageArray,
+                                datatype: "array",
+                                datafields:
+                                    [
+                                        {name: 'date', type: 'string'},
+                                        {name: 'service', type: 'string'},
+                                        {name: 'amount', type: 'integer'},
+                                        {name: 'direction', type: 'string'},
+                                    ]
+                            };
+                        var usageDataAdapter = new $.jqx.dataAdapter(usageSource);
+
+                        usageDiv.jqxGrid(
+                            {
+                                width: '100%',
+                                height: '500',
+                                source: usageDataAdapter,
+                                columnsresize: true,
+                                groupable: true,
+                                theme: 'metro',
+                                filterable: true,
+                                showfilterrow: true,
+                                pageable: true,
+                                sortable: true,
+                                pagesizeoptions: ['10', '20', '50', '1000'],
+                                localization: getLocalization('tr'),
+                                columns: [
+                                    {
+                                        text: 'Tarih',
+                                        dataField: 'date',
+                                        columntype: 'textbox',
+                                        width: '25%'
+
+                                    },
+                                    {
+                                        text: 'Hizmet',
+                                        dataField: 'service',
+                                        columntype: 'textbox',
+                                        width: '25%'
+                                    },
+                                    {
+                                        text: 'Miktar',
+                                        dataField: 'amount',
+                                        columntype: 'textbox',
+                                        width: '25%'
+                                    },
+                                    {
+                                        text: 'İşlem',
+                                        dataField: 'direction',
+                                        columntype: 'textbox',
+                                        width: '25%'
+                                    }
+                                ],
+                            });
+
+                        usageDiv.on('contextmenu', function (e) {
+                            return false;
+                        });
+
+                        usageDiv.on('rowclick', function (event) {
+                            if (event.args.rightclick) {
+                                usageDiv.jqxGrid('selectrow', event.args.rowindex);
+                                var rowindex = usageDiv.jqxGrid('getselectedrowindex');
+                                $('#selected_row_index').val(rowindex);
+                                var dataRecord = usageDiv.jqxGrid('getrowdata', rowindex);
+                                $('#id_edit').val(dataRecord.id);
+                                $('#deleting').html(dataRecord.adi);
+                                return false;
+                            } else {
+                                $("#context-menu").hide();
+                            }
+                        });
+
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        toastr.error('Kontör Kullanım Listesi Alınırken Serviste Hata Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+                    }
+                });
+            },
+            error: function (error) {
+                console.log(error);
+                toastr.error('Kontör Kullanım Listesi Alınırken Serviste Hata Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+            }
+        });
+    }
+
+    getCredits();
+    getCreditUsages();
 
 </script>

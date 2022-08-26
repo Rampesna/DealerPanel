@@ -10,25 +10,11 @@ Route::get('/', function () {
     return redirect()->route('dealerUser.login');
 });
 
-Route::get('/test', function () {
-    $list = collect(json_decode(file_get_contents(public_path('newlist.json'))));
-    $array = [];
-    foreach ($list as $item) {
-        $customer = \App\Models\Customer::where('tax_number', $item->tax_number)->first();
-
-        if ($customer) {
-            $array[] = [
-                'relation_type' => 'App\\Models\\Customer',
-                'relation_id' => $customer->id,
-                'amount' => doubleval($item->amount),
-                'direction' => 1,
-                'description' => $item->description,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
-            ];
-        }
-    }
-
-    return $array;
-
-});
+Route::get('payment/3d/gateway/{encryptedOrderId?}', [\App\Http\Controllers\Web\PaymentController::class, 'gateway'])->name('payment.gateway');
+Route::post('payment/3d/create', [\App\Http\Controllers\Web\PaymentController::class, 'create'])->name('payment.create');
+Route::post('payment/3d/success', [\App\Http\Controllers\Web\PaymentController::class, 'success'])->name('payment.success')->withoutMiddleware([
+    'web'
+]);
+Route::get('payment/3d/success/result', [\App\Http\Controllers\Web\PaymentController::class, 'successWeb'])->name('payment.success.web');
+Route::post('payment/3d/failure', [\App\Http\Controllers\Web\PaymentController::class, 'failure'])->name('payment.failure');
+Route::get('payment/3d/failure/result', [\App\Http\Controllers\Web\PaymentController::class, 'failureWeb'])->name('payment.failure.web');

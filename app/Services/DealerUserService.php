@@ -177,7 +177,7 @@ class DealerUserService
         Mail::to($dealerUser->email)->send(new SendDealerUserPasswordEmail($dealerUser->name, $dealerUser->email, $password));
         $dealerUser->save();
 
-        return $this->success('Dealer user password successfully sent', null);
+        return $this->success('Dealer user password successfully sent', '');
     }
 
     /**

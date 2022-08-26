@@ -88,8 +88,8 @@
                 service_id_create.append(`<optgroup label=""><option value="">Seçim Yapılmadı</option></optgroup>`);
                 service_id_edit.append(`<optgroup label=""><option value="">Seçim Yapılmadı</option></optgroup>`);
                 $.each(response.response, function (i, service) {
-                    service_id_create.append(`<option value="${service.id}">${service.name}</option>`);
-                    service_id_edit.append(`<option value="${service.id}">${service.name}</option>`);
+                    service_id_create.append(`<option value="${service.id}">${service.name} (${service.credit_amount} Kontör)</option>`);
+                    service_id_edit.append(`<option value="${service.id}">${service.name} (${service.credit_amount} Kontör)</option>`);
                 });
                 service_id_create.selectpicker('refresh');
                 service_id_edit.selectpicker('refresh');

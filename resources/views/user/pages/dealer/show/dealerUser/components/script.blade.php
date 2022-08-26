@@ -75,7 +75,8 @@
             data: {
                 id: id
             },
-            success: function () {
+            success: function (response) {
+                console.log(response);
                 toastr.success('Bayi Kullanıcı Şifresi Başarıyla Mail Olarak Gönderildi');
             },
             error: function (error) {

@@ -100,7 +100,7 @@ class CreditDetailService
         $creditDetail->save();
 
         $file = fopen(public_path(date('Y_m_d') . '_credit_details_logs.txt'), 'w');
-        fwrite($file, date('Y-m-d H:i:s') . '   =>   Credit Detail: ' . serialize($creditDetail));
+        fwrite($file, date('Y-m-d H:i:s') . '   =>   Credit Detail: ' . serialize($creditDetail) . '\n\n');
         fclose($file);
 
         return $this->success('Credit detail saved successfully', $creditDetail);

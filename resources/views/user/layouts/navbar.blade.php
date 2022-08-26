@@ -19,7 +19,7 @@
     </div>
 
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-        <div class="container-fluid loaded" style="margin-top: -50px;">
+        <div id="navbarControl" class="container-fluid loaded" style="margin-top: -50px;">
             @yield('content')
         </div>
     </div>

@@ -9,6 +9,8 @@ use App\Http\Middleware\CheckHeaderToken;
 use App\Http\Middleware\CheckMethod;
 use App\Http\Middleware\CheckDealerUser;
 use App\Http\Middleware\CheckUser;
+use App\Http\Middleware\Cors;
+use App\Http\Middleware\TestUserHeaderCheck;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -70,11 +72,13 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'Cors' => Cors::class,
         'CheckMethod' => CheckMethod::class,
         'CheckHeaderToken' => CheckHeaderToken::class,
         'CheckHeaderAuthType' => CheckHeaderAuthType::class,
         'CheckDealerUser' => CheckDealerUser::class,
         'CheckCustomer' => CheckCustomer::class,
         'CheckUser' => CheckUser::class,
+        'TestUserHeaderCheck' => TestUserHeaderCheck::class,
     ];
 }

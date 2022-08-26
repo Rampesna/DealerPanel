@@ -1,5 +1,7 @@
 <script>
 
+    var customerInformation = null;
+
     var EditButton = $('#EditButton');
     var AddRelationServiceButton = $('#AddRelationServiceButton');
     var AddReceiptButton = $('#AddReceiptButton');
@@ -65,16 +67,35 @@
                 transaction_status_id: 2
             },
             success: function (response) {
-                var total = 0;
-                var used = 0;
-                $.each(response.response, function (i, credit) {
-                    if (credit.direction === 1) total += credit.amount;
-                    if (credit.direction === 0) used += credit.amount;
+                var credits = response.response;
+                $.ajax({
+                    type: 'get',
+                    url: '{{ route('api.v1.user.bienSoapService.usageReport') }}',
+                    headers: {
+                        _token: '{{ auth()->user()->apiToken() }}',
+                        _auth_type: 'User',
+                    },
+                    data: {
+                        tax_number: customerInformation.tax_number,
+                        start_date: '2015-01-01T00:00:00',
+                        end_date: '2050-01-01T00:00:00'
+                    },
+                    success: function (usageResponse) {
+                        console.log(usageResponse);
+                        var total = 0;
+                        $.each(credits, function (i, credit) {
+                            if (credit.direction === 1) total += credit.amount;
+                        });
+                        var remaining = total - usageResponse.response;
+                        $('#totalCreditSpan').html(reformatFloatNumber(total));
+                        $('#usedCreditSpan').html(reformatFloatNumber(usageResponse.response));
+                        $('#remainingCreditSpan').html(reformatFloatNumber(remaining));
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        toastr.error('Kontör Kullanım Raporu Alınırken Serviste Hata Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+                    }
                 });
-                var remaining = total - used;
-                $('#totalCreditSpan').html(reformatFloatNumber(total));
-                $('#usedCreditSpan').html(reformatFloatNumber(used));
-                $('#remainingCreditSpan').html(reformatFloatNumber(remaining));
             },
             error: function (error) {
                 console.log(error);
@@ -175,8 +196,8 @@
                 service_id_create.append(`<optgroup label=""><option value="">Seçim Yapılmadı</option></optgroup>`);
                 service_id_edit.append(`<optgroup label=""><option value="">Seçim Yapılmadı</option></optgroup>`);
                 $.each(response.response, function (i, service) {
-                    service_id_create.append(`<option value="${service.id}">${service.name}</option>`);
-                    service_id_edit.append(`<option value="${service.id}">${service.name}</option>`);
+                    service_id_create.append(`<option value="${service.id}">${service.name} (${service.credit_amount} Kontör)</option>`);
+                    service_id_edit.append(`<option value="${service.id}">${service.name} (${service.credit_amount} Kontör)</option>`);
                 });
                 service_id_create.selectpicker('refresh');
                 service_id_edit.selectpicker('refresh');
@@ -217,6 +238,7 @@
 
     function getCustomer() {
         $.ajax({
+            async: false,
             type: 'get',
             url: '{{ route('api.v1.user.customer.show') }}',
             headers: {
@@ -227,6 +249,7 @@
                 id: '{{ $id }}'
             },
             success: function (response) {
+                customerInformation = response.response;
                 $('#id_edit').val(response.response.id);
                 $('#dealer_id_span').html(response.response.dealer ? response.response.dealer.name : '--');
                 $('#name_span').html(response.response.name ?? '--');
@@ -280,15 +303,11 @@
             },
             data: {},
             success: function (response) {
-                country_id_create.empty();
                 country_id_edit.empty();
-                country_id_create.append(`<optgroup label=""><option value="">Seçim Yapılmadı</option></optgroup>`);
                 country_id_edit.append(`<optgroup label=""><option value="">Seçim Yapılmadı</option></optgroup>`);
                 $.each(response.response, function (i, country) {
-                    country_id_create.append(`<option value="${country.id}">${country.name}</option>`);
                     country_id_edit.append(`<option value="${country.id}">${country.name}</option>`);
                 });
-                country_id_create.selectpicker('refresh');
                 country_id_edit.selectpicker('refresh');
             },
             error: function (error) {
@@ -422,20 +441,39 @@
     });
 
     AddReceiptButton.click(function () {
-        var relation_type = 'App\\Models\\Customer';
-        var relation_id = '{{ $id }}';
-        var price = $('#price').val();
+        var creatorType = 'App\\Models\\User';
+        var creatorId = '{{ auth()->id() }}';
+        var relationType = 'App\\Models\\Customer';
+        var relationId = '{{ $id }}';
+        var amount = $('#price').val();
 
         if (price == null || price === '') {
             toastr.warning('Alınacak Ödeme Miktarı Boş Olamaz!');
         } else if (price <= 0) {
             toastr.warning('Alınacak Ödeme Miktarı Sıfır veya Aşağısı Olamaz!');
         } else {
-            addReceipt('post', {
-                relation_type: relation_type,
-                relation_id: relation_id,
-                price: price,
-                direction: 0
+            $('#AddReceiptModal').modal('hide');
+            $('#loader').show();
+            $.ajax({
+                type: 'post',
+                url: '{{ route('api.v1.user.payment.create') }}',
+                data: {
+                    creatorType: creatorType,
+                    creatorId: creatorId,
+                    relationType: relationType,
+                    relationId: relationId,
+                    amount: amount
+                },
+                success: function (encryptedOrderId) {
+                    $('#loader').hide();
+                    $('#paymentLink').attr('href', `{{ route('payment.gateway') }}/${encryptedOrderId}`).html(`Ödeme Sayfasına Gitmek İçin Tıklayın`);
+                    $('#ShowPaymentLinkModal').modal('show');
+                },
+                error: function (error) {
+                    console.log(error);
+                    toastr.error('Ödeme Oluşturulurken Serviste Bir Hata Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+                    $('#loader').hide();
+                }
             });
         }
     });

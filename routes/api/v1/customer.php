@@ -8,6 +8,7 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::middleware([
+    'Cors',
     'CheckHeaderToken',
     'CheckHeaderAuthType',
     'CheckCustomer',
@@ -21,6 +22,10 @@ Route::middleware([
     Route::prefix('credit')->group(function () {
         Route::any('index', [\App\Http\Controllers\Api\Customer\CreditController::class, 'index'])->name('api.v1.customer.credit.index')->middleware(['CheckMethod:get']);
         Route::any('datatable', [\App\Http\Controllers\Api\Customer\CreditController::class, 'datatable'])->name('api.v1.customer.credit.datatable')->middleware(['CheckMethod:get']);
+    });
+
+    Route::prefix('bienSoapService')->group(function () {
+        Route::get('usageReport', [\App\Http\Controllers\Api\Customer\BienSoapController::class, 'usageReport'])->name('api.v1.customer.bienSoapService.usageReport')->middleware(['CheckMethod:get']);
     });
 
     Route::prefix('receipt')->group(function () {

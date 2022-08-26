@@ -11,6 +11,12 @@ Route::middleware([
             ->middleware(['CheckMethod:get']);
     });
 
+    Route::prefix('user')->group(function () {
+        Route::any('checkEmail', [\App\Http\Controllers\Api\General\UserController::class, 'checkEmail'])
+            ->name('api.v1.general.user.checkEmail')
+            ->middleware(['CheckMethod:get']);
+    });
+
     Route::prefix('dealer')->group(function () {
         Route::any('checkTaxNumber', [\App\Http\Controllers\Api\General\DealerController::class, 'checkTaxNumber'])
             ->name('api.v1.general.dealer.checkTaxNumber')

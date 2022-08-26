@@ -27,6 +27,7 @@ class CustomerCreditController extends Controller
         } catch (\Exception $exception) {
             $relation_id = $request->relation_id;
         }
+
         return $this->creditService->index(
             $request->relation_type,
             $relation_id,

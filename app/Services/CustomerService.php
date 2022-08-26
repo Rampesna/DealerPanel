@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Imports\CustomersImport;
 use App\Mail\SendCustomerPasswordEmail;
 use App\Models\Customer;
 use App\Models\Dealer;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CustomerService
 {
@@ -170,9 +172,6 @@ class CustomerService
         addColumn('transaction_status', function ($customer) {
             return $customer->transactionStatus ? $customer->transactionStatus->name : '';
         })->
-        addColumn('balance', function ($customer) {
-            return number_format($customer->credits->where('direction', 1)->sum('amount') - $customer->credits->where('direction', 0)->sum('amount'), 2);
-        })->
         make(true);
     }
 
@@ -246,6 +245,32 @@ class CustomerService
         return $this->success('Customer created successfully', $customer);
     }
 
+    public function importWithExcel($file)
+    {
+        $response = [];
+        $name = date('YmdHis') . '.xlsx';
+        $path = storage_path('/customersImports/');
+        $file->move($path, $name);
+        $customers = Excel::toCollection(null, $path . $name);
+
+        foreach ($customers as $customer) {
+            $response[] = [
+                'dealer_id' => null,
+                'name' => $customer[0],
+                'tax_number' => $customer[1],
+                'tax_office' => $customer[2],
+                'email' => $customer[3],
+                'gsm' => $customer[4],
+                'website' => $customer[5],
+                'transaction_status_id' => 2,
+            ];
+        }
+
+        return $response;
+
+        return Customer::insert($response);
+    }
+
     /**
      * @param int $id
      */
@@ -298,7 +323,7 @@ class CustomerService
         if ($transaction_status_id == 2) {
             $password = Str::random(8);
             $customer->password = bcrypt($password);
-            Mail::to($customer->email)->send(new SendCustomerPasswordEmail($customer->name, $customer->tax_number, $password));
+            // Mail::to($customer->email)->send(new SendCustomerPasswordEmail($customer->name, $customer->tax_number, $password));
         }
 
         $customer->save();

@@ -7,12 +7,13 @@
     @include('user.pages.customer.show.layouts.subheader')
 
     @include('user.pages.customer.show.index.modals.addRelationService')
+    @include('user.pages.customer.show.index.modals.showPaymentLink')
     @include('user.pages.customer.show.index.modals.addReceipt')
     @include('user.pages.customer.show.index.modals.edit')
 
     <input type="hidden" id="id_edit">
     <div class="row mt-15">
-        <div class="col-xl-4">
+        <div class="col-xl-4 mb-5">
             <div class="card">
                 <div class="card-header pt-4 pb-3">
                     <div class="row">
@@ -87,7 +88,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-4">
+        <div class="col-xl-4 mb-5">
             <div class="card">
                 <div class="card-header pt-4 pb-3">
                     <div class="row">
@@ -104,7 +105,7 @@
                         <label class="col-6 col-form-label">Toplam Alınan Kontör:</label>
                         <div class="col-6 text-right">
                             <span class="form-control-plaintext font-weight-bolder" id="totalCreditSpan">
-                                --
+                                <i class="fas fa-spinner fa-spin"></i>
                             </span>
                         </div>
                     </div>
@@ -112,7 +113,7 @@
                         <label class="col-6 col-form-label">Toplam Kullanılan Kontör:</label>
                         <div class="col-6 text-right">
                             <span class="form-control-plaintext font-weight-bolder" id="usedCreditSpan">
-                                --
+                                <i class="fas fa-spinner fa-spin"></i>
                             </span>
                         </div>
                     </div>
@@ -120,14 +121,14 @@
                         <label class="col-6 col-form-label">Kalan Kontör:</label>
                         <div class="col-6 text-right">
                             <span class="form-control-plaintext font-weight-bolder" id="remainingCreditSpan">
-                                --
+                                <i class="fas fa-spinner fa-spin"></i>
                             </span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-xl-4">
+        <div class="col-xl-4 mb-5">
             <div class="card">
                 <div class="card-header pt-4 pb-3">
                     <div class="row">

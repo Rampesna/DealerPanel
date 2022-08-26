@@ -21,9 +21,7 @@
                             <th>E-posta</th>
                             <th>GSM</th>
                             <th>Şehir</th>
-                            <th>Kalan Kontör</th>
                             <th>Durum</th>
-
                         </tr>
                         </thead>
                         <tfoot>
@@ -34,7 +32,6 @@
                             <th>E-posta</th>
                             <th>GSM</th>
                             <th>Şehir</th>
-                            <th>Kalan Kontör</th>
                             <th>Durum</th>
                         </tr>
                         </tfoot>

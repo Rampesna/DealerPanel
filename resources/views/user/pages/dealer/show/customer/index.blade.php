@@ -23,7 +23,6 @@
                             <th>E-posta</th>
                             <th>GSM</th>
                             <th>Şehir</th>
-                            <th>Kalan Kontör</th>
                         </tr>
                         </thead>
                         <tfoot>
@@ -34,7 +33,6 @@
                             <th>E-posta</th>
                             <th>GSM</th>
                             <th>Şehir</th>
-                            <th>Kalan Kontör</th>
                         </tr>
                         </tfoot>
                     </table>

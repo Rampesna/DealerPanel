@@ -362,9 +362,6 @@
             {data: 'tax_office', name: 'tax_office'},
             {data: 'email', name: 'email'},
             {data: 'gsm', name: 'gsm'},
-            {data: 'country_id', name: 'country_id'},
-            {data: 'province_id', name: 'province_id'},
-            {data: 'district_id', name: 'district_id'},
             {data: 'status_id', name: 'status_id'},
         ],
 

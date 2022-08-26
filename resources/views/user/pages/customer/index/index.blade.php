@@ -5,6 +5,7 @@
 @section('content')
 
     @include('user.pages.customer.index.modals.create')
+    @include('user.pages.customer.index.modals.importWithExcel')
     @include('user.pages.customer.index.modals.edit')
     @include('user.pages.customer.index.modals.delete')
 
@@ -23,7 +24,6 @@
                             <th>E-posta</th>
                             <th>GSM</th>
                             <th>Şehir</th>
-                            <th>Kalan Kontör</th>
                         </tr>
                         </thead>
                         <tfoot>
@@ -34,7 +34,6 @@
                             <th>E-posta</th>
                             <th>GSM</th>
                             <th>Şehir</th>
-                            <th>Kalan Kontör</th>
                         </tr>
                         </tfoot>
                     </table>
@@ -48,6 +47,13 @@
             <div class="row">
                 <div class="col-xl-12">
                     <i class="fas fa-plus-circle text-success"></i><span class="ml-4">Müşteri Oluştur</span>
+                </div>
+            </div>
+        </a>
+        <a onclick="importWithExcel()" class="dropdown-item cursor-pointer">
+            <div class="row">
+                <div class="col-xl-12">
+                    <i class="fas fa-file-excel text-success"></i><span class="ml-4">Excel İle İçe Aktar</span>
                 </div>
             </div>
         </a>

@@ -146,7 +146,6 @@
             {data: 'email', name: 'email'},
             {data: 'gsm', name: 'gsm'},
             {data: 'province_id', name: 'province_id'},
-            {data: 'balance', name: 'balance'},
         ],
 
         responsive: true,

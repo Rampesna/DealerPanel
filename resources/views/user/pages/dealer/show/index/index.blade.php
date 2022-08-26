@@ -14,7 +14,7 @@
 
     <input type="hidden" id="dealer_id_edit">
     <div class="row mt-15">
-        <div class="col-xl-4">
+        <div class="col-xl-4 mb-5">
             <div class="card">
                 <div class="card-header pt-4 pb-3">
                     <h6>Bayi Hiyerarşisi</h6>
@@ -24,7 +24,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-4">
+        <div class="col-xl-4 mb-5">
             <div class="card">
                 <div class="card-header pt-4 pb-3">
                     <div class="row">
@@ -64,7 +64,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-4">
+        <div class="col-xl-4 mb-5">
             <div class="card">
                 <div class="card-header pt-4 pb-3">
                     <div class="row">

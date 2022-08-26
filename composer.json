@@ -6,12 +6,18 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "ext-soap": "*",
+        "cyber-duck/laravel-excel": "^2.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.3",
         "laravel/framework": "^8.54",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.3",
+        "maatwebsite/excel": "^3.1",
+        "psr/simple-cache": "1.0",
+        "rap2hpoutre/fast-excel": "^3.2",
+        "wsdltophp/wssecurity": "^2.0",
         "yajra/laravel-datatables": "^1.5"
     },
     "require-dev": {

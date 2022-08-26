@@ -8,10 +8,17 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::middleware([
+    'Cors',
     'CheckHeaderToken',
     'CheckHeaderAuthType',
     'CheckDealerUser',
 ])->group(function () {
+
+    Route::prefix('dealerUser/bienSoapService')->group(function () {
+        Route::get('usageReport', [\App\Http\Controllers\Api\DealerUser\BienSoapController::class, 'usageReport'])->name('api.v1.dealerUser.bienSoapService.usageReport')->middleware(['CheckMethod:get']);
+        Route::get('usageListByCustomerId', [\App\Http\Controllers\Api\DealerUser\BienSoapController::class, 'usageListByCustomerId'])->name('api.v1.dealerUser.bienSoapService.usageListByCustomerId')->middleware(['CheckMethod:get']);
+        Route::get('usageReportByCustomerId', [\App\Http\Controllers\Api\DealerUser\BienSoapController::class, 'usageReportByCustomerId'])->name('api.v1.dealerUser.bienSoapService.usageReportByCustomerId')->middleware(['CheckMethod:get']);
+    });
 
     Route::prefix('customer')->group(function () {
         Route::any('index', [\App\Http\Controllers\Api\DealerUser\CustomerController::class, 'index'])->name('api.v1.dealerUser.customer.index')->middleware(['CheckMethod:get']);

@@ -23,9 +23,6 @@
                             <th>Vergi Dairesi</th>
                             <th>E-posta</th>
                             <th>GSM</th>
-                            <th>Ülke</th>
-                            <th>Şehir</th>
-                            <th>İlçe</th>
                             <th>Durum</th>
                         </tr>
                         </thead>
@@ -37,9 +34,6 @@
                             <th>Vergi Dairesi</th>
                             <th>E-posta</th>
                             <th>GSM</th>
-                            <th>Ülke</th>
-                            <th>Şehir</th>
-                            <th>İlçe</th>
                             <th>Durum</th>
                         </tr>
                         </tfoot>

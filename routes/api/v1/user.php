@@ -7,10 +7,20 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::middleware([
+    'Cors',
     'CheckHeaderToken',
     'CheckHeaderAuthType',
     'CheckUser',
 ])->group(function () {
+
+    Route::prefix('user')->group(function () {
+        Route::any('index', [\App\Http\Controllers\Api\User\UserController::class, 'index'])->name('api.v1.user.user.index')->middleware(['CheckMethod:get']);
+        Route::any('searching', [\App\Http\Controllers\Api\User\UserController::class, 'searching'])->name('api.v1.user.user.searching')->middleware(['CheckMethod:get']);
+        Route::any('datatable', [\App\Http\Controllers\Api\User\UserController::class, 'datatable'])->name('api.v1.user.user.datatable')->middleware(['CheckMethod:get']);
+        Route::any('show', [\App\Http\Controllers\Api\User\UserController::class, 'show'])->name('api.v1.user.user.show')->middleware(['CheckMethod:get']);
+        Route::any('save', [\App\Http\Controllers\Api\User\UserController::class, 'save'])->name('api.v1.user.user.save')->middleware(['CheckMethod:post|put']);
+        Route::any('drop', [\App\Http\Controllers\Api\User\UserController::class, 'drop'])->name('api.v1.user.user.drop')->middleware(['CheckMethod:delete|DELETE']);
+    });
 
     Route::prefix('credit')->group(function () {
         Route::any('deduction', [\App\Http\Controllers\Api\User\CreditController::class, 'deduction'])->name('api.v1.user.credit.deduction')->middleware(['CheckMethod:post|put']);
@@ -20,6 +30,12 @@ Route::middleware([
             Route::any('datatable', [\App\Http\Controllers\Api\User\CreditDetailController::class, 'datatable'])->name('api.v1.user.credit.creditDetail.datatable')->middleware(['CheckMethod:get']);
             Route::any('save', [\App\Http\Controllers\Api\User\CreditDetailController::class, 'save'])->name('api.v1.user.credit.creditDetail.save')->middleware(['CheckMethod:post|put']);
         });
+    });
+
+    Route::prefix('bienSoapService')->group(function () {
+        Route::get('usageReport', [\App\Http\Controllers\Api\User\BienSoapController::class, 'usageReport'])->name('api.v1.user.bienSoapService.usageReport')->middleware(['CheckMethod:get']);
+        Route::get('usageListByCustomerId', [\App\Http\Controllers\Api\User\BienSoapController::class, 'usageListByCustomerId'])->name('api.v1.user.bienSoapService.usageListByCustomerId')->middleware(['CheckMethod:get']);
+        Route::get('usageReportByCustomerId', [\App\Http\Controllers\Api\User\BienSoapController::class, 'usageReportByCustomerId'])->name('api.v1.user.bienSoapService.usageReportByCustomerId')->middleware(['CheckMethod:get']);
     });
 
     Route::prefix('creditDetailType')->group(function () {
@@ -84,7 +100,8 @@ Route::middleware([
         Route::any('datatable', [\App\Http\Controllers\Api\User\CustomerController::class, 'datatable'])->name('api.v1.user.customer.datatable')->middleware(['CheckMethod:get']);
         Route::any('show', [\App\Http\Controllers\Api\User\CustomerController::class, 'show'])->name('api.v1.user.customer.show')->middleware(['CheckMethod:get']);
         Route::any('save', [\App\Http\Controllers\Api\User\CustomerController::class, 'save'])->name('api.v1.user.customer.save')->middleware(['CheckMethod:post|put']);
-        Route::any('drop', [\App\Http\Controllers\Api\User\CustomerController::class, 'drop'])->name('api.v1.user.customer.drop')->middleware(['CheckMethod:delete']);
+        Route::any('importWithExcel', [\App\Http\Controllers\Api\User\CustomerController::class, 'importWithExcel'])->name('api.v1.user.customer.importWithExcel')->middleware(['CheckMethod:post']);
+        Route::any('drop', [\App\Http\Controllers\Api\User\CustomerController::class, 'drop'])->name('api.v1.user.customer.drop')->middleware(['CheckMethod:delete|DELETE']);
         Route::any('updateDealer', [\App\Http\Controllers\Api\User\CustomerController::class, 'updateDealer'])->name('api.v1.user.customer.updateDealer')->middleware(['CheckMethod:post|put']);
 
         Route::prefix('service')->group(function () {
@@ -112,6 +129,7 @@ Route::middleware([
     });
 
     Route::prefix('opportunity')->group(function () {
+        Route::any('test', [\App\Http\Controllers\Api\User\OpportunityController::class, 'index'])->name('api.v1.user.opportunity.test')->middleware(['CheckMethod:get', 'TestUserHeaderCheck']);
         Route::any('index', [\App\Http\Controllers\Api\User\OpportunityController::class, 'index'])->name('api.v1.user.opportunity.index')->middleware(['CheckMethod:get']);
         Route::any('datatable', [\App\Http\Controllers\Api\User\OpportunityController::class, 'datatable'])->name('api.v1.user.opportunity.datatable')->middleware(['CheckMethod:get']);
         Route::any('show', [\App\Http\Controllers\Api\User\OpportunityController::class, 'show'])->name('api.v1.user.opportunity.show')->middleware(['CheckMethod:get']);
@@ -164,4 +182,20 @@ Route::middleware([
         Route::any('check', [\App\Http\Controllers\Api\User\PasswordController::class, 'check'])->name('api.v1.user.password.check')->middleware(['CheckMethod:get']);
         Route::any('update', [\App\Http\Controllers\Api\User\PasswordController::class, 'update'])->name('api.v1.user.password.update')->middleware(['CheckMethod:post']);
     });
+
+    Route::prefix('payment')->group(function () {
+        Route::any('getAll', [\App\Http\Controllers\Api\User\PaymentController::class, 'getAll'])->name('api.v1.user.payment.getAll')->middleware(['CheckMethod:get']);
+        Route::any('getById', [\App\Http\Controllers\Api\User\PaymentController::class, 'getById'])->name('api.v1.user.payment.getById')->middleware(['CheckMethod:get']);
+        Route::any('create', [\App\Http\Controllers\Api\User\PaymentController::class, 'create'])->name('api.v1.user.payment.create')->middleware(['CheckMethod:post']);
+    });
+
+    Route::prefix('service')->group(function () {
+        Route::any('index', [\App\Http\Controllers\Api\User\ServiceController::class, 'index'])->name('api.v1.user.service.index')->middleware(['CheckMethod:get']);
+        Route::any('datatable', [\App\Http\Controllers\Api\User\ServiceController::class, 'datatable'])->name('api.v1.user.service.datatable')->middleware(['CheckMethod:get']);
+        Route::any('show', [\App\Http\Controllers\Api\User\ServiceController::class, 'show'])->name('api.v1.user.service.show')->middleware(['CheckMethod:get']);
+        Route::any('create', [\App\Http\Controllers\Api\User\ServiceController::class, 'create'])->name('api.v1.user.service.create')->middleware(['CheckMethod:post|put']);
+        Route::any('update', [\App\Http\Controllers\Api\User\ServiceController::class, 'update'])->name('api.v1.user.service.update')->middleware(['CheckMethod:post|put']);
+        Route::any('drop', [\App\Http\Controllers\Api\User\ServiceController::class, 'drop'])->name('api.v1.user.service.drop')->middleware(['CheckMethod:delete|DELETE']);
+    });
+
 });

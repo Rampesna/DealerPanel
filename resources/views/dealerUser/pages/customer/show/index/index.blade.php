@@ -94,7 +94,7 @@
                         <label class="col-6 col-form-label">Toplam Alınan Kontör:</label>
                         <div class="col-6 text-right">
                             <span class="form-control-plaintext font-weight-bolder" id="totalCreditSpan">
-                                --
+                                <i class="fa fa-spinner fa-spin"></i>
                             </span>
                         </div>
                     </div>
@@ -102,7 +102,7 @@
                         <label class="col-6 col-form-label">Toplam Kullanılan Kontör:</label>
                         <div class="col-6 text-right">
                             <span class="form-control-plaintext font-weight-bolder" id="usedCreditSpan">
-                                --
+                                <i class="fa fa-spinner fa-spin"></i>
                             </span>
                         </div>
                     </div>
@@ -110,7 +110,7 @@
                         <label class="col-6 col-form-label">Kalan Kontör:</label>
                         <div class="col-6 text-right">
                             <span class="form-control-plaintext font-weight-bolder" id="remainingCreditSpan">
-                                --
+                                <i class="fa fa-spinner fa-spin"></i>
                             </span>
                         </div>
                     </div>

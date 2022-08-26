@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Api\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\User\Customer\DropRequest;
 use App\Http\Requests\Api\User\Customer\SaveRequest;
+use App\Http\Requests\Api\User\Customer\ImportWithExcelRequest;
 use App\Http\Requests\Api\User\Customer\ShowRequest;
 use App\Http\Requests\Api\User\Customer\UpdateDealerRequest;
 use App\Http\Requests\Api\User\Customer\SearchingRequest;
 use App\Services\CustomerService;
 use App\Traits\Response;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
 class CustomerController extends Controller
@@ -33,9 +35,9 @@ class CustomerController extends Controller
         return $this->customerService->searching($request->keyword);
     }
 
-    public function datatable()
+    public function datatable(Request $request)
     {
-        return $this->customerService->datatable(2);
+        return $this->customerService->datatable(2, $request->dealer_id ? Crypt::decrypt($request->dealer_id) : null);
     }
 
     public function show(ShowRequest $request)
@@ -63,6 +65,13 @@ class CustomerController extends Controller
             $request->province_id,
             $request->district_id,
             $request->foundation_date
+        );
+    }
+
+    public function importWithExcel(ImportWithExcelRequest $request)
+    {
+        return $this->customerService->importWithExcel(
+            $request->file('file')
         );
     }
 

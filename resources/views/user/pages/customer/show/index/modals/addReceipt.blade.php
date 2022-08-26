@@ -16,6 +16,14 @@
                         </div>
                     </div>
                 </div>
+                <div id="paymentLinkRow" class="row" style="display: none">
+                    <hr>
+                    <div class="col-xl-12">
+                        <p>
+                            Ödeme linki: <a id="paymentLink" href="" target="_blank"></a>
+                        </p>
+                    </div>
+                </div>
             </form>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Vazgeç</button>

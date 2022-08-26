@@ -139,6 +139,10 @@ $(".onlyNumber").keypress(function (e) {
 
 $('.gsmMask').inputmask('(999) 999-99-99', {placeholder: '(___) ___-__-__'});
 
+$('.creditCardMask').inputmask('9999 9999 9999 9999', {placeholder: '____ ____ ____ ____'});
+
+$('.cvvMask').inputmask('999', {placeholder: '___'});
+
 $(".emailMask").inputmask({
     mask: "*{1,20}[.*{1,20}][.*{1,20}][.*{1,20}]@*{1,20}[.*{2,6}][.*{1,2}]",
     greedy: false,
@@ -190,11 +194,15 @@ function detectMobile() {
     }
 }
 
-if (detectMobile()) {
-    $("#navbarControl").css({'margin-top': '20px'});
-    $("#isMobile").show();
-    $('.mobile').removeClass('col-6').addClass('col-12');
-} else {
-    $("#isMobile").hide();
-    $("#navbarControl").css({'margin-top': '-50px'});
+function checkMobile() {
+    if (detectMobile() || window.innerWidth < 800) {
+        $("#navbarControl").css({'margin-top': '20px'});
+        $("#isMobile").show();
+        $('.mobile').removeClass('col-6').addClass('col-12');
+    } else {
+        $("#isMobile").hide();
+        $("#navbarControl").css({'margin-top': '-50px'});
+    }
 }
+
+checkMobile();

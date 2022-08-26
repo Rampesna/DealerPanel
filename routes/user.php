@@ -40,4 +40,15 @@ Route::middleware([
         Route::get('index', [\App\Http\Controllers\Web\User\ReportController::class, 'index'])->name('user.report.index');
         Route::get('show/{report?}', [\App\Http\Controllers\Web\User\ReportController::class, 'show'])->name('user.report.show');
     });
+
+    Route::prefix('user')->group(function () {
+        Route::get('index', [\App\Http\Controllers\Web\User\UserController::class, 'index'])->name('user.user.index');
+    });
+
+    Route::prefix('service')->group(function () {
+        Route::get('index', [\App\Http\Controllers\Web\User\ServiceController::class, 'index'])->name('user.service.index');
+    });
+
+    Route::get('connections', [\App\Http\Controllers\Web\User\TestController::class, 'index'])->name('user.test.post');
+
 });

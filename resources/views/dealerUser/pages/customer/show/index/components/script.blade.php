@@ -1,5 +1,7 @@
 <script>
 
+    var customerInformation = null;
+
     var AddServiceModalTriggerButton = $('#AddServiceModalTriggerButton');
     var AddServiceButton = $('#AddServiceButton');
 
@@ -37,7 +39,7 @@
             url: '{{ route('api.v1.dealerUser.customer.credit.index') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
-                _auth_type: 'DealerUser'
+                _auth_type: 'User'
             },
             data: {
                 relation_type: relation_type,
@@ -45,17 +47,35 @@
                 transaction_status_id: 2
             },
             success: function (response) {
-                console.log(response)
-                var total = 0;
-                var used = 0;
-                $.each(response.response, function (i, credit) {
-                    if (credit.direction === 1) total += credit.amount;
-                    if (credit.direction === 0) used += credit.amount;
+                var credits = response.response;
+                $.ajax({
+                    type: 'get',
+                    url: '{{ route('api.v1.dealerUser.bienSoapService.usageReport') }}',
+                    headers: {
+                        _token: '{{ auth()->user()->apiToken() }}',
+                        _auth_type: 'User',
+                    },
+                    data: {
+                        tax_number: customerInformation.tax_number,
+                        start_date: '2015-01-01T00:00:00',
+                        end_date: '2050-01-01T00:00:00'
+                    },
+                    success: function (usageResponse) {
+                        console.log(usageResponse);
+                        var total = 0;
+                        $.each(credits, function (i, credit) {
+                            if (credit.direction === 1) total += credit.amount;
+                        });
+                        var remaining = total - usageResponse.response;
+                        $('#totalCreditSpan').html(reformatFloatNumber(total));
+                        $('#usedCreditSpan').html(reformatFloatNumber(usageResponse.response));
+                        $('#remainingCreditSpan').html(reformatFloatNumber(remaining));
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        toastr.error('Kontör Kullanım Raporu Alınırken Serviste Hata Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+                    }
                 });
-                var remaining = total - used;
-                $('#totalCreditSpan').html(reformatFloatNumber(total));
-                $('#usedCreditSpan').html(reformatFloatNumber(used));
-                $('#remainingCreditSpan').html(reformatFloatNumber(remaining));
             },
             error: function (error) {
                 console.log(error);
@@ -66,6 +86,7 @@
 
     function getCustomer() {
         $.ajax({
+            async: false,
             type: 'get',
             url: '{{ route('api.v1.dealerUser.customer.show') }}',
             headers: {
@@ -76,6 +97,7 @@
                 id: '{{ $id }}'
             },
             success: function (response) {
+                customerInformation = response.response;
                 $('#dealer_id_span').html(response.response.dealer ? response.response.dealer.name : '--');
                 $('#name_span').html(response.response.name ?? '--');
                 $('#tax_number_span').html(response.response.tax_number ?? '--');
@@ -108,7 +130,7 @@
                 service_id_create.empty();
                 service_id_create.append(`<optgroup label=""><option value="">Seçim Yapılmadı</option></optgroup>`);
                 $.each(response.response, function (i, service) {
-                    service_id_create.append(`<option value="${service.id}">${service.name}</option>`);
+                    service_id_create.append(`<option value="${service.id}">${service.name} (${service.credit_amount} Kontör)</option>`);
                 });
                 service_id_create.selectpicker('refresh');
             },

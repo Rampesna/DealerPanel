@@ -7,7 +7,7 @@
     @include('user.pages.dealer.show.layouts.subheader')
 
     <div class="row mt-15">
-        <div class="col-xl-4">
+        <div class="col-xl-4 mb-5">
             <div class="card">
                 <div class="card-header pt-4 pb-3 text-center">
                     <h6>Toplam Borç</h6>
@@ -17,7 +17,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-4">
+        <div class="col-xl-4 mb-5">
             <div class="card">
                 <div class="card-header pt-4 pb-3 text-center">
                     <h6>Toplam Ödeme</h6>
@@ -27,7 +27,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-4">
+        <div class="col-xl-4 mb-5">
             <div class="card">
                 <div class="card-header pt-4 pb-3 text-center">
                     <h6>Bakiye</h6>

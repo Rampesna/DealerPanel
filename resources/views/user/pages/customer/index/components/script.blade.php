@@ -4,6 +4,7 @@
 <script>
 
     var CreateButton = $('#CreateButton');
+    var ImportWithExcelButton = $('#ImportWithExcelButton');
     var UpdateButton = $('#UpdateButton');
     var DeleteButton = $('#DeleteButton');
 
@@ -21,6 +22,10 @@
 
     function create() {
         $('#CreateModal').modal('show');
+    }
+
+    function importWithExcel() {
+        $('#ImportWithExcelModal').modal('show');
     }
 
     function edit() {
@@ -364,7 +369,6 @@
             {data: 'email', name: 'email'},
             {data: 'gsm', name: 'gsm'},
             {data: 'province_id', name: 'province_id'},
-            {data: 'balance', name: 'balance'},
         ],
 
         responsive: true,
@@ -430,9 +434,7 @@
         var province_id = province_id_create.val();
         var district_id = district_id_create.val();
 
-        if (dealer_id == null || dealer_id === '') {
-            toastr.warning('Bayi Seçilmesi Zorunludur!');
-        } else if (tax_number == null || tax_number === '') {
+        if (tax_number == null || tax_number === '') {
             toastr.warning('Vergi Numarası Boş Olamaz!');
         } else if (tax_number.length < 10) {
             toastr.warning('Vergi Numarası En Az 10 Karakter Olmalıdır!');
@@ -476,6 +478,42 @@
         }
     });
 
+    ImportWithExcelButton.click(function () {
+        var file = $('#import_with_excel_file').prop('files')[0];
+
+        if (!file) {
+            toastr.warning('Dosya Seçilmedi!');
+        } else {
+            $('#loader').show();
+            $('#ImportWithExcelModal').modal('hide');
+            $('#ImportWithExcelForm').trigger('reset');
+            var formData = new FormData();
+            formData.append('file', file);
+            $.ajax({
+                processData: false,
+                contentType: false,
+                type: 'post',
+                url: '{{ route('api.v1.user.customer.importWithExcel') }}',
+                headers: {
+                    _token: '{{ auth()->user()->apiToken() }}',
+                    _auth_type: 'User'
+                },
+                data: formData,
+                success: function (response) {
+                    console.log(response);
+                    toastr.success('Müşteri Kayıtları Başarıyla İçe Aktarıldı!');
+                    customers.ajax.reload();
+                    $('#loader').hide();
+                },
+                error: function (error) {
+                    console.log(error);
+                    toastr.error('Müşteriler İçeri Akratılırken Serviste Sorun Oluştu!');
+                    $('#loader').hide();
+                }
+            });
+        }
+    });
+
     UpdateButton.click(function () {
         var id = $('#id_edit').val();
         var dealer_id = $('#dealer_id_edit').val();
@@ -490,9 +528,7 @@
         var province_id = province_id_edit.val();
         var district_id = district_id_edit.val();
 
-        if (dealer_id == null || dealer_id === '') {
-            toastr.warning('Bayi Seçilmesi Zorunludur!');
-        } else if (tax_number == null || tax_number === '') {
+        if (tax_number == null || tax_number === '') {
             toastr.warning('Vergi Numarası Boş Olamaz!');
         } else if (tax_number.length < 10) {
             toastr.warning('Vergi Numarası En Az 10 Karakter Olmalıdır!');
@@ -500,8 +536,6 @@
             toastr.warning('Vergi Numarası En Fazla 11 Karakter Olmalıdır!');
         } else if (name == null || name === '') {
             toastr.warning('Müşteri Ünvanı Boş Olamaz!');
-        } else if (email == null || email === '') {
-            toastr.warning('E-posta Adresi Boş Olamaz!');
         } else {
             $.ajax({
                 type: 'get',

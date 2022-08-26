@@ -46,30 +46,7 @@
     <input type="hidden" id="encrypted_id_edit">
     <div class="row">
         <div class="col-xl-12">
-            <div class="card" id="creditsCard">
-                <div class="card-body">
-                    <table class="table" id="credits">
-                        <thead>
-                        <tr>
-                            <th></th>
-                            <th>İşlem Tarihi</th>
-                            <th>Bağlı Hizmet</th>
-                            <th>Miktar</th>
-                            <th>İşlem</th>
-                        </tr>
-                        </thead>
-                        <tfoot>
-                        <tr>
-                            <th></th>
-                            <th>İşlem Tarihi</th>
-                            <th>Bağlı Hizmet</th>
-                            <th>Miktar</th>
-                            <th>İşlem</th>
-                        </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
+            <div id="usages"></div>
         </div>
     </div>
 

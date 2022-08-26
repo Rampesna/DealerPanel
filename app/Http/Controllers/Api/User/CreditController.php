@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\User\Credit\DeductionRequest;
+use App\Http\Requests\Api\User\Credit\UsageReportRequest;
 use App\Services\CreditService;
+use App\SoapServices\BienSoapService;
 use Illuminate\Support\Facades\Crypt;
 
 class CreditController extends Controller
@@ -24,7 +26,7 @@ class CreditController extends Controller
         $relation = $request->relation_type::where('tax_number', $request->tax_number)->first();
 
         $file = fopen(public_path(date('Y_m_d') . '_credits_logs.txt'), 'w');
-        fwrite($file, date('Y-m-d H:i:s') . '   =>   Relation: ' . serialize($relation));
+        fwrite($file, date('Y-m-d H:i:s') . '   =>   Relation: ' . serialize($relation) . '\n\n');
         fclose($file);
 
         if ($relation) {
@@ -45,5 +47,15 @@ class CreditController extends Controller
                 'response' => null
             ], 404);
         }
+    }
+
+    public function usageReport(UsageReportRequest $request)
+    {
+        $bienSoapService = new BienSoapService;
+        return $bienSoapService->GetCustomerReportWithSoftware(
+            $request->start_date,
+            $request->end_date,
+            $request->tax_number
+        );
     }
 }

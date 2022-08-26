@@ -29,7 +29,6 @@ class SaveRequest extends FormRequest
     {
         return [
             'id' => strtolower(request()->method()) == 'put' ? 'required' : 'nullable',
-            'dealer_id' => 'required',
             'tax_number' => 'required',
             'name' => 'required'
         ];

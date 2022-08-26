@@ -5,7 +5,7 @@
 @section('content')
 
     <div class="row">
-        <div class="col-xl-4 col-12">
+        <div class="col-xl-4 col-12 mb-5">
             <div class="card">
                 <div class="card-header pt-4 pb-3 text-center">
                     <h5>Müşteriler</h5>
@@ -41,7 +41,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-4 col-12">
+        <div class="col-xl-4 col-12 mb-5">
             <div class="card">
                 <div class="card-header pt-4 pb-3 text-center">
                     <h5>Bayiler</h5>
@@ -77,7 +77,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-4 col-12">
+        <div class="col-xl-4 col-12 mb-5">
             <div class="card">
                 <div class="card-header pt-4 pb-3 text-center">
                     <h5>Fırsatlar</h5>

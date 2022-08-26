@@ -137,6 +137,10 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/environment" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/translation" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/sebastian/code-unit-reverse-lookup" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/box/spout" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/rap2hpoutre/fast-excel" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/cyber-duck/laravel-excel" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/wsdltophp/wssecurity" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
