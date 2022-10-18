@@ -300,6 +300,7 @@
         var country_id = country_id_create.val();
         var province_id = province_id_create.val();
         var district_id = district_id_create.val();
+        var divisor = $('#divisor_create').val();
 
         if (tax_number == null || tax_number === '') {
             toastr.warning('Vergi Numarası Boş Olamaz!');
@@ -332,6 +333,7 @@
                             country_id: country_id,
                             province_id: province_id,
                             district_id: district_id,
+                            divisor: divisor
                         });
                     }
                 },

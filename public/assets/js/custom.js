@@ -67,6 +67,57 @@ const months = [
     'Aralık',
 ];
 
+const monthList = [
+    {
+        id: 1,
+        name: 'Ocak'
+    },
+    {
+        id: 2,
+        name: 'Şubat'
+    },
+    {
+        id: 3,
+        name: 'Mart'
+    },
+    {
+        id: 4,
+        name: 'Nisan'
+    },
+    {
+        id: 5,
+        name: 'Mayıs'
+    },
+    {
+        id: 6,
+        name: 'Haziran'
+    },
+    {
+        id: 7,
+        name: 'Temmuz'
+    },
+    {
+        id: 8,
+        name: 'Ağustos'
+    },
+    {
+        id: 9,
+        name: 'Eylül'
+    },
+    {
+        id: 10,
+        name: 'Ekim'
+    },
+    {
+        id: 11,
+        name: 'Kasım'
+    },
+    {
+        id: 12,
+        name: 'Aralık'
+    }
+];
+
 function reformatDatetimeForHuman(date) {
     var formattedDate = new Date(date);
     return String(formattedDate.getDate()).padStart(2, '0') + ' ' +
@@ -96,6 +147,20 @@ function reformatDate(date) {
     var formattedDate = new Date(date);
     return String(formattedDate.getDate()).padStart(2, '0') + '.' +
         String(formattedDate.getMonth() + 1).padStart(2, '0') + '.' +
+        formattedDate.getFullYear();
+}
+
+function reformatDatetimeTo_YYYY_MM_DD(date) {
+    var formattedDate = new Date(date);
+    return formattedDate.getFullYear() + '-' +
+        String(formattedDate.getMonth() + 1).padStart(2, '0') + '-' +
+        String(formattedDate.getDate()).padStart(2, '0');
+}
+
+function reformatDatetimeToDateForHuman(date) {
+    var formattedDate = new Date(date);
+    return String(formattedDate.getDate()).padStart(2, '0') + ' ' +
+        monthList.find(date => date.id === formattedDate.getMonth() + 1).name + ', ' +
         formattedDate.getFullYear();
 }
 

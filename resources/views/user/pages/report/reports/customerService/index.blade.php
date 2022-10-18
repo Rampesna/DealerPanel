@@ -1,11 +1,9 @@
 @extends('user.layouts.master')
-@section('title', 'Müşteri Kontör Raporu')
+@section('title', 'Müşteri Hizmet Raporu')
 @php(setlocale(LC_TIME, 'Turkish'))
 
 @section('content')
 
-    <input type="hidden" id="id_edit">
-    <input type="hidden" id="encrypted_id_edit">
     <div class="row text-center">
         <div class="col-xl-12">
             <div id="report"></div>
@@ -17,13 +15,12 @@
         </div>
     </div>
 
-
 @endsection
 
 @section('page-styles')
-    @include('user.pages.report.reports.credit.components.style')
+    @include('user.pages.report.reports.customerService.components.style')
 @stop
 
 @section('page-script')
-    @include('user.pages.report.reports.credit.components.script')
+    @include('user.pages.report.reports.customerService.components.script')
 @stop

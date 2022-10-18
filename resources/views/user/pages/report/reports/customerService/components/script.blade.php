@@ -29,27 +29,46 @@
     var DownloadExcelButton = $('#DownloadExcelButton');
 
     function getReport() {
-        toastr.info('Rapor Oluşturuluyor, Lütfen Bekleyiniz...');
-        reportDiv.html('<i class="fa fa-spinner fa-spin"></i>');
         $.ajax({
             type: 'get',
-            url: '{{ route('api.v1.user.report.credit.customer.report') }}',
+            url: '{{ route('api.v1.user.customer.indexWithServices') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
                 _auth_type: 'User'
             },
-            data: {},
+            data: {
+                transaction_status_id: 2,
+            },
             success: function (response) {
+                var dataList = [];
+
+                $.each(response.response, function (i, customer) {
+                    if (customer.services.length > 0) {
+                        $.each(customer.services, function (j, service) {
+                            dataList.push({
+                                taxNumber: customer.tax_number,
+                                name: customer.name,
+                                service: service.service.name,
+                                amount: service.amount,
+                                price: service.service.price,
+                                start: reformatDatetimeToDateForHuman(service.start),
+                                end: (new Date() > new Date(service.end)) ? 'Sona Erdi' : reformatDatetimeToDateForHuman(service.end),
+                            });
+                        });
+                    }
+                });
+
                 var source = {
-                    localdata: response,
+                    localdata: dataList,
                     datatype: "array",
                     datafields: [
                         {name: 'taxNumber'},
                         {name: 'name'},
-                        {name: 'dealer'},
-                        {name: 'bought'},
-                        {name: 'used'},
-                        {name: 'remaining'},
+                        {name: 'service'},
+                        {name: 'amount'},
+                        {name: 'price'},
+                        {name: 'start'},
+                        {name: 'end'},
                     ]
                 };
                 var dataAdapter = new $.jqx.dataAdapter(source);
@@ -75,23 +94,28 @@
                             columntype: 'textbox',
                         },
                         {
-                            text: 'Bayi',
-                            dataField: 'dealer',
+                            text: 'Hizmet',
+                            dataField: 'service',
                             columntype: 'textbox',
                         },
                         {
-                            text: 'Alınan Kontör',
-                            dataField: 'bought',
+                            text: 'Adet',
+                            dataField: 'amount',
                             columntype: 'textbox',
                         },
                         {
-                            text: 'Kullanılan Kontör',
-                            dataField: 'used',
+                            text: 'Fiyat',
+                            dataField: 'price',
                             columntype: 'textbox',
                         },
                         {
-                            text: 'Kalan Kontör',
-                            dataField: 'remaining',
+                            text: 'Başlangıç',
+                            dataField: 'start',
+                            columntype: 'textbox',
+                        },
+                        {
+                            text: 'Bitiş',
+                            dataField: 'end',
                             columntype: 'textbox',
                         }
                     ]

@@ -96,6 +96,7 @@ Route::middleware([
 
     Route::prefix('customer')->group(function () {
         Route::any('index', [\App\Http\Controllers\Api\User\CustomerController::class, 'index'])->name('api.v1.user.customer.index')->middleware(['CheckMethod:get']);
+        Route::any('indexWithServices', [\App\Http\Controllers\Api\User\CustomerController::class, 'indexWithServices'])->name('api.v1.user.customer.indexWithServices')->middleware(['CheckMethod:get']);
         Route::any('searching', [\App\Http\Controllers\Api\User\CustomerController::class, 'searching'])->name('api.v1.user.customer.searching')->middleware(['CheckMethod:get']);
         Route::any('datatable', [\App\Http\Controllers\Api\User\CustomerController::class, 'datatable'])->name('api.v1.user.customer.datatable')->middleware(['CheckMethod:get']);
         Route::any('show', [\App\Http\Controllers\Api\User\CustomerController::class, 'show'])->name('api.v1.user.customer.show')->middleware(['CheckMethod:get']);
@@ -174,6 +175,7 @@ Route::middleware([
         Route::prefix('credit')->group(function () {
             Route::prefix('customer')->group(function () {
                 Route::any('datatable', [\App\Http\Controllers\Api\User\Report\Credit\CustomerController::class, 'creditReportDatatable'])->name('api.v1.user.report.credit.customer.datatable');
+                Route::any('report', [\App\Http\Controllers\Api\User\Report\Credit\CustomerController::class, 'report'])->name('api.v1.user.report.credit.customer.report');
             });
         });
     });

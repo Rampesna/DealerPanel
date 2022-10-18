@@ -113,7 +113,8 @@
                         end_date: end_date
                     },
                     success: function (response) {
-                        var usages = response.response.Usages;
+                        console.log(response);
+                        var usages = response.response.usages;
                         var usageArray = [];
 
                         $.each(usages, function (i, usage) {
@@ -138,7 +139,15 @@
                             } else {
                                 service = usage.Type;
                             }
-                            amount = usage.Items.Count;
+
+                            if (usage.Type === 'Ledger') {
+                                amount = `${reformatFloatNumber(usage.Items.Count / 1000)} MB`;
+                            } else if (usage.Type === 'OutboxEArchive') {
+                                amount = parseInt(usage.Items.Count / response.response.customer.divisor);
+                            } else {
+                                amount = usage.Items.Count;
+                            }
+
                             direction = 'Kullanıldı';
 
                             usageArray.push({
@@ -167,7 +176,7 @@
                                     [
                                         {name: 'date', type: 'string'},
                                         {name: 'service', type: 'string'},
-                                        {name: 'amount', type: 'integer'},
+                                        {name: 'amount', type: 'string'},
                                         {name: 'direction', type: 'string'},
                                     ]
                             };

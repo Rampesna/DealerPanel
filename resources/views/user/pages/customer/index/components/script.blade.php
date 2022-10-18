@@ -49,6 +49,7 @@
                 $('#tax_office_edit').val(response.response.tax_office);
                 $('#website_edit').val(response.response.website);
                 $('#foundation_date_edit').val(response.response.foundation_date);
+                $('#divisor_edit').val(response.response.divisor);
                 country_id_edit.val(response.response.country_id).selectpicker('refresh');
                 getProvincesForEdit(response.response.province_id);
                 getDistrictsForEdit(response.response.district_id);
@@ -433,6 +434,7 @@
         var country_id = country_id_create.val();
         var province_id = province_id_create.val();
         var district_id = district_id_create.val();
+        var divisor = $('#divisor_create').val();
 
         if (tax_number == null || tax_number === '') {
             toastr.warning('Vergi Numarası Boş Olamaz!');
@@ -467,6 +469,7 @@
                             country_id: country_id,
                             province_id: province_id,
                             district_id: district_id,
+                            divisor: divisor === '' ? 1 : divisor
                         });
                     }
                 },
@@ -527,6 +530,7 @@
         var country_id = country_id_edit.val();
         var province_id = province_id_edit.val();
         var district_id = district_id_edit.val();
+        var divisor = $('#divisor_edit').val();
 
         if (tax_number == null || tax_number === '') {
             toastr.warning('Vergi Numarası Boş Olamaz!');
@@ -561,6 +565,7 @@
                             country_id: country_id,
                             province_id: province_id,
                             district_id: district_id,
+                            divisor: divisor === '' ? 1 : divisor
                         });
                     }
                 },

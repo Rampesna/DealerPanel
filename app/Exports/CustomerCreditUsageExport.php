@@ -1,33 +1,29 @@
 <?php
 
-namespace App\Http\Controllers\Api\User\Report\Credit;
+namespace App\Exports;
 
-use App\Http\Controllers\Controller;
 use App\Models\Customer;
-use App\Services\CustomerService;
 use App\SoapServices\BienSoapService;
-use App\Traits\Response;
+use Maatwebsite\Excel\Concerns\FromCollection;
 
-class CustomerController extends Controller
+class CustomerCreditUsageExport implements FromCollection
 {
-    use Response;
-
-    private $customerService;
-
-    public function __construct()
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public function collection()
     {
-        $this->customerService = new CustomerService;
-    }
+        $response = [
+            [
+                'taxNumber' => 'VKN/TCKN',
+                'name' => 'Müşteri',
+                'dealer' => 'Bayi',
+                'bought' => 'Alınan Kontör',
+                'used' => 'Kullanılan Kontör',
+                'remaining' => 'Kalan Kontör',
+            ]
+        ];
 
-    public function creditReportDatatable()
-    {
-        set_time_limit(86400);
-        return $this->customerService->creditReportDatatable();
-    }
-
-    public function report()
-    {
-        set_time_limit(86400);
         $bienSoapService = new BienSoapService;
         $usages = collect($bienSoapService->GetCustomerReportWithSoftware(
             '2000-01-01',
@@ -41,26 +37,10 @@ class CustomerController extends Controller
         foreach ($customers as $customer) {
             $customerFromService = $usages->where('VknTckn', $customer->tax_number)->first();
             if ($customerFromService && $customerFromService->Usages) {
-
                 $customerUsage = 0;
-
-                if (is_array($customerFromService->Usages)) {
-                    foreach ($customerFromService->Usages as $usageItem) {
-                        if ($usageItem->Type == 'Ledger') {
-                            $customerUsage += $usageItem->Items->Count / 1000;
-                        } else if ($usageItem->Type == 'OutboxEArchive') {
-                            $customerUsage += $usageItem->Items->Count / $customer->divisor;
-                        } else {
-                            $customerUsage += $usageItem->Items->Count;
-                        }
-                    }
-                } else {
-                    if ($customerFromService->Usages->Type == 'Ledger') {
-                        $customerUsage += $customerFromService->Usages->Items->Count / 1000;
-                    } else if ($customerFromService->Usages->Type == 'OutboxEArchive') {
-                        $customerUsage += $customerFromService->Usages->Items->Count / $customer->divisor;
-                    } else {
-                        $customerUsage += $customerFromService->Usages->Items->Count;
+                foreach ($customerFromService->Usages as $customerUsageItem) {
+                    if (isset($customerUsageItem->Items)) {
+                        $customerUsage += $customerUsageItem->Items->Count;
                     }
                 }
 
@@ -84,6 +64,6 @@ class CustomerController extends Controller
             }
         }
 
-        return response()->json(collect($response));
+        return collect($response);
     }
 }

@@ -91,6 +91,12 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-xl-4">
+                        <div class="form-group">
+                            <label for="divisor_create">Katsayı Böleni</label>
+                            <input id="divisor_create" type="number" class="form-control">
+                        </div>
+                    </div>
                 </div>
             </form>
             <div class="modal-footer">

@@ -40,7 +40,7 @@ class BienSoapService
     {
         $this->baseUrl = 'https://connect.bienteknoloji.com.tr/Services/RemoteManagement?wsdl';
         $this->username = 'AdminBien';
-        $this->password = 'BN_2019_11!';
+        $this->password = 'BiEn202211!';
         $this->client = new SoapClient($this->baseUrl);
 
 
@@ -56,14 +56,14 @@ class BienSoapService
     public function GetCustomerReportWithSoftware(
         $startDate,
         $endDate,
-        $taxNumber
+        $taxNumber = null
     )
     {
         $response = $this->client->GetCustomerReportWithSoftware([
             'query' => [
                 'StartDate' => $startDate,
                 'EndDate' => $endDate,
-                'VknTckn' => "$taxNumber",
+                'VknTckn' => $taxNumber,
             ]
         ]);
 

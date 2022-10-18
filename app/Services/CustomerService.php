@@ -2,12 +2,14 @@
 
 namespace App\Services;
 
+use App\BienCrmServices\BienCrmService;
 use App\Imports\CustomersImport;
 use App\Mail\SendCustomerPasswordEmail;
 use App\Models\Customer;
 use App\Models\Dealer;
 use App\Models\Province;
 use App\Models\TransactionStatus;
+use App\SoapServices\BienSoapService;
 use App\Traits\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -93,6 +95,34 @@ class CustomerService
     )
     {
         $customers = Customer::with([]);
+
+        if ($transaction_status_id) {
+            $customers->where('transaction_status_id', $transaction_status_id);
+        }
+
+        if ($dealer_id) {
+            $customers->whereIn('dealer_id', (new DealerService)->getSubDealersIds($dealer_id));
+        }
+
+        return $this->success('All customers', $customers->get());
+    }
+
+    /**
+     * @param int|null $transaction_status_id
+     * @param int|null $dealer_id
+     */
+    public function indexWithServices(
+        $transaction_status_id = null,
+        $dealer_id = null
+    )
+    {
+        $customers = Customer::with([
+            'services' => function ($services) {
+                $services->with([
+                    'service'
+                ]);
+            }
+        ]);
 
         if ($transaction_status_id) {
             $customers->where('transaction_status_id', $transaction_status_id);
@@ -207,6 +237,7 @@ class CustomerService
      * @param int|null $province_id
      * @param int|null $district_id
      * @param string $foundation_date
+     * @param float $divisor
      */
     public function save(
         $id,
@@ -220,7 +251,8 @@ class CustomerService
         $country_id,
         $province_id,
         $district_id,
-        $foundation_date
+        $foundation_date,
+        $divisor = 1
     )
     {
         $customer = $id ? Customer::find($id) : new Customer;
@@ -240,6 +272,7 @@ class CustomerService
         $customer->province_id = $province_id;
         $customer->district_id = $district_id;
         $customer->foundation_date = $foundation_date;
+        $customer->divisor = $divisor;
         $customer->save();
 
         return $this->success('Customer created successfully', $customer);
@@ -328,7 +361,10 @@ class CustomerService
 
         $customer->save();
 
-        return $this->success('Customer transaction status updated successfully', null);
+        $bienCrmCustomerService = new \App\BienCrmServices\CustomerService;
+        $bienCrmCustomerService->create($customer);
+
+        return $this->success('Customer transaction status updated successfully', []);
     }
 
     /**
@@ -369,7 +405,26 @@ class CustomerService
             return $customer->credits->where('direction', 1)->sum('amount');
         })->
         addColumn('used', function ($customer) {
-            return $customer->credits->where('direction', 0)->sum('amount');
+            $bienSoapService = new BienSoapService;
+            $response = $bienSoapService->GetCustomerReportWithSoftware(
+                '2000-01-01',
+                '2050-01-01',
+                $customer->tax_number
+            );
+
+            $usage = 0;
+
+            if (isset($response->GetCustomerReportWithSoftwareResult->Value)) {
+                if (is_array($response->GetCustomerReportWithSoftwareResult->Value->Usages)) {
+                    foreach ($response->GetCustomerReportWithSoftwareResult->Value->Usages as $usageItem) {
+                        $usage += $usageItem->Items->Count;
+                    }
+                } else {
+                    $usage = $response->GetCustomerReportWithSoftwareResult->Value->Usages->Items->Count;
+                }
+            }
+
+            return $usage;
         })->
         addColumn('remaining', function ($customer) {
             return $customer->credits->where('direction', 1)->sum('amount') - $customer->credits->where('direction', 0)->sum('amount');

@@ -25,9 +25,14 @@ class CustomerController extends Controller
         $this->customerService = new CustomerService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return $this->customerService->index();
+        return $this->customerService->index($request->transaction_status_id, $request->dealer_id);
+    }
+
+    public function indexWithServices(Request $request)
+    {
+        return $this->customerService->indexWithServices($request->transaction_status_id, $request->dealer_id);
     }
 
     public function searching(SearchingRequest $request)
@@ -64,7 +69,8 @@ class CustomerController extends Controller
             $request->country_id,
             $request->province_id,
             $request->district_id,
-            $request->foundation_date
+            $request->foundation_date,
+            $request->divisor
         );
     }
 
