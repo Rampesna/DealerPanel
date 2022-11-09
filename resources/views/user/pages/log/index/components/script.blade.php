@@ -1,162 +1,169 @@
-<script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js?v=7.0.3') }}"></script>
-<script src="{{ asset('assets/js/pages/crud/datatables/extensions/buttons.js?v=7.0.3') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxcore.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxbuttons.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxscrollbar.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxlistbox.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxdropdownlist.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxmenu.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxgrid.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxgrid.selection.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxgrid.columnsreorder.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxgrid.columnsresize.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxgrid.filter.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxgrid.sort.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxdata.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxgrid.pager.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxnumberinput.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxwindow.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxdata.export.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxgrid.export.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxexport.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxgrid.grouping.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/globalization/globalize.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqgrid-localization.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jszip.min.js') }}"></script>
 
 <script>
 
-    var logs = $('#logs').DataTable({
-        language: {
-            info: "_TOTAL_ Kayıttan _START_ - _END_ Arasındaki Kayıtlar Gösteriliyor.",
-            infoEmpty: "Gösterilecek Hiç Kayıt Yok.",
-            loadingRecords: "Kayıtlar Yükleniyor.",
-            zeroRecords: "Tablo Boş",
-            search: "Arama:",
-            infoFiltered: "(Toplam _MAX_ Kayıttan Filtrelenenler)",
-            lengthMenu: "Sayfa Başı _MENU_ Kayıt Göster",
-            sProcessing: "Yükleniyor...",
-            paginate: {
-                first: "İlk",
-                previous: "Önceki",
-                next: "Sonraki",
-                last: "Son"
-            },
-            select: {
-                rows: {
-                    "_": "%d kayıt seçildi",
-                    "0": "",
-                    "1": "1 kayıt seçildi"
-                }
-            },
-            buttons: {
-                print: {
-                    title: 'Yazdır'
-                }
-            }
-        },
+    var reportDiv = $('#report');
 
-        lengthMenu: [
-            [10, 25, 50, 250, -1],
-            [10, 25, 50, 250, "Tümü"]
-        ],
+    var DownloadExcelButton = $('#DownloadExcelButton');
 
-        dom: 'Brtipl',
-
-        order: [
-            [
-                1,
-                "asc"
-            ]
-        ],
-
-        buttons: [
-            {
-                extend: 'collection',
-                text: '<i class="fa fa-download"></i> Dışa Aktar',
-                buttons: [
-                    {
-                        extend: 'pdf',
-                        text: '<i class="fa fa-file-pdf"></i> PDF İndir'
-                    },
-                    {
-                        extend: 'excel',
-                        text: '<i class="fa fa-file-excel"></i> Excel İndir'
-                    }
-                ]
-            },
-            {
-                extend: 'print',
-                text: '<i class="fa fa-print"></i> Yazdır'
-            },
-            {
-                extend: 'colvis',
-                text: '<i class="fa fa-columns"></i> Sütunlar'
-            },
-            {
-                text: '<i class="fas fa-undo"></i> Yenile',
-                action: function (e, dt, node, config) {
-                    $('table input').val('');
-                    logs.search('').columns().search('').ajax.reload().draw();
-                }
-            }
-        ],
-
-        initComplete: function () {
-            var r = $('#logs tfoot tr');
-            $('#logs thead').append(r);
-            this.api().columns().every(function (index) {
-                var column = this;
-                var input = document.createElement('input');
-                input.className = 'form-control';
-                $(input).appendTo($(column.footer()).empty())
-                    .on('change', function () {
-                        column.search($(this).val(), false, false, true).draw();
-                    });
-            });
-        },
-
-        processing: true,
-        serverSide: true,
-        ajax: {
+    function getReport() {
+        $.ajax({
             type: 'get',
-            url: '{{ route('api.v1.user.log.relationService.datatable') }}',
+            url: '{{ route('api.v1.user.log.relationService.index') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
                 _auth_type: 'User'
             },
+            data: {},
+            success: function (response) {
+
+                console.log(response.response);
+
+                var dataList = [];
+
+                $.each(response.response, function (i, relationService) {
+                    dataList.push({
+                        createdAt: reformatDatetimeForHuman(relationService.created_at),
+                        creatorType: relationService.creator_type === 'App\\Models\\User' ? 'Yönetici' : (
+                            relationService.creator_type === 'App\\Models\\Dealer' ? 'Bayi' : (
+                                relationService.creator_type === 'App\\Models\\Customer' ? 'Müşteri' : relationService.creator_type
+                            )
+                        ),
+                        creator: relationService.creator ? relationService.creator.name : '',
+                        relationType: relationService.relation_type === 'App\\Models\\User' ? 'Yönetici' : (
+                            relationService.relation_type === 'App\\Models\\Dealer' ? 'Bayi' : (
+                                relationService.relation_type === 'App\\Models\\Customer' ? 'Müşteri' : relationService.relation_type
+                            )
+                        ),
+                        relation: relationService.relation ? relationService.relation.name : '',
+                        serviceName: relationService.service ? relationService.service.name : '',
+                        serviceAmount: relationService.amount ?? '',
+                        serviceStart: relationService.start ? reformatDatetimeForHuman(relationService.start) : '',
+                        serviceEnd: relationService.end ? reformatDatetimeForHuman(relationService.end) : '',
+                    });
+                });
+
+                var source = {
+                    localdata: dataList,
+                    datatype: "array",
+                    datafields: [
+                        {name: 'createdAt'},
+                        {name: 'creatorType'},
+                        {name: 'creator'},
+                        {name: 'relationType'},
+                        {name: 'relation'},
+                        {name: 'serviceName'},
+                        {name: 'serviceAmount'},
+                        {name: 'serviceStart'},
+                        {name: 'serviceEnd'},
+                    ]
+                };
+                var dataAdapter = new $.jqx.dataAdapter(source);
+                reportDiv.jqxGrid({
+                    width: '100%',
+                    height: '500',
+                    source: dataAdapter,
+                    columnsresize: true,
+                    groupable: true,
+                    theme: 'metro',
+                    filterable: true,
+                    showfilterrow: true,
+                    localization: getLocalization('tr'),
+                    columns: [
+                        {
+                            text: 'Oluşturulma Tarihi',
+                            dataField: 'createdAt',
+                            columntype: 'textbox',
+                        },
+                        {
+                            text: 'Oluşturan',
+                            dataField: 'creatorType',
+                            columntype: 'textbox',
+                        },
+                        {
+                            text: 'Oluşturan Ünvan',
+                            dataField: 'creator',
+                            columntype: 'textbox',
+                        },
+                        {
+                            text: 'Hizmeti Alan',
+                            dataField: 'relationType',
+                            columntype: 'textbox',
+                        },
+                        {
+                            text: 'Hizmeti Alan Ünvan',
+                            dataField: 'relation',
+                            columntype: 'textbox',
+                        },
+                        {
+                            text: 'Hizmet',
+                            dataField: 'serviceName',
+                            columntype: 'textbox',
+                        },
+                        {
+                            text: 'Hizmet Adeti',
+                            dataField: 'serviceAmount',
+                            columntype: 'textbox',
+                        },
+                        {
+                            text: 'Hizmet Başlangıç',
+                            dataField: 'serviceStart',
+                            columntype: 'textbox',
+                        },
+                        {
+                            text: 'Hizmet Bitiş',
+                            dataField: 'serviceEnd',
+                            columntype: 'textbox',
+                        }
+                    ]
+                });
+                reportDiv.on('contextmenu', function () {
+                    return false;
+                });
+                reportDiv.on('rowclick', function (event) {
+                    if (event.args.rightclick) {
+                        $("#employeesGrid").jqxGrid('selectrow', event.args.rowindex);
+                        var scrollTop = $(window).scrollTop();
+                        var scrollLeft = $(window).scrollLeft();
+                        contextMenu.jqxMenu('open', parseInt(event.args.originalEvent.clientX) + 5 + scrollLeft, parseInt(event.args.originalEvent.clientY) + 5 + scrollTop);
+                        return false;
+                    }
+                });
+                DownloadExcelButton.show();
+            },
             error: function (error) {
-                console.log(error)
+                console.log(error);
+                toastr.error('Rapor alınırken bir hata oluştu.');
             }
-        },
-        columns: [
-            {data: 'created_at', name: 'created_at'},
-            {data: 'creator_type', name: 'creator_type'},
-            {data: 'creator_id', name: 'creator_id'},
-            {data: 'relation_type', name: 'relation_type'},
-            {data: 'relation_id', name: 'relation_id'},
-            {data: 'service_id', name: 'service_id'},
-            {data: 'amount', name: 'amount'},
-            {data: 'start', name: 'start'},
-            {data: 'end', name: 'end'},
-        ],
+        });
+    }
 
-        responsive: true,
-        select: 'single'
-    });
+    getReport();
 
-    $('body').on('contextmenu', function (e) {
-        var selectedRows = logs.rows({selected: true});
-        if (selectedRows.count() > 0) {
-            var id = selectedRows.data()[0].id;
-            var encrypted_id = selectedRows.data()[0].encrypted_id;
-            var name = selectedRows.data()[0].name;
-            $("#id_edit").val(id);
-            $("#encrypted_id_edit").val(encrypted_id);
-            $("#deleting").html(name);
-            $("#EditingContexts").show();
-        } else {
-            $("#EditingContexts").hide();
-        }
-
-        return false;
-    }).on("click", function () {
-        $("#context-menu").hide();
-    }).on('focusout', function () {
-        $("#context-menu").hide();
-    });
-
-    $('#logs tbody').on('mousedown', 'tr', function (e) {
-        if (e.button === 0) {
-            return false;
-        } else {
-            logs.row(this).select();
-        }
-    });
-
-    $(document).click((e) => {
-        if ($.contains($("#logsCard").get(0), e.target)) {
-        } else {
-            $("#context-menu").hide();
-            logs.rows().deselect();
-        }
+    DownloadExcelButton.click(function () {
+        reportDiv.jqxGrid('exportdata', 'xlsx', 'Hizmet Logları');
     });
 
 </script>

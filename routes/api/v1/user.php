@@ -202,7 +202,7 @@ Route::middleware([
 
     Route::prefix('log')->group(function () {
         Route::prefix('relationService')->group(function () {
-            Route::get('datatable', [\App\Http\Controllers\Api\User\Log\RelationServiceController::class, 'datatable'])->name('api.v1.user.log.relationService.datatable');
+            Route::get('index', [\App\Http\Controllers\Api\User\Log\RelationServiceController::class, 'index'])->name('api.v1.user.log.relationService.index');
         });
     });
 

@@ -18,7 +18,24 @@ class RelationServiceController extends Controller
     }
 
     /**
-     * @param DatatableRequest $request
+     * @param Request $request
+     */
+    public function index(Request $request)
+    {
+        try {
+            $relation_id = Crypt::decrypt($request->relation_id);
+        } catch (\Exception $exception) {
+            $relation_id = $request->relation_id;
+        }
+        return $this->relationServiceService->index(
+            $request->relation_type,
+            $relation_id,
+            $request->transaction_status_id
+        );
+    }
+
+    /**
+     * @param Request $request
      */
     public function datatable(Request $request)
     {

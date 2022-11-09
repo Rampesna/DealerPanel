@@ -1,45 +1,17 @@
 @extends('user.layouts.master')
-@section('title', 'Loglar')
+@section('title', 'Müşteri Hizmet Raporu')
 @php(setlocale(LC_TIME, 'Turkish'))
 
 @section('content')
 
-    <input type="hidden" id="id_edit">
-    <input type="hidden" id="encrypted_id_edit">
-    <div class="row">
+    <div class="row text-center">
         <div class="col-xl-12">
-            <div class="card" id="logsCard">
-                <div class="card-body">
-                    <table class="table" id="logs">
-                        <thead>
-                        <tr>
-                            <th>Oluşturulma Tarihi</th>
-                            <th>Oluşturan</th>
-                            <th>Oluşturan Ünvan</th>
-                            <th>Hizmeti Alan</th>
-                            <th>Hizmeti Ünvan</th>
-                            <th>Hizmet Adı</th>
-                            <th>Hizmet Adeti</th>
-                            <th>Hizmet Başlangıcı</th>
-                            <th>Hizmet Bitişi</th>
-                        </tr>
-                        </thead>
-                        <tfoot>
-                        <tr>
-                            <th>Oluşturulma Tarihi</th>
-                            <th>Oluşturan</th>
-                            <th>Oluşturan Ünvan</th>
-                            <th>Hizmeti Alan</th>
-                            <th>Hizmeti Ünvan</th>
-                            <th>Hizmet Adı</th>
-                            <th>Hizmet Adeti</th>
-                            <th>Hizmet Başlangıcı</th>
-                            <th>Hizmet Bitişi</th>
-                        </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
+            <div id="report"></div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-xl-12 text-right">
+            <button class="btn btn-primary" id="DownloadExcelButton" style="display: none">Excel İndir</button>
         </div>
     </div>
 

@@ -22,7 +22,11 @@ class RelationServiceService
         $transaction_status_id = null
     )
     {
-        $relationServices = RelationService::with([]);
+        $relationServices = RelationService::with([
+            'creator',
+            'relation',
+            'service'
+        ]);
 
         if ($relation_type && $relation_id) {
             $relationServices->where('relation_type', $relation_type)->where('relation_id', $relation_id);
