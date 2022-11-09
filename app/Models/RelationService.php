@@ -30,6 +30,11 @@ class RelationService extends Model
         return $this->morphTo()->withTrashed();
     }
 
+    public function creator()
+    {
+        return $this->morphTo()->withTrashed();
+    }
+
     public function status()
     {
         return $this->belongsTo(RelationServiceStatus::class, 'status_id', 'id')->withTrashed();

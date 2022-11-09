@@ -200,4 +200,10 @@ Route::middleware([
         Route::any('drop', [\App\Http\Controllers\Api\User\ServiceController::class, 'drop'])->name('api.v1.user.service.drop')->middleware(['CheckMethod:delete|DELETE']);
     });
 
+    Route::prefix('log')->group(function () {
+        Route::prefix('relationService')->group(function () {
+            Route::get('datatable', [\App\Http\Controllers\Api\User\Log\RelationServiceController::class, 'datatable'])->name('api.v1.user.log.relationService.datatable');
+        });
+    });
+
 });

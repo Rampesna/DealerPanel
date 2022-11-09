@@ -144,6 +144,8 @@
                                 amount = `${reformatFloatNumber(usage.Items.Count / 1000)} MB`;
                             } else if (usage.Type === 'OutboxEArchive') {
                                 amount = parseInt(usage.Items.Count / response.response.customer.divisor);
+                            } else if (usage.Type === 'Ticket') {
+                                amount = parseInt(usage.Items.Count / 5);
                             } else {
                                 amount = usage.Items.Count;
                             }
@@ -161,7 +163,7 @@
                             if (credit.direction === 1) {
                                 usageArray.push({
                                     date: reformatDateForHuman(credit.created_at),
-                                    service: credit.service.name || '',
+                                    service: credit.service ? credit.service.name : '',
                                     amount: credit.amount,
                                     direction: 'Satın Alındı'
                                 });

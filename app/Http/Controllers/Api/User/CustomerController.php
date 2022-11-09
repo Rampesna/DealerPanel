@@ -70,7 +70,7 @@ class CustomerController extends Controller
             $request->province_id,
             $request->district_id,
             $request->foundation_date,
-            $request->divisor
+            $request->divisor ?? 1
         );
     }
 

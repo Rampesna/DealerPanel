@@ -272,7 +272,7 @@ class CustomerService
         $customer->province_id = $province_id;
         $customer->district_id = $district_id;
         $customer->foundation_date = $foundation_date;
-        $customer->divisor = $divisor;
+        $customer->divisor = $divisor == '' || $divisor == null ? 1 : $divisor;
         $customer->save();
 
         return $this->success('Customer created successfully', $customer);

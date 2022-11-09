@@ -45,6 +45,10 @@ Route::middleware([
         Route::get('index', [\App\Http\Controllers\Web\User\UserController::class, 'index'])->name('user.user.index');
     });
 
+    Route::prefix('log')->group(function () {
+        Route::get('index', [\App\Http\Controllers\Web\User\LogController::class, 'index'])->name('user.log.index');
+    });
+
     Route::prefix('service')->group(function () {
         Route::get('index', [\App\Http\Controllers\Web\User\ServiceController::class, 'index'])->name('user.service.index');
     });

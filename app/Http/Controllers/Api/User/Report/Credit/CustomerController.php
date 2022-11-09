@@ -50,6 +50,8 @@ class CustomerController extends Controller
                             $customerUsage += $usageItem->Items->Count / 1000;
                         } else if ($usageItem->Type == 'OutboxEArchive') {
                             $customerUsage += $usageItem->Items->Count / $customer->divisor;
+                        } else if ($usageItem->Type == 'Ticket') {
+                            $customerUsage += $usageItem->Items->Count / 5;
                         } else {
                             $customerUsage += $usageItem->Items->Count;
                         }
@@ -59,6 +61,8 @@ class CustomerController extends Controller
                         $customerUsage += $customerFromService->Usages->Items->Count / 1000;
                     } else if ($customerFromService->Usages->Type == 'OutboxEArchive') {
                         $customerUsage += $customerFromService->Usages->Items->Count / $customer->divisor;
+                    } else if ($customerFromService->Usages->Type == 'Ticket') {
+                        $customerUsage += $customerFromService->Usages->Items->Count / 5;
                     } else {
                         $customerUsage += $customerFromService->Usages->Items->Count;
                     }

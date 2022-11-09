@@ -62,8 +62,20 @@ class RelationServiceService
             $relationService->relation_type == 'App\\Models\\Dealer' ? 'Bayi' : ''
             );
         })->
+        editColumn('creator_type', function ($relationService) {
+            return $relationService->creator_type == 'App\\Models\\Customer' ? 'Müşteri' : (
+            $relationService->creator_type == 'App\\Models\\Dealer' ? 'Bayi' : (
+            $relationService->creator_type == 'App\\Models\\User' ? 'Yönetici' : (
+            $relationService->creator_type
+            )
+            )
+            );
+        })->
         editColumn('relation_id', function ($relationService) {
             return $relationService->relation ? $relationService->relation->name : '';
+        })->
+        editColumn('creator_id', function ($relationService) {
+            return $relationService->creator ? $relationService->creator->name : '';
         })->
         editColumn('service_id', function ($relationService) {
             return $relationService->service ? $relationService->service->name : '';
@@ -72,10 +84,13 @@ class RelationServiceService
             return $relationService->status ? $relationService->status->name : '';
         })->
         editColumn('start', function ($relationService) {
-            return date('d.m.Y, H:i', strtotime($relationService->start));
+            return date('d.m.Y, H:i', strtotime($relationService->start ?? ''));
         })->
         editColumn('end', function ($relationService) {
-            return date('d.m.Y, H:i', strtotime($relationService->end));
+            return date('d.m.Y, H:i', strtotime($relationService->end ?? ''));
+        })->
+        editColumn('created_at', function ($relationService) {
+            return $relationService->created_at ? date('d.m.Y, H:i', strtotime($relationService->created_at ?? '')) : '';
         })->
         addColumn('transaction_status', function ($relationService) {
             return $relationService->transactionStatus ? $relationService->transactionStatus->name : '';

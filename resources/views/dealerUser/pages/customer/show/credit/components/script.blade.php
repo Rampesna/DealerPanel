@@ -142,7 +142,16 @@
                                     service = usage.Type;
                                 }
 
-                                amount = usage.Items ? usage.Items.Count : 0;
+                                if (usage.Type === 'Ledger') {
+                                    amount = `${reformatFloatNumber(usage.Items.Count / 1000)} MB`;
+                                } else if (usage.Type === 'OutboxEArchive') {
+                                    amount = parseInt(usage.Items.Count / response.response.customer.divisor);
+                                } else if (usage.Type === 'Ticket') {
+                                    amount = parseInt(usage.Items.Count / 5);
+                                } else {
+                                    amount = usage.Items.Count;
+                                }
+
                                 direction = 'Kullanıldı';
 
                                 usageArray.push({
@@ -184,7 +193,6 @@
                                 direction: direction
                             });
                         }
-
 
                         $.each(credits, function (i, credit) {
                             if (credit.direction === 1) {

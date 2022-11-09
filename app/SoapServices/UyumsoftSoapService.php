@@ -38,8 +38,9 @@ class UyumsoftSoapService
 
     public function __construct()
     {
-//        $this->baseUrl = 'http://efatura-test.uyumsoft.com.tr/Services/BasicDespatchIntegration?wsdl';
-        $this->baseUrl = 'https://efatura-test.uyumsoft.com.tr/Services/DespatchIntegration?wsdl';
+        $this->baseUrl = 'http://efatura-test.uyumsoft.com.tr/Services/BasicDespatchIntegration?wsdl';
+//        $this->baseUrl = 'https://efatura-test.uyumsoft.com.tr/Services/DespatchIntegration?wsdl';
+//        $this->baseUrl = 'https://efatura-test.uyumsoft.com.tr/api/BasicMobileIntegrationApi?wdsl';
         $this->username = 'Uyumsoft';
         $this->password = 'Uyumsoft';
         $this->client = new SoapClient($this->baseUrl);
@@ -50,7 +51,7 @@ class UyumsoftSoapService
 
     public function GetInboxDespatch()
     {
-        $response = $this->client->GetInboxDespatch([
+        $response = $this->client->TestConnection([
             'query' => [
                 'despatchId' => '8a2d3526-effb-45f5-ab67-2c438efe974a',
             ]

@@ -40,6 +40,8 @@ class BienSoapController extends Controller
                     $usage += $usageItem->Items->Count / 1000;
                 } else if ($usageItem->Type == 'OutboxEArchive') {
                     $usage += $usageItem->Items->Count / $customer->divisor;
+                } else if ($usageItem->Type == 'Ticket') {
+                    $usage += $usageItem->Items->Count / 5;
                 } else {
                     $usage += $usageItem->Items->Count;
                 }
@@ -49,6 +51,8 @@ class BienSoapController extends Controller
                 $usage += $response->GetCustomerReportWithSoftwareResult->Value->Usages->Items->Count / 1000;
             } else if ($response->GetCustomerReportWithSoftwareResult->Value->Usages->Type == 'OutboxEArchive') {
                 $usage += $response->GetCustomerReportWithSoftwareResult->Value->Usages->Items->Count / $customer->divisor;
+            } else if ($response->GetCustomerReportWithSoftwareResult->Value->Usages->Type == 'Ticket') {
+                $usage += $response->GetCustomerReportWithSoftwareResult->Value->Usages->Items->Count / 5;
             } else {
                 $usage += $response->GetCustomerReportWithSoftwareResult->Value->Usages->Items->Count;
             }
@@ -75,6 +79,8 @@ class BienSoapController extends Controller
                     $usage += $usageItem->Items->Count / 1000;
                 } else if ($usageItem->Type == 'OutboxEArchive') {
                     $usage += $usageItem->Items->Count / $customer->divisor;
+                } else if ($usageItem->Type == 'Ticket') {
+                    $usage += $usageItem->Items->Count / 5;
                 } else {
                     $usage += $usageItem->Items->Count;
                 }
@@ -84,6 +90,8 @@ class BienSoapController extends Controller
                 $usage += $response->GetCustomerReportWithSoftwareResult->Value->Usages->Items->Count / 1000;
             } else if ($response->GetCustomerReportWithSoftwareResult->Value->Usages->Type == 'OutboxEArchive') {
                 $usage += $response->GetCustomerReportWithSoftwareResult->Value->Usages->Items->Count / $customer->divisor;
+            } else if ($response->GetCustomerReportWithSoftwareResult->Value->Usages->Type == 'Ticket') {
+                $usage += $response->GetCustomerReportWithSoftwareResult->Value->Usages->Items->Count / 5;
             } else {
                 $usage += $response->GetCustomerReportWithSoftwareResult->Value->Usages->Items->Count;
             }
