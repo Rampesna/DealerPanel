@@ -29,6 +29,7 @@
     var DownloadExcelButton = $('#DownloadExcelButton');
 
     function getReport() {
+        toastr.info('Kayıtlar Yükleniyor Lütfen Bekleyin...');
         $.ajax({
             type: 'get',
             url: '{{ route('api.v1.user.log.relationService.index') }}',
@@ -45,6 +46,7 @@
 
                 $.each(response.response, function (i, relationService) {
                     dataList.push({
+                        id: relationService.id,
                         createdAt: reformatDatetimeForHuman(relationService.created_at),
                         creatorType: relationService.creator_type === 'App\\Models\\User' ? 'Yönetici' : (
                             relationService.creator_type === 'App\\Models\\Dealer' ? 'Bayi' : (
@@ -69,6 +71,7 @@
                     localdata: dataList,
                     datatype: "array",
                     datafields: [
+                        {name: 'id'},
                         {name: 'createdAt'},
                         {name: 'creatorType'},
                         {name: 'creator'},
@@ -92,6 +95,11 @@
                     showfilterrow: true,
                     localization: getLocalization('tr'),
                     columns: [
+                        {
+                            text: '#',
+                            dataField: 'id',
+                            columntype: 'textbox',
+                        },
                         {
                             text: 'Oluşturulma Tarihi',
                             dataField: 'createdAt',
