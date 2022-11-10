@@ -60,6 +60,7 @@
                             )
                         ),
                         relation: relationService.relation ? relationService.relation.name : '',
+                        relationDealer: relationService.dealer ? relationService.dealer.name : '',
                         serviceName: relationService.service ? relationService.service.name : '',
                         serviceAmount: relationService.amount ?? '',
                         serviceStart: relationService.start ? reformatDatetimeForHuman(relationService.start) : '',
@@ -77,6 +78,7 @@
                         {name: 'creator'},
                         {name: 'relationType'},
                         {name: 'relation'},
+                        {name: 'relationDealer'},
                         {name: 'serviceName'},
                         {name: 'serviceAmount'},
                         {name: 'serviceStart'},
@@ -123,6 +125,11 @@
                         {
                             text: 'Hizmeti Alan Ünvan',
                             dataField: 'relation',
+                            columntype: 'textbox',
+                        },
+                        {
+                            text: 'Bayi Bilgisi',
+                            dataField: 'relationDealer',
                             columntype: 'textbox',
                         },
                         {

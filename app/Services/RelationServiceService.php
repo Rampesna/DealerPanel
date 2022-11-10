@@ -24,7 +24,11 @@ class RelationServiceService
     {
         $relationServices = RelationService::with([
             'creator',
-            'relation',
+            'relation' => function ($relation) {
+                $relation->with([
+                    'dealer'
+                ]);
+            },
             'service'
         ]);
 

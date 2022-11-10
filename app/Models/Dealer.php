@@ -41,6 +41,11 @@ class Dealer extends Model
         return $this->belongsTo(Dealer::class, 'top_id', 'id');
     }
 
+    public function dealer()
+    {
+        return $this->belongsTo(Dealer::class, 'dealer_id', 'id');
+    }
+
     public function customers()
     {
         return $this->hasMany(Customer::class);
