@@ -1,128 +1,128 @@
-<script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js?v=7.0.3') }}"></script>
-<script src="{{ asset('assets/js/pages/crud/datatables/extensions/buttons.js?v=7.0.3') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxcore.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxbuttons.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxscrollbar.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxlistbox.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxdropdownlist.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxmenu.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxgrid.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxgrid.selection.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxgrid.columnsreorder.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxgrid.columnsresize.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxgrid.filter.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxgrid.sort.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxdata.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxgrid.pager.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxnumberinput.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxwindow.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxdata.export.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxgrid.export.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxexport.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqxgrid.grouping.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/globalization/globalize.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jqgrid-localization.js') }}"></script>
+<script src="{{ asset('assets/jqwidgets/jszip.min.js') }}"></script>
 
 <script>
 
-    var customers = $('#customers').DataTable({
-        language: {
-            info: "_TOTAL_ Kayıttan _START_ - _END_ Arasındaki Kayıtlar Gösteriliyor.",
-            infoEmpty: "Gösterilecek Hiç Kayıt Yok.",
-            loadingRecords: "Kayıtlar Yükleniyor.",
-            zeroRecords: "Tablo Boş",
-            search: "Arama:",
-            infoFiltered: "(Toplam _MAX_ Kayıttan Filtrelenenler)",
-            lengthMenu: "Sayfa Başı _MENU_ Kayıt Göster",
-            sProcessing: "Yükleniyor...",
-            paginate: {
-                first: "İlk",
-                previous: "Önceki",
-                next: "Sonraki",
-                last: "Son"
-            },
-            select: {
-                rows: {
-                    "_": "%d kayıt seçildi",
-                    "0": "",
-                    "1": "1 kayıt seçildi"
-                }
-            },
-            buttons: {
-                print: {
-                    title: 'Yazdır'
-                }
-            }
-        },
+    var reportDiv = $('#report');
 
-        dom: 'Brtipl',
+    var DownloadExcelButton = $('#DownloadExcelButton');
 
-        lengthMenu: [
-            [10, 25, 50, 250, -1],
-            [10, 25, 50, 250, "Tümü"]
-        ],
-
-        order: [
-            [
-                1,
-                "asc"
-            ]
-        ],
-
-        buttons: [
-            {
-                extend: 'collection',
-                text: '<i class="fa fa-download"></i> Dışa Aktar',
-                buttons: [
-                    {
-                        extend: 'pdf',
-                        text: '<i class="fa fa-file-pdf"></i> PDF İndir'
-                    },
-                    {
-                        extend: 'excel',
-                        text: '<i class="fa fa-file-excel"></i> Excel İndir'
-                    }
-                ]
-            },
-            {
-                extend: 'print',
-                text: '<i class="fa fa-print"></i> Yazdır'
-            },
-            {
-                extend: 'colvis',
-                text: '<i class="fa fa-columns"></i> Sütunlar'
-            },
-            {
-                text: '<i class="fas fa-undo"></i> Yenile',
-                action: function (e, dt, node, config) {
-                    $('table input').val('');
-                    dealers.search('').columns().search('').ajax.reload().draw();
-                }
-            }
-        ],
-
-        initComplete: function () {
-            var r = $('#customers tfoot tr');
-            $('#customers thead').append(r);
-            this.api().columns().every(function (index) {
-                var column = this;
-                var input = document.createElement('input');
-                input.className = 'form-control';
-
-                if (index !== 0) {
-                    input = null;
-                }
-
-                $(input).appendTo($(column.footer()).empty())
-                    .on('change', function () {
-                        column.search($(this).val(), false, false, true).draw();
-                    });
-            });
-        },
-
-        processing: true,
-        serverSide: true,
-        ajax: {
+    function getReport() {
+        toastr.info('Rapor Oluşturuluyor, Lütfen Bekleyiniz...');
+        reportDiv.html('<i class="fa fa-spinner fa-spin"></i>');
+        $.ajax({
             type: 'get',
-            url: '{{ route('api.v1.dealerUser.report.credit.customer.datatable') }}',
+            url: '{{ route('api.v1.dealerUser.report.credit.customer.report') }}',
             headers: {
                 _token: '{{ auth()->user()->apiToken() }}',
-                _auth_type: 'User'
+                _auth_type: 'DealerUser'
             },
             data: {
-                dealer_id: '{{ auth()->user()->getDealerId() }}'
+                dealer_id: parseInt('{{ auth()->id() }}'),
+            },
+            success: function (response) {
+                var source = {
+                    localdata: response,
+                    datatype: "array",
+                    datafields: [
+                        {name: 'taxNumber'},
+                        {name: 'name'},
+                        {name: 'dealer'},
+                        {name: 'bought'},
+                        {name: 'used'},
+                        {name: 'remaining'},
+                    ]
+                };
+                var dataAdapter = new $.jqx.dataAdapter(source);
+                reportDiv.jqxGrid({
+                    width: '100%',
+                    height: '500',
+                    source: dataAdapter,
+                    columnsresize: true,
+                    groupable: true,
+                    theme: 'metro',
+                    filterable: true,
+                    showfilterrow: true,
+                    localization: getLocalization('tr'),
+                    columns: [
+                        {
+                            text: 'VKN/TCKN',
+                            dataField: 'taxNumber',
+                            columntype: 'textbox',
+                        },
+                        {
+                            text: 'Müşteri',
+                            dataField: 'name',
+                            columntype: 'textbox',
+                        },
+                        {
+                            text: 'Bayi',
+                            dataField: 'dealer',
+                            columntype: 'textbox',
+                        },
+                        {
+                            text: 'Alınan Kontör',
+                            dataField: 'bought',
+                            columntype: 'textbox',
+                        },
+                        {
+                            text: 'Kullanılan Kontör',
+                            dataField: 'used',
+                            columntype: 'textbox',
+                        },
+                        {
+                            text: 'Kalan Kontör',
+                            dataField: 'remaining',
+                            columntype: 'textbox',
+                        }
+                    ]
+                });
+                reportDiv.on('contextmenu', function () {
+                    return false;
+                });
+                reportDiv.on('rowclick', function (event) {
+                    if (event.args.rightclick) {
+                        $("#employeesGrid").jqxGrid('selectrow', event.args.rowindex);
+                        var scrollTop = $(window).scrollTop();
+                        var scrollLeft = $(window).scrollLeft();
+                        contextMenu.jqxMenu('open', parseInt(event.args.originalEvent.clientX) + 5 + scrollLeft, parseInt(event.args.originalEvent.clientY) + 5 + scrollTop);
+                        return false;
+                    }
+                });
+                DownloadExcelButton.show();
             },
             error: function (error) {
-                console.log(error)
+                console.log(error);
+                toastr.error('Rapor alınırken bir hata oluştu.');
             }
-        },
-        columns: [
-            {data: 'tax_number', name: 'tax_number'},
-            {data: 'name', name: 'name'},
-            {data: 'total', name: 'total'},
-            {data: 'used', name: 'used'},
-            {data: 'remaining', name: 'remaining'},
-        ],
+        });
+    }
 
-        responsive: true
+    getReport();
+
+    DownloadExcelButton.click(function () {
+        reportDiv.jqxGrid('exportdata', 'xlsx', 'Müşteri Kontör Raporu');
     });
 
 </script>

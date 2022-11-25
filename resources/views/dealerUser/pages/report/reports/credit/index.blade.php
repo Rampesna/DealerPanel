@@ -6,32 +6,14 @@
 
     <input type="hidden" id="id_edit">
     <input type="hidden" id="encrypted_id_edit">
-    <div class="row">
+    <div class="row text-center">
         <div class="col-xl-12">
-            <div class="card" id="customersCard">
-                <div class="card-body">
-                    <table class="table" id="customers">
-                        <thead>
-                        <tr>
-                            <th>Vergi Numarası</th>
-                            <th>Ünvan</th>
-                            <th>Toplam Alınan Kontör</th>
-                            <th>Toplam Harcanan Kontör</th>
-                            <th>Kalan Kontör</th>
-                        </tr>
-                        </thead>
-                        <tfoot>
-                        <tr>
-                            <th>Vergi Numarası</th>
-                            <th>Ünvan</th>
-                            <th>Toplam Alınan Kontör</th>
-                            <th>Toplam Harcanan Kontör</th>
-                            <th>Kalan Kontör</th>
-                        </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
+            <div id="report"></div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-xl-12 text-right">
+            <button class="btn btn-primary" id="DownloadExcelButton" style="display: none">Excel İndir</button>
         </div>
     </div>
 

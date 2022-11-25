@@ -118,6 +118,7 @@ Route::middleware([
         Route::prefix('credit')->group(function () {
             Route::prefix('customer')->group(function () {
                 Route::get('datatable', [\App\Http\Controllers\Api\DealerUser\Report\Credit\CustomerController::class, 'creditReportDatatable'])->name('api.v1.dealerUser.report.credit.customer.datatable');
+                Route::get('report', [\App\Http\Controllers\Api\DealerUser\Report\Credit\CustomerController::class, 'report'])->name('api.v1.dealerUser.report.credit.customer.report');
             });
         });
     });

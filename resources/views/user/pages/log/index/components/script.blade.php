@@ -60,7 +60,7 @@
                             )
                         ),
                         relation: relationService.relation ? relationService.relation.name : '',
-                        relationDealer: relationService.dealer ? relationService.dealer.name : '',
+                        relationDealer: relationService.relation.dealer ? relationService.relation.dealer.name : '',
                         serviceName: relationService.service ? relationService.service.name : '',
                         serviceAmount: relationService.amount ?? '',
                         serviceStart: relationService.start ? reformatDatetimeForHuman(relationService.start) : '',
