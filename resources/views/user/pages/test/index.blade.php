@@ -4,6 +4,7 @@
 
 @section('content')
 
+<<<<<<< Updated upstream
     <div class="row">
         <div class="col-xl-4">
             <div class="card">
@@ -31,6 +32,9 @@
             </div>
         </div>
     </div>
+=======
+
+>>>>>>> Stashed changes
 
 @endsection
 
@@ -41,7 +45,33 @@
 @section('page-script')
     <script>
 
+<<<<<<< Updated upstream
 
+=======
+        function getOpportunities() {
+            $.ajax({
+                type: 'get',
+                url: '{{ route('api.v1.user.opportunity.test') }}',
+                headers: {
+                    _token: '{{ auth()->user()->apiToken() }}',
+                    _auth_type: 'User'
+                },
+                data: {
+                    test1: 1,
+                    test2: 2
+                },
+                success: function (response) {
+                    console.log(response)
+                },
+                error: function (error) {
+                    console.log(error);
+                    toastr.error('Sistem Arızası');
+                }
+            });
+        }
+
+        getOpportunities();
+>>>>>>> Stashed changes
 
     </script>
 @stop
