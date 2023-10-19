@@ -187,8 +187,10 @@ Route::middleware([
 
     Route::prefix('payment')->group(function () {
         Route::any('getAll', [\App\Http\Controllers\Api\User\PaymentController::class, 'getAll'])->name('api.v1.user.payment.getAll')->middleware(['CheckMethod:get']);
+        Route::any('getApproved', [\App\Http\Controllers\Api\User\PaymentController::class, 'getApproved'])->name('api.v1.user.payment.getApproved')->middleware(['CheckMethod:get']);
         Route::any('getById', [\App\Http\Controllers\Api\User\PaymentController::class, 'getById'])->name('api.v1.user.payment.getById')->middleware(['CheckMethod:get']);
         Route::any('create', [\App\Http\Controllers\Api\User\PaymentController::class, 'create'])->name('api.v1.user.payment.create')->middleware(['CheckMethod:post']);
+        Route::any('testJqxServerSide', [\App\Http\Controllers\Api\User\PaymentController::class, 'testJqxServerSide'])->name('api.v1.user.payment.testJqxServerSide')->middleware(['CheckMethod:get']);
     });
 
     Route::prefix('service')->group(function () {
@@ -200,10 +202,23 @@ Route::middleware([
         Route::any('drop', [\App\Http\Controllers\Api\User\ServiceController::class, 'drop'])->name('api.v1.user.service.drop')->middleware(['CheckMethod:delete|DELETE']);
     });
 
+    Route::prefix('announcement')->group(function () {
+        Route::any('index', [\App\Http\Controllers\Api\User\AnnouncementController::class, 'index'])->name('api.v1.user.announcement.index')->middleware(['CheckMethod:get']);
+        Route::any('datatable', [\App\Http\Controllers\Api\User\AnnouncementController::class, 'datatable'])->name('api.v1.user.announcement.datatable')->middleware(['CheckMethod:get']);
+        Route::any('show', [\App\Http\Controllers\Api\User\AnnouncementController::class, 'show'])->name('api.v1.user.announcement.show')->middleware(['CheckMethod:get']);
+        Route::any('create', [\App\Http\Controllers\Api\User\AnnouncementController::class, 'create'])->name('api.v1.user.announcement.create')->middleware(['CheckMethod:post|put']);
+        Route::any('update', [\App\Http\Controllers\Api\User\AnnouncementController::class, 'update'])->name('api.v1.user.announcement.update')->middleware(['CheckMethod:post|put']);
+        Route::any('drop', [\App\Http\Controllers\Api\User\AnnouncementController::class, 'drop'])->name('api.v1.user.announcement.drop')->middleware(['CheckMethod:delete|DELETE']);
+    });
+
     Route::prefix('log')->group(function () {
         Route::prefix('relationService')->group(function () {
             Route::get('index', [\App\Http\Controllers\Api\User\Log\RelationServiceController::class, 'index'])->name('api.v1.user.log.relationService.index');
         });
+    });
+
+    Route::prefix('crsService')->group(function () {
+        Route::post('CreateNewCustomer', [\App\Http\Controllers\Api\User\CrsServiceController::class, 'CreateNewCustomer'])->name('api.v1.user.crsService.CreateNewCustomer');
     });
 
 });

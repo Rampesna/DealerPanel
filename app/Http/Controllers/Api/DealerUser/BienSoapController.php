@@ -46,6 +46,7 @@ class BienSoapController extends Controller
     public function usageReportByCustomerId(UsageReportByCustomerIdRequest $request)
     {
         $customer = Customer::find(Crypt::decrypt($request->customer_id));
+
         $response = $this->bienSoapService->GetCustomerReportWithSoftware(
             $request->start_date,
             $request->end_date,
@@ -56,10 +57,26 @@ class BienSoapController extends Controller
 
         if (is_array($response->GetCustomerReportWithSoftwareResult->Value->Usages)) {
             foreach ($response->GetCustomerReportWithSoftwareResult->Value->Usages as $usageItem) {
-                $usage += $usageItem->Items->Count;
+                if ($usageItem->Type == 'Ledger') {
+                    $usage += $usageItem->Items->Count / 1000;
+                } else if ($usageItem->Type == 'OutboxEArchive') {
+                    $usage += $usageItem->Items->Count / $customer->divisor;
+                } else if ($usageItem->Type == 'Ticket') {
+                    $usage += $usageItem->Items->Count / 5;
+                } else {
+                    $usage += $usageItem->Items->Count;
+                }
             }
         } else {
-            $usage = $response->GetCustomerReportWithSoftwareResult->Value->Usages->Items->Count;
+            if ($response->GetCustomerReportWithSoftwareResult->Value->Usages->Type == 'Ledger') {
+                $usage += $response->GetCustomerReportWithSoftwareResult->Value->Usages->Items->Count / 1000;
+            } else if ($response->GetCustomerReportWithSoftwareResult->Value->Usages->Type == 'OutboxEArchive') {
+                $usage += $response->GetCustomerReportWithSoftwareResult->Value->Usages->Items->Count / $customer->divisor;
+            } else if ($response->GetCustomerReportWithSoftwareResult->Value->Usages->Type == 'Ticket') {
+                $usage += $response->GetCustomerReportWithSoftwareResult->Value->Usages->Items->Count / 5;
+            } else {
+                $usage += $response->GetCustomerReportWithSoftwareResult->Value->Usages->Items->Count;
+            }
         }
 
         return $this->success('Usage report', $usage);
@@ -68,12 +85,16 @@ class BienSoapController extends Controller
     public function usageListByCustomerId(UsageListByCustomerIdRequest $request)
     {
         $customer = Customer::find(Crypt::decrypt($request->customer_id));
+
         $response = $this->bienSoapService->GetCustomerReportWithSoftware(
             $request->start_date,
             $request->end_date,
             $customer->tax_number
         );
 
-        return $this->success('Usage report', $response->GetCustomerReportWithSoftwareResult->Value);
+        return $this->success('Usage report', [
+            'usages' => $response->GetCustomerReportWithSoftwareResult->Value->Usages,
+            'customer' => $customer
+        ]);
     }
 }

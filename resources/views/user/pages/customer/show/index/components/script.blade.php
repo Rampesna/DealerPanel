@@ -254,6 +254,7 @@
                 $('#dealer_id_span').html(response.response.dealer ? response.response.dealer.name : '--');
                 $('#name_span').html(response.response.name ?? '--');
                 $('#tax_number_span').html(response.response.tax_number ?? '--');
+                $('#activation_date_span').html(reformatDateForHuman(response.response.activation_date) ?? '--');
                 $('#tax_office_span').html(response.response.tax_office ?? '--');
                 $('#email_span').html(response.response.email ?? '--');
                 $('#gsm_span').html(response.response.gsm ?? '--');

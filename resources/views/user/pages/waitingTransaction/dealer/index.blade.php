@@ -7,6 +7,7 @@
     @include('user.pages.waitingTransaction.layouts.subheader')
 
     @include('user.pages.waitingTransaction.dealer.modals.accept')
+    @include('user.pages.waitingTransaction.dealer.modals.reject')
 
     <input type="hidden" id="id_edit">
     <input type="hidden" id="encrypted_id_edit">
@@ -39,6 +40,13 @@
                 <div class="row">
                     <div class="col-xl-12">
                         <i class="fas fa-check-circle text-success"></i><span class="ml-4">Onayla</span>
+                    </div>
+                </div>
+            </a>
+            <a onclick="reject()" class="dropdown-item cursor-pointer">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <i class="fas fa-times-circle text-danger"></i><span class="ml-4">Reddet</span>
                     </div>
                 </div>
             </a>

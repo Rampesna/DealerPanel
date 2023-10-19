@@ -42,6 +42,11 @@
                     </div>
                     <br>
                     <div class="d-flex justify-content-between">
+                        <div>Aktivasyon Tarihi</div>
+                        <div id="activation_date_span">--</div>
+                    </div>
+                    <br>
+                    <div class="d-flex justify-content-between">
                         <div>Vergi Dairesi</div>
                         <div id="tax_office_span">--</div>
                     </div>

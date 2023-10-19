@@ -76,4 +76,13 @@ Route::middleware([
             ->name('api.v1.general.district.index')
             ->middleware(['CheckMethod:get']);
     });
+
+    Route::prefix('announcement')->group(function () {
+        Route::any('index', [\App\Http\Controllers\Api\General\AnnouncementController::class, 'index'])
+            ->name('api.v1.general.announcement.index')
+            ->middleware(['CheckMethod:get']);
+        Route::any('getById', [\App\Http\Controllers\Api\General\AnnouncementController::class, 'getById'])
+            ->name('api.v1.general.announcement.getById')
+            ->middleware(['CheckMethod:get']);
+    });
 });

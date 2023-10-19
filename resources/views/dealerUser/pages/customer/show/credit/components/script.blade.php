@@ -98,7 +98,6 @@
                 relation_type: relation_type
             },
             success: function (creditsResponse) {
-                console.log(creditsResponse);
                 var credits = creditsResponse.response;
                 $.ajax({
                     type: 'get',
@@ -113,77 +112,43 @@
                         end_date: end_date
                     },
                     success: function (response) {
-                        var usages = response.response.Usages;
+                        console.log(response);
+                        var usages = response.response.usages;
                         var usageArray = [];
 
-                        console.log(usages);
+                        $.each(usages, function (i, usage) {
 
-                        if ($.isArray(usages)) {
-                            $.each(usages, function (i, usage) {
-
-                                var date = '';
-                                var service = '';
-                                var amount = 0;
-                                var direction = '';
-
-                                if (usage.Type === 'InboxInvoice') {
-                                    service = 'E-fatura Gelen';
-                                } else if (usage.Type === 'OutboxEInvoice') {
-                                    service = 'E-fatura Giden';
-                                } else if (usage.Type === 'OutboxEArchive') {
-                                    service = 'E-arşiv Giden';
-                                } else if (usage.Type === 'Ledger') {
-                                    service = 'E-Defter';
-                                } else if (usage.Type === 'Ticket') {
-                                    service = 'E-Posta';
-                                } else if (usage.Type === 'EseVoucher') {
-                                    service = 'E-MM';
-                                } else {
-                                    service = usage.Type;
-                                }
-
-                                if (usage.Type === 'Ledger') {
-                                    amount = `${reformatFloatNumber(usage.Items.Count / 1000)} MB`;
-                                } else if (usage.Type === 'OutboxEArchive') {
-                                    amount = parseInt(usage.Items.Count / response.response.customer.divisor);
-                                } else if (usage.Type === 'Ticket') {
-                                    amount = parseInt(usage.Items.Count / 5);
-                                } else {
-                                    amount = usage.Items.Count;
-                                }
-
-                                direction = 'Kullanıldı';
-
-                                usageArray.push({
-                                    date: date,
-                                    service: service,
-                                    amount: amount,
-                                    direction: direction
-                                });
-                            });
-                        } else {
                             var date = '';
                             var service = '';
                             var amount = 0;
                             var direction = '';
 
-                            if (usages.Type === 'InboxInvoice') {
+                            if (usage.Type === 'InboxInvoice') {
                                 service = 'E-fatura Gelen';
-                            } else if (usages.Type === 'OutboxEInvoice') {
+                            } else if (usage.Type === 'OutboxEInvoice') {
                                 service = 'E-fatura Giden';
-                            } else if (usages.Type === 'OutboxEArchive') {
+                            } else if (usage.Type === 'OutboxEArchive') {
                                 service = 'E-arşiv Giden';
-                            } else if (usages.Type === 'Ledger') {
+                            } else if (usage.Type === 'Ledger') {
                                 service = 'E-Defter';
-                            } else if (usages.Type === 'Ticket') {
+                            } else if (usage.Type === 'Ticket') {
                                 service = 'E-Posta';
-                            } else if (usages.Type === 'EseVoucher') {
+                            } else if (usage.Type === 'EseVoucher') {
                                 service = 'E-MM';
                             } else {
-                                service = usages.Type;
+                                service = usage.Type;
                             }
 
-                            amount = usages.Items ? usages.Items.Count : 0;
+                            if (usage.Type === 'Ledger') {
+                                amount = `${reformatFloatNumber(usage.Items.Count / 1000)} MB`;
+                            } else if (usage.Type === 'OutboxEArchive') {
+                                amount = parseInt(usage.Items.Count / response.response.customer.divisor);
+                            } else if (usage.Type === 'Ticket') {
+                                amount = parseInt(usage.Items.Count / 5);
+                            } else {
+                                amount = usage.Items.Count;
+                            }
+
                             direction = 'Kullanıldı';
 
                             usageArray.push({
@@ -192,13 +157,12 @@
                                 amount: amount,
                                 direction: direction
                             });
-                        }
-
+                        });
                         $.each(credits, function (i, credit) {
                             if (credit.direction === 1) {
                                 usageArray.push({
                                     date: reformatDateForHuman(credit.created_at),
-                                    service: credit.service.name || '',
+                                    service: credit.service ? credit.service.name : '',
                                     amount: credit.amount,
                                     direction: 'Satın Alındı'
                                 });
@@ -213,7 +177,7 @@
                                     [
                                         {name: 'date', type: 'string'},
                                         {name: 'service', type: 'string'},
-                                        {name: 'amount', type: 'integer'},
+                                        {name: 'amount', type: 'string'},
                                         {name: 'direction', type: 'string'},
                                     ]
                             };
@@ -232,7 +196,7 @@
                                 pageable: true,
                                 sortable: true,
                                 pagesizeoptions: ['10', '20', '50', '1000'],
-                                localization: getLocalization('tr'),
+                                // localization: getLocalization('tr'),
                                 columns: [
                                     {
                                         text: 'Tarih',

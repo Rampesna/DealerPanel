@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4b4c4a342149582afbf8fb4fc90b0c61",
+    "content-hash": "0029b63b9c118e9c3cf19d536581a70f",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3442,6 +3442,48 @@
                 "source": "https://github.com/ralouphie/getallheaders/tree/develop"
             },
             "time": "2019-03-08T08:55:37+00:00"
+        },
+        {
+            "name": "rampesna/jqx-server-side",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Rampesna/jqx-server-side.git",
+                "reference": "e63bfb955b4f795b5c55d13f97af17cd7cef74a1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Rampesna/jqx-server-side/zipball/e63bfb955b4f795b5c55d13f97af17cd7cef74a1",
+                "reference": "e63bfb955b4f795b5c55d13f97af17cd7cef74a1",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^8.0",
+                "illuminate/http": "^8.0",
+                "php": ">=8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Rampesna\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Talha Can",
+                    "email": "rampesna@gmail.com"
+                }
+            ],
+            "description": "JQX Server Side is a PHP library that helps you to create a server side for JQX DataTables.",
+            "support": {
+                "issues": "https://github.com/Rampesna/jqx-server-side/issues",
+                "source": "https://github.com/Rampesna/jqx-server-side/tree/v1.0.1"
+            },
+            "time": "2023-10-12T07:56:40+00:00"
         },
         {
             "name": "ramsey/collection",
@@ -9005,9 +9047,9 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.3|^8.0",
+        "php": "^8.0",
         "ext-soap": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }

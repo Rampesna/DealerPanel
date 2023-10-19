@@ -3,12 +3,35 @@
 namespace App\Services;
 
 use App\Models\Payment;
+use Illuminate\Http\Request;
+use Rampesna\JqxGrid;
 
 class PaymentService
 {
     public function getAll()
     {
         return Payment::all();
+    }
+
+    public function getApproved()
+    {
+        return Payment::with([
+            'relation' => function ($query) {
+                $query->withTrashed();
+            },
+        ])->where('approved', 1)->get();
+    }
+
+    public function testJqxServerSide(Request $request)
+    {
+        $table = 'payments';
+        $columns = [
+            'id',
+        ];
+
+        $jqxGrid = new JqxGrid($table, $columns, $request);
+
+        return $jqxGrid->initialize();
     }
 
     public function getById(

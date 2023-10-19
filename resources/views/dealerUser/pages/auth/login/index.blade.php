@@ -43,6 +43,9 @@
                                 <div class="col-xl-4">
                                     <button type="button" class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3" id="LoginButton">Giriş Yap</button>
                                 </div>
+                                <div class="col-xl-8">
+                                    <a href="{{ route('home') }}" class="btn btn-secondary btn-block font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3" id="LoginButton">Ana Ekran</a>
+                                </div>
                             </div>
                         </div>
                     </div>

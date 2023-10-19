@@ -2,6 +2,7 @@
 
 namespace App\SoapServices;
 
+use App\Models\Customer;
 use SoapClient;
 use WsdlToPhp\WsSecurity\WsSecurity;
 use App\Traits\Response;
@@ -38,6 +39,7 @@ class BienSoapService
 
     public function __construct()
     {
+//        $this->baseUrl = 'http://connect-test.bienteknoloji.com.tr/Services/BasicRemoteManagement?wsdl';
         $this->baseUrl = 'https://connect.bienteknoloji.com.tr/Services/RemoteManagement?wsdl';
         $this->username = 'AdminBien';
         $this->password = 'BiEn202211!';
@@ -59,6 +61,7 @@ class BienSoapService
         $taxNumber = null
     )
     {
+        $customer = Customer::where('tax_number', $taxNumber)->first();
         $response = $this->client->GetCustomerReportWithSoftware([
             'query' => [
                 'StartDate' => $startDate,
@@ -82,6 +85,20 @@ class BienSoapService
                 'StartDate' => '2015-01-01T00:00:00',
                 'EndDate' => '2050-01-01T00:00:00',
                 'VknTckn' => '1700318993',
+            ]
+        ]);
+
+        return $response;
+    }
+
+    public function GetCustomerStatusInformation()
+    {
+        $response = $this->client->GetCustomerStatusInformation([
+            'query' => [
+                'ActAsDataAdmin' => true,
+                'PageIndex' => 0,
+                'PageSize' => 4347,
+                'VknTckn' => '31853334448',
             ]
         ]);
 

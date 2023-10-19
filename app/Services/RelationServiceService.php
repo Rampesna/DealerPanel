@@ -92,10 +92,10 @@ class RelationServiceService
             return $relationService->status ? $relationService->status->name : '';
         })->
         editColumn('start', function ($relationService) {
-            return date('d.m.Y, H:i', strtotime($relationService->start ?? ''));
+            return $relationService->start;
         })->
         editColumn('end', function ($relationService) {
-            return date('d.m.Y, H:i', strtotime($relationService->end ?? ''));
+            return $relationService->end;
         })->
         editColumn('created_at', function ($relationService) {
             return $relationService->created_at ? date('d.m.Y, H:i', strtotime($relationService->created_at ?? '')) : '';
@@ -211,7 +211,16 @@ class RelationServiceService
 
             if ($relationService->creator_type == 'App\\Models\\Dealer') {
                 if (Dealer::find($relationService->creator_id)->balance < ($relationService->amount * $relationService->service->price)) {
-                    return $this->error('Not enough balance', 400);
+                    // Add this service to dealer first
+                    $creditService->save(
+                        null,
+                        $relationService->creator_type,
+                        $relationService->creator_id,
+                        $relationService->id,
+                        $relationService->amount * $relationService->service->credit_amount,
+                        1,
+                        'Hizmet Onayı İle Otomatik Kontör Aktarımı'
+                    );
                 }
             }
 

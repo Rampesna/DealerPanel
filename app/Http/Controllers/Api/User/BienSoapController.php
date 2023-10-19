@@ -34,27 +34,29 @@ class BienSoapController extends Controller
 
         $usage = 0;
 
-        if (is_array($response->GetCustomerReportWithSoftwareResult->Value->Usages)) {
-            foreach ($response->GetCustomerReportWithSoftwareResult->Value->Usages as $usageItem) {
-                if ($usageItem->Type == 'Ledger') {
-                    $usage += $usageItem->Items->Count / 1000;
-                } else if ($usageItem->Type == 'OutboxEArchive') {
-                    $usage += $usageItem->Items->Count / $customer->divisor;
-                } else if ($usageItem->Type == 'Ticket') {
-                    $usage += $usageItem->Items->Count / 5;
-                } else {
-                    $usage += $usageItem->Items->Count;
+        if (isset($response->GetCustomerReportWithSoftwareResult->Value)) {
+            if (is_array($response->GetCustomerReportWithSoftwareResult->Value->Usages)) {
+                foreach ($response->GetCustomerReportWithSoftwareResult->Value->Usages as $usageItem) {
+                    if ($usageItem->Type == 'Ledger') {
+                        $usage += $usageItem->Items->Count / 1000;
+                    } else if ($usageItem->Type == 'OutboxEArchive') {
+                        $usage += $usageItem->Items->Count / $customer->divisor;
+                    } else if ($usageItem->Type == 'Ticket') {
+                        $usage += $usageItem->Items->Count / 5;
+                    } else {
+                        $usage += $usageItem->Items->Count;
+                    }
                 }
-            }
-        } else {
-            if ($response->GetCustomerReportWithSoftwareResult->Value->Usages->Type == 'Ledger') {
-                $usage += $response->GetCustomerReportWithSoftwareResult->Value->Usages->Items->Count / 1000;
-            } else if ($response->GetCustomerReportWithSoftwareResult->Value->Usages->Type == 'OutboxEArchive') {
-                $usage += $response->GetCustomerReportWithSoftwareResult->Value->Usages->Items->Count / $customer->divisor;
-            } else if ($response->GetCustomerReportWithSoftwareResult->Value->Usages->Type == 'Ticket') {
-                $usage += $response->GetCustomerReportWithSoftwareResult->Value->Usages->Items->Count / 5;
             } else {
-                $usage += $response->GetCustomerReportWithSoftwareResult->Value->Usages->Items->Count;
+                if ($response->GetCustomerReportWithSoftwareResult->Value->Usages->Type == 'Ledger') {
+                    $usage += $response->GetCustomerReportWithSoftwareResult->Value->Usages->Items->Count / 1000;
+                } else if ($response->GetCustomerReportWithSoftwareResult->Value->Usages->Type == 'OutboxEArchive') {
+                    $usage += $response->GetCustomerReportWithSoftwareResult->Value->Usages->Items->Count / $customer->divisor;
+                } else if ($response->GetCustomerReportWithSoftwareResult->Value->Usages->Type == 'Ticket') {
+                    $usage += $response->GetCustomerReportWithSoftwareResult->Value->Usages->Items->Count / 5;
+                } else {
+                    $usage += $response->GetCustomerReportWithSoftwareResult->Value->Usages->Items->Count;
+                }
             }
         }
 

@@ -2,18 +2,15 @@
 
 namespace App\Services;
 
-use App\BienCrmServices\BienCrmService;
-use App\Imports\CustomersImport;
-use App\Mail\SendCustomerPasswordEmail;
 use App\Models\Customer;
 use App\Models\Dealer;
 use App\Models\Province;
 use App\Models\TransactionStatus;
 use App\SoapServices\BienSoapService;
 use App\Traits\Response;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
 use Maatwebsite\Excel\Facades\Excel;
@@ -261,6 +258,14 @@ class CustomerService
             return $this->error('Customer not found', 404);
         }
 
+        $bienSoapService = new BienSoapService;
+        $customerFromSoapService = $bienSoapService->GetCustomerStatusInformation();
+        $activationDate = '';
+        if (isset($customerFromSoapService->GetCustomerStatusInformationResult->Value->Items->CreateDateUtc)) {
+            $carbonDate = new Carbon($customerFromSoapService->GetCustomerStatusInformationResult->Value->Items->CreateDateUtc);
+            $activationDate = $carbonDate->toDateTimeString();
+        }
+
         $customer->dealer_id = $dealer_id;
         $customer->name = $name;
         $customer->tax_number = $tax_number;
@@ -273,6 +278,7 @@ class CustomerService
         $customer->district_id = $district_id;
         $customer->foundation_date = $foundation_date;
         $customer->divisor = $divisor == '' || $divisor == null ? 1 : $divisor;
+        $customer->activation_date = $activationDate;
         $customer->save();
 
         return $this->success('Customer created successfully', $customer);
@@ -361,8 +367,8 @@ class CustomerService
 
         $customer->save();
 
-        $bienCrmCustomerService = new \App\BienCrmServices\CustomerService;
-        $bienCrmCustomerService->create($customer);
+//        $bienCrmCustomerService = new \App\BienCrmServices\CustomerService;
+//        $bienCrmCustomerService->create($customer);
 
         return $this->success('Customer transaction status updated successfully', []);
     }

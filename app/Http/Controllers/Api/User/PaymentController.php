@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\User\Payment\CreateRequest;
 use App\Http\Requests\Api\User\Payment\GetByIdRequest;
 use App\Services\PaymentService;
-use App\SoapServices\ParamService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
 class PaymentController extends Controller
@@ -21,6 +21,11 @@ class PaymentController extends Controller
     public function getAll()
     {
         return $this->paymentService->getAll();
+    }
+
+    public function getApproved()
+    {
+        return $this->paymentService->getApproved();
     }
 
     public function getById(GetByIdRequest $request)
@@ -41,5 +46,12 @@ class PaymentController extends Controller
         );
 
         return Crypt::encrypt($orderId);
+    }
+
+    public function testJqxServerSide(Request $request)
+    {
+        return response()->json(
+            $this->paymentService->testJqxServerSide($request)
+        );
     }
 }

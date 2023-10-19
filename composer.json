@@ -5,7 +5,7 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^7.3|8.0",
+        "php": "^8.0",
         "ext-soap": "*",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.3",
@@ -16,6 +16,7 @@
         "maatwebsite/excel": "^3.1",
         "phpoffice/phpspreadsheet": "*",
         "psr/simple-cache": "1.0",
+        "rampesna/jqx-server-side": "^1.0",
         "rap2hpoutre/fast-excel": "^3.2",
         "wsdltophp/wssecurity": "^2.0",
         "yajra/laravel-datatables": "^1.5"

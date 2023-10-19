@@ -197,7 +197,7 @@
                                 pageable: true,
                                 sortable: true,
                                 pagesizeoptions: ['10', '20', '50', '1000'],
-                                localization: getLocalization('tr'),
+                                // localization: getLocalization('tr'),
                                 columns: [
                                     {
                                         text: 'Tarih',

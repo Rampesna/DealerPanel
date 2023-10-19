@@ -166,6 +166,51 @@
                         <span class="menu-text">Kullanıcılar</span>
                     </a>
                 </li>
+                <li class="menu-item {{ request()->segment(2) === 'announcement' ? 'menu-item-active' : null }}" aria-haspopup="true">
+                    <a href="{{ route('user.announcement.index') }}" class="menu-link">
+                        <span class="svg-icon menu-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" >
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24"/>
+                                    <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10"/>
+                                    <path d="M12,16 C12.5522847,16 13,16.4477153 13,17 C13,17.5522847 12.5522847,18 12,18 C11.4477153,18 11,17.5522847 11,17 C11,16.4477153 11.4477153,16 12,16 Z M10.591,14.868 L10.591,13.209 L11.851,13.209 C13.447,13.209 14.602,11.991 14.602,10.395 C14.602,8.799 13.447,7.581 11.851,7.581 C10.234,7.581 9.121,8.799 9.121,10.395 L7.336,10.395 C7.336,7.875 9.31,5.922 11.851,5.922 C14.392,5.922 16.387,7.875 16.387,10.395 C16.387,12.915 14.392,14.868 11.851,14.868 L10.591,14.868 Z" fill="#000000"/>
+                                </g>
+                            </svg>
+                        </span>
+                        <span class="menu-text">Duyurular</span>
+                    </a>
+                </li>
+                <li class="menu-item {{ request()->segment(2) === 'trendyolApplication' ? 'menu-item-active' : null }}" aria-haspopup="true">
+                    <a href="{{ route('user.trendyolApplication.index') }}" class="menu-link">
+                        <span class="svg-icon menu-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" >
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24"/>
+                                    <circle fill="#000000" opacity="0.3" cx="19" cy="5" r="3"/>
+                                    <g transform="translate(2.000000, 6.000000)">
+                                        <rect x="0" y="0" width="16" height="16"/>
+                                        <path d="M9,5 L9,12 C9,12.5522847 8.55228475,13 8,13 L8,13 C7.44771525,13 7,12.5522847 7,12 L7,5 L5,5 C4.44771525,5 4,4.55228475 4,4 L4,4 C4,3.44771525 4.44771525,3 5,3 L11,3 C11.5522847,3 12,3.44771525 12,4 L12,4 C12,4.55228475 11.5522847,5 11,5 L9,5 Z" fill="#000000"/>
+                                    </g>
+                                </g>
+                            </svg>
+                        </span>
+                        <span class="menu-text">Trendyol Başvuruları</span>
+                    </a>
+                </li>
+                <li class="menu-item {{ request()->segment(2) === 'payment' ? 'menu-item-active' : null }}" aria-haspopup="true">
+                    <a href="{{ route('user.payment.index') }}" class="menu-link">
+                        <span class="svg-icon menu-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" >
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24"/>
+                                    <rect fill="#000000" opacity="0.3" x="2" y="2" width="10" height="12" rx="2"/>
+                                    <path d="M4,6 L20,6 C21.1045695,6 22,6.8954305 22,8 L22,20 C22,21.1045695 21.1045695,22 20,22 L4,22 C2.8954305,22 2,21.1045695 2,20 L2,8 C2,6.8954305 2.8954305,6 4,6 Z M18,16 C19.1045695,16 20,15.1045695 20,14 C20,12.8954305 19.1045695,12 18,12 C16.8954305,12 16,12.8954305 16,14 C16,15.1045695 16.8954305,16 18,16 Z" fill="#000000"/>
+                                </g>
+                            </svg>
+                        </span>
+                        <span class="menu-text">Ödemeler</span>
+                    </a>
+                </li>
                 @if(auth()->id() == 1)
                     <li class="menu-item {{ request()->segment(2) === 'log' ? 'menu-item-active' : null }}" aria-haspopup="true">
                         <a href="{{ route('user.log.index') }}" class="menu-link">

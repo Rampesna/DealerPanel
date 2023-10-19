@@ -20,6 +20,12 @@
     var district_id_create = $('#district_id_create');
     var district_id_edit = $('#district_id_edit');
 
+    var service_id_create = $('#service_id_create');
+    var service_id_edit = $('#service_id_edit');
+
+    var status_id_create = $('#status_id_create');
+    var status_id_edit = $('#status_id_edit');
+
     function create() {
         $('#CreateModal').modal('show');
     }
@@ -70,7 +76,9 @@
         $(location).prop('href', `{{ route('user.customer.show') }}/${$('#encrypted_id_edit').val()}/index`)
     }
 
-    function save(method, data) {
+    function save(method, data, serviceData) {
+        CreateButton.attr('disabled', true).html('<i class="fa fa-spinner fa-spin"></i>');
+        UpdateButton.attr('disabled', true).html('<i class="fa fa-spinner fa-spin"></i>');
         $.ajax({
             type: method,
             url: '{{ route('api.v1.user.customer.save') }}',
@@ -79,7 +87,52 @@
                 _auth_type: 'User'
             },
             data: data,
-            success: function () {
+            success: function (response) {
+                CreateButton.attr('disabled', false).html('Oluştur');
+                UpdateButton.attr('disabled', false).html('Güncelle');
+                var relation_type = 'App\\Models\\Customer';
+                var relation_id = response.response.id;
+                var creator_type = 'App\\Models\\User';
+                var creator_id = '{{ auth()->id() }}';
+
+                if (
+                    serviceData &&
+                    serviceData.service_id &&
+                    serviceData.start &&
+                    serviceData.end &&
+                    serviceData.amount &&
+                    serviceData.status_id
+                ) {
+                    var newData = {
+                        creator_type: creator_type,
+                        creator_id: creator_id,
+                        relation_type: relation_type,
+                        relation_id: relation_id,
+                        service_id: serviceData.service_id,
+                        start: serviceData.start,
+                        end: serviceData.end,
+                        amount: serviceData.amount,
+                        status_id: serviceData.status_id
+                    };
+
+                    $.ajax({
+                        type: 'post',
+                        url: '{{ route('api.v1.user.customer.service.save') }}',
+                        headers: {
+                            _token: '{{ auth()->user()->apiToken() }}',
+                            _auth_type: 'User'
+                        },
+                        data: newData,
+                        success: function () {
+
+                        },
+                        error: function (error) {
+                            console.log(error);
+                            toastr.error('Hizmet Kaydedilirken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+                        }
+                    });
+                }
+
                 toastr.success('Başarıyla Kaydedildi!');
                 $('#CreateForm').trigger('reset');
                 dealer_id_create.selectpicker('refresh');
@@ -89,6 +142,8 @@
             },
             error: function (error) {
                 console.log(error);
+                CreateButton.attr('disabled', false).html('Oluştur');
+                UpdateButton.attr('disabled', false).html('Güncelle');
                 toastr.error('Müşteri Kaydedilirken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
             }
         });
@@ -257,8 +312,65 @@
         });
     }
 
+    function getServices() {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('api.v1.general.service.index') }}',
+            headers: {
+                _token: '{{ auth()->user()->apiToken() }}',
+                _auth_type: 'User'
+            },
+            data: {},
+            success: function (response) {
+                service_id_create.empty();
+                service_id_edit.empty();
+                service_id_create.append(`<optgroup label=""><option value="">Seçim Yapılmadı</option></optgroup>`);
+                service_id_edit.append(`<optgroup label=""><option value="">Seçim Yapılmadı</option></optgroup>`);
+                $.each(response.response, function (i, service) {
+                    service_id_create.append(`<option value="${service.id}">${service.name} (${service.credit_amount} Kontör)</option>`);
+                    service_id_edit.append(`<option value="${service.id}">${service.name} (${service.credit_amount} Kontör)</option>`);
+                });
+                service_id_create.selectpicker('refresh');
+                service_id_edit.selectpicker('refresh');
+            },
+            error: function (error) {
+                console.log(error);
+                toastr.error('Hizmet Listesi Alınırken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin.');
+            }
+        });
+    }
+
+    function getCustomerServiceStatuses() {
+        $.ajax({
+            type: 'get',
+            url: '{{ route('api.v1.general.relationServiceStatus.index') }}',
+            headers: {
+                _token: '{{ auth()->user()->apiToken() }}',
+                _auth_type: 'User'
+            },
+            data: {},
+            success: function (response) {
+                status_id_create.empty();
+                status_id_edit.empty();
+                status_id_create.append(`<optgroup label=""><option value="">Seçim Yapılmadı</option></optgroup>`);
+                status_id_edit.append(`<optgroup label=""><option value="">Seçim Yapılmadı</option></optgroup>`);
+                $.each(response.response, function (i, customerServiceStatus) {
+                    status_id_create.append(`<option value="${customerServiceStatus.id}">${customerServiceStatus.name}</option>`);
+                    status_id_edit.append(`<option value="${customerServiceStatus.id}">${customerServiceStatus.name}</option>`);
+                });
+                status_id_create.selectpicker('refresh');
+                status_id_edit.selectpicker('refresh');
+            },
+            error: function () {
+
+            }
+        });
+    }
+
     getDealers();
     getCountries();
+    getServices();
+    getCustomerServiceStatuses();
 
     var customers = $('#customers').DataTable({
         language: {
@@ -436,6 +548,12 @@
         var district_id = district_id_create.val();
         var divisor = $('#divisor_create').val();
 
+        var service_id = service_id_create.val();
+        var start = $('#start_create').val();
+        var end = $('#end_create').val();
+        var amount = $('#amount_create').val();
+        var status_id = status_id_create.val();
+
         if (tax_number == null || tax_number === '') {
             toastr.warning('Vergi Numarası Boş Olamaz!');
         } else if (tax_number.length < 10) {
@@ -446,6 +564,16 @@
             toastr.warning('Müşteri Ünvanı Boş Olamaz!');
         } else if (email == null || email === '') {
             toastr.warning('E-posta Adresi Boş Olamaz!');
+        }  else if (service_id == null || service_id === '') {
+            toastr.warning('Hizmet Seçimi Yapmalısınız!');
+        } else if (start == null || start === '') {
+            toastr.warning('Hizmet Başlangıcı Seçimi Zorunludur!');
+        } else if (end == null || end === '') {
+            toastr.warning('Hizmet Bitişi Seçimi Zorunludur!');
+        } else if (amount == null || amount === '') {
+            toastr.warning('Hizmet Adedi Girilmesi Zorunludur!');
+        } else if (status_id == null || status_id === '') {
+            toastr.warning('Hizmet Durumu Girilmesi Zorunludur!');
         } else {
             $.ajax({
                 type: 'get',
@@ -470,6 +598,12 @@
                             province_id: province_id,
                             district_id: district_id,
                             divisor: divisor === '' ? 1 : divisor
+                        }, {
+                            service_id: service_id,
+                            start: start,
+                            end: end,
+                            amount: amount,
+                            status_id: status_id,
                         });
                     }
                 },

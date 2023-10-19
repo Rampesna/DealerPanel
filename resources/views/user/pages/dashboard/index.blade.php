@@ -4,7 +4,9 @@
 
 @section('content')
 
-    <div class="row">
+    @include('user.pages.dashboard.modals.announcement')
+
+    <div class="row mb-5">
         <div class="col-xl-4 col-12 mb-5">
             <div class="card">
                 <div class="card-header pt-4 pb-3 text-center">
@@ -97,6 +99,23 @@
                             </span>
                             <h4 class="font-30 font-weight-bold text-col-blue" id="opportunitiesSpan" style="font-size: 30px">--</h4>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card card-custom gutter-b">
+                <div class="card-header border-0 pt-7">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label font-weight-bold font-size-h4 text-dark-75">Son Duyurular</span>
+                    </h3>
+                </div>
+                <div class="card-body pt-1">
+                    <div class="form" id="announcementsRow">
+
                     </div>
                 </div>
             </div>

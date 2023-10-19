@@ -7,6 +7,7 @@
     @include('user.pages.waitingTransaction.layouts.subheader')
 
     @include('user.pages.waitingTransaction.customer.modals.accept')
+    @include('user.pages.waitingTransaction.customer.modals.reject')
 
     <input type="hidden" id="id_edit">
     <input type="hidden" id="encrypted_id_edit">
@@ -20,6 +21,8 @@
                             <th>Vergi Numarası</th>
                             <th>Bayi</th>
                             <th>Ünvan</th>
+                            <th>E-mail</th>
+                            <th>Telefon</th>
                         </tr>
                         </thead>
                         <tfoot>
@@ -27,6 +30,8 @@
                             <th>Vergi Numarası</th>
                             <th>Bayi</th>
                             <th>Ünvan</th>
+                            <th>E-mail</th>
+                            <th>Telefon</th>
                         </tr>
                         </tfoot>
                     </table>
@@ -41,6 +46,13 @@
                 <div class="row">
                     <div class="col-xl-12">
                         <i class="fas fa-check-circle text-success"></i><span class="ml-4">Onayla</span>
+                    </div>
+                </div>
+            </a>
+            <a onclick="reject()" class="dropdown-item cursor-pointer">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <i class="fas fa-times-circle text-danger"></i><span class="ml-4">Reddet</span>
                     </div>
                 </div>
             </a>

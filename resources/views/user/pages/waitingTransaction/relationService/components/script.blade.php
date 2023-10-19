@@ -4,9 +4,14 @@
 <script>
 
     var AcceptButton = $('#AcceptButton');
+    var RejectButton = $('#RejectButton');
 
     function accept() {
         $('#AcceptModal').modal('show');
+    }
+
+    function reject() {
+        $('#RejectModal').modal('show');
     }
 
     var relationServices = $('#relationServices').DataTable({
@@ -191,7 +196,39 @@
                     toastr.error('Talebi Oluşturanın Yeterli Kontör Bakiyesi Bulunmadığından İşlem Onaylanamıyor!');
                 } else {
                     console.log(error);
-                    toastr.error('Müşteri Onaylanırken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin');
+                    toastr.error('Hizmet Onaylanırken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin');
+                }
+            }
+        });
+    });
+
+    RejectButton.click(function () {
+        var customer_service_id = $('#id_edit').val();
+        var transaction_status_id = 3;
+        $.ajax({
+            type: 'put',
+            url: '{{ route('api.v1.user.waitingTransaction.relationService.accept') }}',
+            headers: {
+                _token: '{{ auth()->user()->apiToken() }}',
+                _auth_type: 'User'
+            },
+            data: {
+                customer_service_id: customer_service_id,
+                transaction_status_id: transaction_status_id,
+                auth_type: '{{ str_replace('\\', '\\\\', auth()->user()->authType()) }}',
+                auth_id: '{{ auth()->id() }}'
+            },
+            success: function () {
+                $('#RejectModal').modal('hide');
+                relationServices.ajax.reload();
+                toastr.success('Hizmet Reddedildi.');
+            },
+            error: function (error) {
+                if (error.responseJSON.message === 'Not enough balance') {
+                    toastr.error('Talebi Oluşturanın Yeterli Kontör Bakiyesi Bulunmadığından İşlem Onaylanamıyor!');
+                } else {
+                    console.log(error);
+                    toastr.error('Hizmet Reddedilirken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin');
                 }
             }
         });

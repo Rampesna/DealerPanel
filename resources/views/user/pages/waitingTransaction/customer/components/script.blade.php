@@ -4,9 +4,14 @@
 <script>
 
     var AcceptButton = $('#AcceptButton');
+    var RejectButton = $('#RejectButton');
 
     function accept() {
         $('#AcceptModal').modal('show');
+    }
+
+    function reject() {
+        $('#RejectModal').modal('show');
     }
 
     var customers = $('#customers').DataTable({
@@ -111,6 +116,8 @@
             {data: 'tax_number', name: 'tax_number', width: '10%'},
             {data: 'dealer_id', name: 'dealer_id', width: '15%'},
             {data: 'name', name: 'name'},
+            {data: 'email', name: 'email'},
+            {data: 'gsm', name: 'gsm'},
         ],
 
         responsive: true,
@@ -184,6 +191,33 @@
             error: function (error) {
                 console.log(error);
                 toastr.error('Müşteri Onaylanırken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin');
+            }
+        });
+    });
+
+    RejectButton.click(function () {
+        var customer_id = $('#id_edit').val();
+        var transaction_status_id = 3;
+        toastr.info('İşleminiz Yapılıyor Lütfen Bekleyin...');
+        $.ajax({
+            type: 'put',
+            url: '{{ route('api.v1.user.waitingTransaction.customer.accept') }}',
+            headers: {
+                _token: '{{ auth()->user()->apiToken() }}',
+                _auth_type: 'User'
+            },
+            data: {
+                customer_id: customer_id,
+                transaction_status_id: transaction_status_id,
+            },
+            success: function () {
+                $('#RejectModal').modal('hide');
+                customers.ajax.reload();
+                toastr.error('Müşteri Başarıyla Reddedildi.');
+            },
+            error: function (error) {
+                console.log(error);
+                toastr.error('Müşteri Reddedilirken Sistemsel Bir Sorun Oluştu. Lütfen Geliştirici Ekibi İle İletişime Geçin');
             }
         });
     });
